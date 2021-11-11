@@ -1,11 +1,11 @@
 # Fdb version 3
-["pdflatex"] 1636113086 "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" "bachelor_thesis.pdf" "bachelor_thesis" 1636113088
+["pdflatex"] 1636639520 "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" "bachelor_thesis.pdf" "bachelor_thesis" 1636639522
   "Images/TITLE/cvut.pdf" 1636111174 8834 aae85eda4be094453c958955829d71c0 ""
   "Images/TITLE/fjfi.pdf" 1636111174 6374 f1bb5f82c5ddffa0dc5ee811955ab358 ""
-  "bachelor_thesis.aux" 1636113088 695 2e7a405fac8187693a3e7e0f619a597e "pdflatex"
-  "bachelor_thesis.tex" 1636113084 9448 e2d03885dfb0f557b4df446066269aea ""
-  "bachelor_thesis.toc" 1636113088 357 cd2d4bea26c99b0bdaac9203b508b24c "pdflatex"
-  "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" 1636113084 9448 e2d03885dfb0f557b4df446066269aea ""
+  "bachelor_thesis.aux" 1636639521 1772 cdc97c55bb56a1ccb6bdf736225381d0 "pdflatex"
+  "bachelor_thesis.tex" 1636639516 9790 85a0f05738f3b5bd7cede39c99671ab0 ""
+  "bachelor_thesis.toc" 1636639521 938 7b39e0dd6a534f6b511ecab28d1c2d2f "pdflatex"
+  "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" 1636639516 9790 85a0f05738f3b5bd7cede39c99671ab0 ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc" 1636051308 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2021/texmf-dist/fonts/map/fontname/texfonts.map" 1636051660 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/jknappen/ec/ecrm1095.tfm" 1636051338 3584 929cdff2b7a8c11bd4d49fd68cb0ae70 ""
@@ -24,7 +24,6 @@
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/t1xr.tfm" 1636055237 6716 6d25a377562601272906e3bfe6b2817a ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/t1xsc.tfm" 1636055237 16708 520af01c295bb6e31a9ec3bddf6d176c ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/t1xsl.tfm" 1636055237 6928 bb5fcf71a20cb826f74ab4d8df5ea593 ""
-  "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/t1xtt.tfm" 1636055237 1384 8943063000d26272532f74ca134dfecd ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/txex.tfm" 1636055237 1080 b674b4ba143004461509a754a0984b67 ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/txexa.tfm" 1636055237 688 f56006d6e56f46e63d9f63252958b828 ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/txi.tfm" 1636055237 2584 cf4a6a7c2a518d47468fe29ef0913ba0 ""
@@ -37,7 +36,6 @@
   "c:/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/txsyc.tfm" 1636055237 1084 75e807e9e71f7a312e4e1187dce5e93b ""
   "c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb" 1636055237 6339 e2b78706efdc360ee6aec9b6e20211a7 ""
   "c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb" 1636055237 11099 83316203930a07cc1ec0d29d0f0dd35c ""
-  "c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb" 1636055237 26301 f08b3c26ea42c3177a262c2ac37d6a91 ""
   "c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1636055046 44729 fea0975e20ec51c992338362f05f1146 ""
   "c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb" 1636055046 46026 687528a208fbfc1f00832bb96cccebbb ""
   "c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.pfb" 1636055046 45458 504e2b06fa82109d168c7a0afb09e145 ""
@@ -83,7 +81,6 @@
   "c:/texlive/2021/texmf-dist/tex/latex/txfonts/omxtxex.fd" 1636055238 312 11fe1916b0a13a81a05234a6fc7f8738 ""
   "c:/texlive/2021/texmf-dist/tex/latex/txfonts/ot1txr.fd" 1636055238 1271 4e3afbd8e832f2f9c7f064894e6e68e4 ""
   "c:/texlive/2021/texmf-dist/tex/latex/txfonts/t1txr.fd" 1636055238 1242 cbf8a0d4f750f9833a0bfb05fb39f1cb ""
-  "c:/texlive/2021/texmf-dist/tex/latex/txfonts/t1txtt.fd" 1636055238 1324 7b6c95370a64cd8c7620cbefefb53dba ""
   "c:/texlive/2021/texmf-dist/tex/latex/txfonts/txfonts.sty" 1636055238 50381 d367461010070c7a491b1f6979ab2062 ""
   "c:/texlive/2021/texmf-dist/tex/latex/txfonts/utxexa.fd" 1636055238 310 1b00b0b05685b816e4c6caccce437e0d ""
   "c:/texlive/2021/texmf-dist/tex/latex/txfonts/utxmia.fd" 1636055238 334 87436a82076ca2e35cd305f852507afc ""
@@ -97,6 +94,6 @@
   "c:/texlive/2021/texmf.cnf" 1636055820 713 e69b156964470283e0530f5060668171 ""
   (generated)
   "bachelor_thesis.toc"
-  "bachelor_thesis.log"
   "bachelor_thesis.pdf"
   "bachelor_thesis.aux"
+  "bachelor_thesis.log"

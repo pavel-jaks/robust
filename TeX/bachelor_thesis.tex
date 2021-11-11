@@ -84,8 +84,14 @@
 \makeatother
 
 \usepackage{babel}
+
+\def\NameOfThesisCzech{Robustní strojové učení a adversariální vzorky}
+\def\NameOfThesisEnglish{Robust machine learning and adversarial examples}
+\def\NameOfAuthor{Pavel Jakš}
+\def\NameOfSupervisor{Mgr. Lukáš Adam, Ph.D.}
+
 \begin{document}
-\def\documentdate{7. \v{c}ervence 2021}
+\def\documentdate{7. \v{c}ervence 2022}
 
 %%\def\documentdate{\today}
 
@@ -112,14 +118,12 @@
 
 \vspace{3cm}
 
-\textbf{\huge{}Název práce česky název práce česky název práce česky
-název práce česky}{\huge\par}
+\textbf{\huge{}\NameOfThesisCzech}{\huge\par}
 
 \vspace{1cm}
 
 \selectlanguage{american}%
-\textbf{\huge{}Title of the Work in English Title of the Work in English
-Title of the Work in English}{\huge\par}
+\textbf{\huge{}\NameOfThesisEnglish}{\huge\par}
 
 \selectlanguage{czech}%
 \vspace{2cm}
@@ -132,11 +136,10 @@ Title of the Work in English}{\huge\par}
 
 \begin{lyxlist}{MMMMMMMMM}
 \begin{singlespace}
-\item [{Autor:}] \textbf{Jméno Autora}
-\item [{Vedoucí~práce:}] \textbf{prof. Ing. Jméno Školitele, DrSc.}
-\item [{Konzultant:}] \textbf{doc. RNDr. Jméno Konzultanta, CSc. }(pouze
-pokud konzultant byl jmenován.)
-\item [{Akademický~rok:}] 2020/2021
+\item [{Autor:}] \textbf{\NameOfAuthor}
+\item [{Vedoucí~práce:}] \textbf{\NameOfSupervisor}
+%\item [{Konzultant:}] \textbf{doc. RNDr. Jméno Konzultanta, CSc. }(pouze pokud konzultant byl jmenován.)
+\item [{Akademický~rok:}] 2021/2022
 \end{singlespace}
 \end{lyxlist}
 \newpage{}
@@ -169,10 +172,9 @@ pokud konzultant byl jmenován.)
 
 \noindent \emph{\Large{}Poděkování:}{\Large\par}
 
-\noindent Chtěl bych zde poděkovat především svému školiteli ...................
+\noindent Chtěl bych zde poděkovat především svému školiteli - panu doktoru Adamovi -
 za pečlivost, ochotu, vstřícnost a odborné i lidské zázemí při vedení
-mé diplomové práce. Dále děkuji svému konzultantovi ................
-za ................
+mé bakalářské práce.
 
 \vfill
 
@@ -183,7 +185,7 @@ jsem všechnu použitou literaturu.
 
 \bigskip{}
 
-\noindent V Praze dne \documentdate\hfill{}Jméno Autora
+\noindent V Praze dne \documentdate\hfill{}\NameOfAuthor
 
 \vspace{2cm}
 
@@ -194,19 +196,18 @@ jsem všechnu použitou literaturu.
 \begin{onehalfspace}
 \noindent \emph{Název práce:}
 
-\noindent \textbf{Název práce}
+\noindent \textbf{\NameOfThesisCzech}
 \end{onehalfspace}
 
 \bigskip{}
 
-\noindent \emph{Autor:} Jméno Autora
+\noindent \emph{Autor:} \NameOfAuthor
 
 \bigskip{}
 
-\noindent \emph{Obor:} Celý název oboru (nikoliv zkratka)\bigskip{}
+\noindent \emph{Obor:} Matematická informatika\bigskip{}
 
-\noindent \emph{Zaměření:} Celý název zaměření (Pokud obor neobsahuje
-zaměření, tuto řádku odstranit.)
+% \noindent \emph{Zaměření:} Celý název zaměření (Pokud obor neobsahuje zaměření, tuto řádku odstranit.)
 
 \bigskip{}
 
@@ -214,13 +215,16 @@ zaměření, tuto řádku odstranit.)
 
 \bigskip{}
 
-\noindent \emph{Vedoucí práce:} prof. Ing. Jméno Školitele, DrSc.,
-pracoviště školitele (název instituce, fakulty, katedry...)
+\noindent \emph{Vedoucí práce:} \NameOfSupervisor,
+Katedra počítačů,
+Fakulta elektrotechnická,
+České vysoké učení technické v Praze,
+Karlovo náměstí 13, 121 35, Praha 2
 
 \bigskip{}
 
-\noindent \emph{Konzultant:} doc. RNDr. Jméno Konzultanta, CSc., pracoviště
-konzultanta. Pouze pokud konzultant byl jmenován.
+% \noindent \emph{Konzultant:} doc. RNDr. Jméno Konzultanta, CSc., pracoviště
+% konzultanta. Pouze pokud konzultant byl jmenován.
 
 \bigskip{}
 
@@ -249,12 +253,12 @@ podle abecedy a oddělená čárkou
 \begin{onehalfspace}
 \noindent \emph{Title:}
 
-\noindent \textbf{Title of the Work}
+\noindent \textbf{\NameOfThesisEnglish}
 \end{onehalfspace}
 
 \bigskip{}
 
-\noindent \emph{Author:} Author's Name
+\noindent \emph{Author:} \NameOfAuthor
 
 \bigskip{}
 
@@ -296,7 +300,30 @@ by commas
 
 Text úvodu....
 
-\chapter{Název první kapitoly}
+% Neuronové sítě
+\chapter{Neuronové sítě}
+
+\section{MLP}
+
+\section{Konvoluční neuronové sítě}
+
+\section{Učení neuronové sítě}
+
+
+
+% Adversariální vzorky
+\chapter{Adversariální vzorky}
+
+\section{Metody generování adversariálních vzorků}
+
+\subsection{FGSM}
+
+\subsection{Iterativní FGSM}
+
+
+% Robustní učení
+\chapter{Robustní učení neuronové sítě}
+
 
 \pagestyle{headings}
 
@@ -308,17 +335,15 @@ Text úvodu....
 
 Text závěru....
 \begin{thebibliography}{1}
-\bibitem{Allen-Cahn}S. Allen, J. W. Cahn: \emph{A microscopic theory
-for antiphase boundary motion and its application to antiphase domain
-coarsening}. Acta Metall., 27:1084-1095, 1979.
+\bibitem{Goodfellow}I. Goodfellow, Y. Bengio, A. Courville,
+\emph{Deep Learning}. MIT Press, 2016.
 
-\bibitem{CINECA}G. Ballabio et al.: \emph{High Performance Systems
-User Guide}. High Performance Systems Department, CINECA, Bologna,
-2005. \url{www.cineca.it}
+\bibitem{GoodfellowEtAl} I. Goodfellow, J. Shlens, C. Szegedy,
+\emph{Explaining and Harnessing Adversarial Examples}. In 'International Conference on Learning Representations', ICLR 2015.
 
-\bibitem{rumpf3}J. Becker, T. Preusser, M. Rumpf: \emph{PDE methods
-in flow simulation post processing}. Computing and Visualization in
-Science, 3(3):159-167, 2000.
+\bibitem{NumericalOptim} J. Nocedal, S. Wright,
+\emph{Numerical optimization}. Springer Science \& Business Media, 2006.
+
 \end{thebibliography}
 
 \end{document}
