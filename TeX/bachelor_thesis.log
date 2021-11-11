@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.11.4)  11 NOV 2021 15:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.11.4)  11 NOV 2021 19:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -409,34 +409,38 @@ LaTeX Font Info:    Font shape `T1/txr/b/n' in size <24.88> not available
 Kapitola 1.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <14.4> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 306.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <12> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 310.
 [13] [14
 
 ]
 Kapitola 2.
-LaTeX Font Info:    Font shape `T1/txr/b/n' in size <12> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 319.
 [15] [16
 
 ]
 Kapitola 3.
 [17] [18
 
-] [19] [20
+]
+Kapitola 4.
+[19] [20
 
-] [21] (./bachelor_thesis.aux) ) 
+] [21] [22
+
+] [23] (./bachelor_thesis.aux) ) 
 Here is how much of TeX's memory you used:
  5253 strings out of 478579
  72453 string characters out of 5857458
- 382906 words of memory out of 5000000
+ 383906 words of memory out of 5000000
  23038 multiletter control sequences out of 15000+600000
  458499 words of font info for 95 fonts, out of 8000000 for 9000
  1152 hyphenation exceptions out of 8191
  57i,6n,66p,306b,268s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on bachelor_thesis.pdf (21 pages, 84910 bytes).
+Output written on bachelor_thesis.pdf (23 pages, 86891 bytes).
 PDF statistics:
- 111 PDF objects out of 1000 (max. 8388607)
- 71 compressed objects within 1 object stream
+ 117 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
