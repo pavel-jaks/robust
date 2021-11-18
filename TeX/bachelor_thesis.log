@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.11.4)  11 NOV 2021 19:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.11.4)  18 NOV 2021 18:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -407,15 +407,20 @@ LaTeX Font Info:    Font shape `T1/txr/b/n' in size <24.88> not available
 
 ]
 Kapitola 1.
+LaTeX Font Info:    Trying to load font information for TS1+txr on input line 327.
+(c:/texlive/2021/texmf-dist/tex/latex/txfonts/ts1txr.fd
+File: ts1txr.fd 2000/12/15 v3.1
+)
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <14.4> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 306.
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 336.
+ [13]
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <12> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 310.
-[13] [14
-
-]
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 360.
+ [14]
 Kapitola 2.
-[15] [16
+[15
+
+] [16
 
 ]
 Kapitola 3.
@@ -429,18 +434,18 @@ Kapitola 4.
 
 ] [23] (./bachelor_thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 5253 strings out of 478579
- 72453 string characters out of 5857458
- 383906 words of memory out of 5000000
- 23038 multiletter control sequences out of 15000+600000
- 458499 words of font info for 95 fonts, out of 8000000 for 9000
+ 5295 strings out of 478579
+ 72960 string characters out of 5857458
+ 384917 words of memory out of 5000000
+ 23068 multiletter control sequences out of 15000+600000
+ 463468 words of font info for 104 fonts, out of 8000000 for 9000
  1152 hyphenation exceptions out of 8191
  57i,6n,66p,306b,268s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on bachelor_thesis.pdf (23 pages, 86891 bytes).
+{c:/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtcxr.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/txex.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/txsy.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/txsyb.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on bachelor_thesis.pdf (23 pages, 105316 bytes).
 PDF statistics:
- 117 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 142 PDF objects out of 1000 (max. 8388607)
+ 90 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

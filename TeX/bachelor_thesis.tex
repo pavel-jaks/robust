@@ -298,12 +298,62 @@ by commas
 
 \addcontentsline{toc}{chapter}{Úvod}
 
-Text úvodu....
+Pojem neuronové sítě představuje výpočetní jednotku, která svou univerzálností nachází uplatnění v~mnoha disciplínách.
 
 % Neuronové sítě
 \chapter{Neuronové sítě}
 
+% Úvodní pojednání o neuronových sítích
+% Umělý neuron
+Princip fungování neuronové sítě spočívá v poskládání celku z dílčích výpočetních jednotek - umělých neuronů.
+Takovýto neuron je standardně funkcí více proměnných, jehož výstup je proměnná jediná.
+Typickým modelem umělého neuronu je funkce definovaná předpisem
+\begin{equation} \label{neuron}
+	f(x_1, ..., x_n) = \sigma (\sum_{i=1}^n w_i x_i + b) ,
+\end{equation}
+kde \emph{n} je počet vstupujících proměnných, \emph{$w_i$} jsou tzv. váhy (w z anglického slova weight),
+\emph{b} je práh (b z anglického slova bias), \emph{$\sigma$} označuje tzv. aktivační funkci.
+
+Roli vstupujících proměnných mohou hrát např. hodnoty RGB pixelů barevných obrázků, je-li aplikací klasifikace obrázků,
+nebo výstupy jiných neuronů.
+Pod pojmem váha se skrývá míra ovlivnění výstupu neuronu daným vstupem.
+Je-li váha u nějakého vstupu vysoká, pak je výstup citlivější na daný vstup.
+Práh pro změnu určuje posunutí citlivosti neuronu na všechny vstupy jako celku.
+
+Poslední, avšak velmi důležitou charakteristikou tohoto modelu neuronu je aktivační funkce.
+Za aktivační funkci lze vzít libovolnou funkci $f : \mathbb{R} \rightarrow \mathbb{R}$,
+existuje však základní sada:
+\begin{itemize}
+	\item Sigmoid: $f(x) = \frac{1}{1 + e^{-x}}$
+	\item ReLU: $f(x) = max(0, x)$
+	\item LeakyReLU: $f(x) = max(0, x) + \alpha * min(x, 0)$, kde $\alpha \in \mathbb{R}^+$
+	\item Tanh: $f(x) = tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}$
+\end{itemize}
+Tyto funkce lze doplnit o jejich mírné modifikace.
+Moderní doporučenou praxí je užívat ReLU jako aktivační funkci a (\ref{neuron}) jako model neuronu dle \cite{Goodfellow}.
+
+
 \section{Hluboká dopředná neuronová síť}
+Je-li pojem umělého neuronu objasněn, lze se přesunout k jeho užití v neuronových sítích.
+Základní myšlenkou těchto sítí je vhodné poskládání umělých neuronů do vrstev, které dohromady tvoří síť neuronů.
+Taková vrstva je potom trojího druhu - vstupní, výstupní a skrytá.
+\emph{Vstupní vrstva} je množina umělých neuronů, které mají za vstup výstupy problému, jehož je neuronová síť řešením.
+Za vstup si lze představit matici černobílých pixelů, které představují obrázek číslice, kterou je cíl klasifikovat.
+\emph{Výstupní} vrstva sestává z neuronů, které mají za vstup výstupy neuronů předchozí vrstvy.
+Výstupem této vrstvy pak bude řešení daného problému - například klasifikace číslice.
+Posledním druhem vrstvy je \emph{vrstva skrytá}.
+Takováto vrstva má za vstupy výstupy vrstvy předcházející a její výstupy slouží jako vstupy pro vrstvu nadcházející.
+Má-li neuronová síť tuto architekturu, hovoří se o \emph{dopředné neuronové síti}.
+Má-li navíc alespoň jednu skrytou vrstvu, lze mluvit o \emph{hluboké dopředné neuronové síti}.
+
+Se znalostí pojmu vrstvy neuronů lze přistoupit k poznámce o tzv. \emph{softmax funkci}.
+Jedná se o vektorovou funkci $f: \mathbb{R}^n \rightarrow \mathbb{R}^n$, kde
+\begin{equation*}
+	f(x_1, ..., x_n)_i = \frac{e^{x_i}}{\sum_{j=1}^n e^{x_j}}.
+\end{equation*}
+Její užití je nasnadě: Výstup této funkce lze totiž interpretovat jako diskrétní pravděpodobnostní distribuci,
+a proto ji lze užít jako aktivační funkci výstupní vrstvy, je-li cílem dané neuronové sítě klasifikace vstupu do kategorií.
+Potom $i_m = argmax\{f(x_1, ..., x_n)_i | i = 1, ..., n\}$ představuje index predikované kategorie a příslušné maximum jistotu predikce.
 
 \section{Konvoluční neuronové sítě}
 
@@ -330,6 +380,7 @@ Text úvodu....
 \subsection{Stochastický gradientní sestup}
 
 \subsection{Adam}
+
 
 % Adversariální vzorky
 \chapter{Adversariální vzorky}
