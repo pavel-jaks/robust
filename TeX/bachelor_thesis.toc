@@ -8,21 +8,21 @@
 \contentsline {chapter}{Úvod}{11}{}%
 \contentsline {chapter}{\numberline {1}Neuronové sítě}{13}{}%
 \contentsline {section}{\numberline {1.1}Hluboká dopředná neuronová síť}{13}{}%
-\contentsline {section}{\numberline {1.2}Konvoluční neuronové sítě}{14}{}%
+\contentsline {section}{\numberline {1.2}Konvoluční sítě}{14}{}%
 \contentsline {subsection}{\numberline {1.2.1}Konvoluce}{14}{}%
-\contentsline {subsection}{\numberline {1.2.2}Pooling}{14}{}%
-\contentsline {chapter}{\numberline {2}Učení neuronové sítě}{15}{}%
-\contentsline {section}{\numberline {2.1}Účelové funkce}{15}{}%
-\contentsline {subsection}{\numberline {2.1.1}Střední kvadratická chyba}{15}{}%
-\contentsline {subsection}{\numberline {2.1.2}Ztráta křížové entropie}{15}{}%
-\contentsline {section}{\numberline {2.2}Algoritmus zpětného šíření chyby}{15}{}%
-\contentsline {section}{\numberline {2.3}Algoritmy učení}{15}{}%
-\contentsline {subsection}{\numberline {2.3.1}Gradientní sestup}{15}{}%
-\contentsline {subsection}{\numberline {2.3.2}Stochastický gradientní sestup}{15}{}%
-\contentsline {subsection}{\numberline {2.3.3}Adam}{15}{}%
-\contentsline {chapter}{\numberline {3}Adversariální vzorky}{17}{}%
-\contentsline {section}{\numberline {3.1}Metody generování adversariálních vzorků}{17}{}%
-\contentsline {subsection}{\numberline {3.1.1}FGSM}{17}{}%
-\contentsline {subsection}{\numberline {3.1.2}Iterativní FGSM}{17}{}%
-\contentsline {chapter}{\numberline {4}Robustní učení neuronové sítě}{19}{}%
-\contentsline {chapter}{Záv\v {e}r}{21}{}%
+\contentsline {subsection}{\numberline {1.2.2}Pooling}{15}{}%
+\contentsline {chapter}{\numberline {2}Učení neuronové sítě}{17}{}%
+\contentsline {section}{\numberline {2.1}Účelové funkce}{17}{}%
+\contentsline {subsection}{\numberline {2.1.1}Střední kvadratická chyba}{17}{}%
+\contentsline {subsection}{\numberline {2.1.2}Ztráta křížové entropie}{17}{}%
+\contentsline {section}{\numberline {2.2}Algoritmus zpětného šíření chyby}{17}{}%
+\contentsline {section}{\numberline {2.3}Algoritmy učení}{17}{}%
+\contentsline {subsection}{\numberline {2.3.1}Gradientní sestup}{17}{}%
+\contentsline {subsection}{\numberline {2.3.2}Stochastický gradientní sestup}{17}{}%
+\contentsline {subsection}{\numberline {2.3.3}Adam}{17}{}%
+\contentsline {chapter}{\numberline {3}Adversariální vzorky}{19}{}%
+\contentsline {section}{\numberline {3.1}Metody generování adversariálních vzorků}{19}{}%
+\contentsline {subsection}{\numberline {3.1.1}FGSM}{19}{}%
+\contentsline {subsection}{\numberline {3.1.2}Iterativní FGSM}{19}{}%
+\contentsline {chapter}{\numberline {4}Robustní učení neuronové sítě}{21}{}%
+\contentsline {chapter}{Záv\v {e}r}{23}{}%

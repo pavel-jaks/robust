@@ -312,7 +312,7 @@ Typickým modelem umělého neuronu je funkce definovaná předpisem
 	f(x_1, ..., x_n) = \sigma (\sum_{i=1}^n w_i x_i + b) ,
 \end{equation}
 kde \emph{n} je počet vstupujících proměnných, \emph{$w_i$} jsou tzv. váhy (w z anglického slova weight),
-\emph{b} je práh (b z anglického slova bias), \emph{$\sigma$} označuje tzv. aktivační funkci.
+\emph{b} je práh (b z~anglického slova bias), \emph{$\sigma$} označuje tzv. aktivační funkci.
 
 Roli vstupujících proměnných mohou hrát např. hodnoty RGB pixelů barevných obrázků, je-li aplikací klasifikace obrázků,
 nebo výstupy jiných neuronů.
@@ -342,7 +342,7 @@ Za vstup si lze představit matici černobílých pixelů, které představují 
 \emph{Výstupní} vrstva sestává z neuronů, které mají za vstup výstupy neuronů předchozí vrstvy.
 Výstupem této vrstvy pak bude řešení daného problému - například klasifikace číslice.
 Posledním druhem vrstvy je \emph{vrstva skrytá}.
-Takováto vrstva má za vstupy výstupy vrstvy předcházející a její výstupy slouží jako vstupy pro vrstvu nadcházející.
+Takováto vrstva má za vstupy výstupy vrstvy předcházející a její výstupy slouží jako vstupy pro~vrstvu nadcházející.
 Má-li neuronová síť tuto architekturu, hovoří se o \emph{dopředné neuronové síti}.
 Má-li navíc alespoň jednu skrytou vrstvu, lze mluvit o \emph{hluboké dopředné neuronové síti}.
 
@@ -355,9 +355,49 @@ Její užití je nasnadě: Výstup této funkce lze totiž interpretovat jako di
 a proto ji lze užít jako aktivační funkci výstupní vrstvy, je-li cílem dané neuronové sítě klasifikace vstupu do kategorií.
 Potom $i_m = argmax\{f(x_1, ..., x_n)_i | i = 1, ..., n\}$ představuje index predikované kategorie a příslušné maximum jistotu predikce.
 
-\section{Konvoluční neuronové sítě}
+Další poznámka se bude věnovat zjednodušení zápisu akce vrstvy na vstup.
+Podle modelu neuronu v (\ref{neuron}) se akce jednodnoho neuronu na vstup sestává z násobení,
+následného sčítání, přičtení prahu a aplikací aktivační funkce.
+Tato procedura nastává pro každý neuron ve vrstvě.
+Tak lze sestavit z jednotlivých vah $w_i^{(j)}$ (\emph{i}-tá váha \emph{j}-tého neuronu ve vrstvě) matici $\mathbb{A}$,
+jejímiž prvky jsou právě ony váhy $(\mathbb{A})_{j,i} = w_i^{(j)}$, z prahů pak vektor $b$, kde $b_i = b^{(i)}$
+- práh \emph{i}-tého neuronu ve vrstvě.
+Potom při ztotožnění aktivační funkce $\sigma$ s její vektorovou variantou,
+za označení vektoru vstupu vrstvy jako $x_{in}$ a výstupu vrstvy jako $x_{out}$ lze psát:
+\begin{equation} \label{layer}
+	x_{out} = \sigma(\mathbb{A}x_{in} + b)
+\end{equation}
+Tedy stěžejní operací se stává maticové násobení, respektive násebení vektoru maticí zprava.
+
+Při tomto si lze povšimnout, že takováto neuronová síť má řadu parametrů, o kterých není jasné jak je správně nastavit.
+Některé parametry (například váhy a prahy) se nastavují během učení neuronové sítě, čemuž je věnována samostatná kapitola.
+Potom tu jsou parametry, jejichž charakter je poněkud odlišný.
+Jedná se o ty parametry, které zůstávají během života neuronové sítě netknuté.
+Jako příklad lze uvést počet neuronů ve skryté vrstvě, který se promítne v rozměrech matice vah či dimenzionalitě výstupu vrstvy.
+Takovýmto prametrům je přisuzován název hyper-parametry.
+
+\section{Konvoluční sítě}
+
+% Úvod do CNNs
+\emph{Konvoluční sítě} nebo též \emph{konvoluční neuronové sítě} přinášejí svou architekturou
+nové možnosti zpracování dat se specifickou strukturou, do které patří například časové řady,
+obrázky nebo videa.
+Středobodem konvolučních sítí je, jak již název napovídá, operace \emph{konvoluce}.
+Ta nahrazuje maticové násobení, kterým lze reprezentovat operace ve výše popsaném modelu hluboké dopředné sítě.
+
+Další nedílnou součástí konvolučních sítí je tzv. \emph{pooling}.
+Spolu s konvolucí tak tvoří mocný nástroj, který ve formě konvolučních a pooling vrstev hlubokých neuronových sítí
+přináší například invarianci sítě vůči malému posunutí \cite{Goodfellow}.
 
 \subsection{Konvoluce}
+
+Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma funkcemi $f$ a $g$.
+Nechť jsou dále pro~jednoduchost $f$ a $g$ reálné funkce jedné reálné proměnné.
+Potom operací kovoluce, jež se standardně značí $*$, vzniká nová funkce:
+\begin{equation*}
+	(f * g)(t) = \int_{-\infty}^{+\infty} f(x) g(t - x) dx,
+\end{equation*}
+a to za předpokladu, že integrál na pravé straně konverguje.
 
 \subsection{Pooling}
 
