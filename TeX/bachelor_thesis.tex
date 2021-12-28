@@ -391,19 +391,57 @@ přináší například invarianci sítě vůči malému posunutí \cite{Goodfel
 
 \subsection{Konvoluce}
 
-Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma funkcemi $f$ a $g$.
-Nechť jsou dále pro~jednoduchost $f$ a $g$ reálné funkce jedné reálné proměnné.
-Potom operací kovoluce, jež se standardně značí $*$, vzniká nová funkce:
+Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma číselnými funkcemi $f$ a $g$ se stejným definičním oborem.
+Operací kovoluce, jež se standardně značí $*$, vzniká nová číselná funkce:
 \begin{equation*}
-	(f * g)(t) = \int_{-\infty}^{+\infty} f(x) g(t - x) dx,
+	(f * g)(t) = \int_{\mathbb{R}^{d}} f(x) g(t - x) dx,
 \end{equation*}
 a to za předpokladu, že integrál na pravé straně konverguje.
 
-\subsection{Pooling}
+Ačkoliv je konvoluce komutativní operací, v kontextu strojového učení se mezi oběma funkcemi vstupujícími do konvoluce rozlišuje.
+Funkce vstupující jako první se nazývá vstup a druhá funkce se nazývá jádrem.
+Dále se v kontextu konvolučních sítí standardně objevují diskrétní funkce, které nabývají nenulových hodnot pouze v konečně mnoha bodech.
+Potom integrál přes $\mathbb{R}^d$ přechází v konečnou sumu:
+\begin{equation}
+	(I * K)(i_1, ..., i_n) = \sum_{j_1} ... \sum_{j_n} I(j_1, ..., j_n) K(i_1 - j_1, ..., i_n - j_n)
+\end{equation}
+Díky komutativitě konvoluce lze též psát:
+\begin{equation}
+	(I * K)(i_1, ..., i_n) = \sum_{j_1} ... \sum_{j_n} I(i_1 - j_1, ..., i_n - j_n) K(j_1, ..., j_n)
+\end{equation}
+Při aplikaci komutativity došlo k tzv. \emph{překlopení jádra} (termín pochází z anglického kernel flipping).
+Za vynechání překlopení jádra lze dojít ke \emph{křížové korelaci}:
+\begin{equation}
+	(I * K)(i_1, ..., i_n) = \sum_{j_1} ... \sum_{j_n} I(i_1 + j_1, ..., i_n + j_n) K(j_1, ..., j_n)
+\end{equation}
+Mnoho knihoven zabývajících se neuronovými sítěmi dle \cite{Goodfellow} implementují křížovou korelaci namísto konvoluce,
+ačkoliv tuto svou implementaci nazývají konvolucí.
 
+\subsection{Pooling}
+Standardní konvoluční vrstva neuronové sítě sestává ze tří fází.
+První fáze provádí paralelně několik konvolucí, které produkují sadu aktivcí.
+Druhá fáze, někdy označovaná jako \emph{detekční fáze}, aplikuje na výstupy první fáze aktivační funkci.
+Třetí fáze potom provádí tzv. \emph{pooling}.
+
+Pooling je funkce, která nahrazuje hodnoty v bodech nějakou souhrnou statistikou určitého okolí daného bodu.
+Např. \emph{max pooling} aplikovaný na matici se podívá na obdélníkové okolí předem definovaných rozměrů daného bodu
+a jako svůj výstup vybere maximální hodnotu nalezenou v onom okolí.
+Jiné oblíbené pooling funkce zahrnují funkce reportující průměr či $L^2$ normu daného obdelníkového okolí.
+
+Dle \cite{Goodfellow} pooling přidává neuronové síti tu vlastnost, že je \emph{invariantní vůči malým translacím} na vstupu.
+Tj. dojde-li k posunutí hodnot vstupu o malou hodnotu, díky poolingu dojde ke změně výstupu konvoluční vrstvy jen v malém počtu výstupů.
 
 % Učení neuronové sítě
 \chapter{Učení neuronové sítě}
+
+Předchozí kapitola představuje neuronové sítě jakožto složené zobrazení s mnoha parametry.
+Aby takováto neuronová síť byla k něčemu užitečná, např. ke klasifikaci obrázků, musí dané zkonstruované zobrazení
+vracet smysluplné výsledky k daným vstupům.
+Toho se v praxi dociluje vhodným nastavením hyper-parametrů sítě a následným nalezením hodnot parametrů daného složeného zobrazení,
+které odpovídají funkční neuronové síti.
+Toto hledání parametrů se též nazývá jako \emph{učení neuronové sítě}
+a provádí se metodami numerické optimalizace jistého vhodně zvoleného kritéria,
+které se označuje jako \emph{účelová} či \emph{ztrátová funkce}.
 
 \section{Účelové funkce}
 
