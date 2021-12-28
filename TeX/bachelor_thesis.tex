@@ -445,7 +445,21 @@ které se označuje jako \emph{účelová} či \emph{ztrátová funkce}.
 
 \section{Účelové funkce}
 
+Nutným předpokladem ke konstrukci vhodné účelové funkce je tzv. \emph{trénovací sada} vzorků a k nim příslušné \emph{značky}.
+Jedná se o množinu možných vstupů, které jsou vybaveny správným výstupem.
+Je-li dána trénovací sada a značky, lze definovat účelovou funkci jako jakési měřidlo ukazující,
+jak moc se trénovaná neuronová síť mýlí, je-li vpuštěna na vzorky trénovací sady.
+Tomuto přístupu k učení neuronové sítě se také říká učení s učitelem.
+
 \subsection{Střední kvadratická chyba}
+
+Jedna z klasických účelových funkcí je funkce střední kvadratické chyby.
+Je dána přepisem:
+\begin{equation}
+	L(x, y) = \frac{1}{n} \sum_{i=1}^n (f(x)_i - y_i)^2,
+\end{equation}
+kde $x$ je vektor vzorku, $y$ je vektor značky, $f$ je funkce neuronové sítě a $n$ je rozměr vektoru značky.
+Jedná se o kritérium ukazující, jak moc se neuronová síť mýlí v predikci u konkrétního vzorku. 
 
 \subsection{Ztráta křížové entropie}
 
