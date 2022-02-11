@@ -15,7 +15,7 @@ Repozitář vypracování bakalářské práce
 ## Konzultace 10. února
 
 * [x] Sjednotit značení; provést odchaotičnění
-* [ ] Zjednodušit kód; zavést hot reload
+* [x] Zjednodušit kód; zavést hot reload
 * [ ] Rozumět kódu
 * [ ] Popsat v BP to, co je v kódu
-* [ ] Zavést při učení NN mini-batche
+* [x] Zavést při učení NN mini-batche
