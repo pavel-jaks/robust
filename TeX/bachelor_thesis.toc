@@ -9,12 +9,8 @@
 \contentsline {chapter}{\numberline {1}Neuronové sítě}{13}{}%
 \contentsline {section}{\numberline {1.1}Hluboká dopředná neuronová síť}{13}{}%
 \contentsline {section}{\numberline {1.2}Konvoluční sítě}{14}{}%
-\contentsline {subsection}{\numberline {1.2.1}Konvoluce}{14}{}%
-\contentsline {subsection}{\numberline {1.2.2}Pooling}{15}{}%
 \contentsline {chapter}{\numberline {2}Učení neuronové sítě}{17}{}%
 \contentsline {section}{\numberline {2.1}Účelové funkce}{17}{}%
-\contentsline {subsection}{\numberline {2.1.1}Střední kvadratická chyba}{17}{}%
-\contentsline {subsection}{\numberline {2.1.2}Ztráta křížové entropie}{18}{}%
 \contentsline {section}{\numberline {2.2}Algoritmus zpětného šíření chyby}{18}{}%
 \contentsline {section}{\numberline {2.3}Algoritmy učení}{18}{}%
 \contentsline {subsection}{\numberline {2.3.1}Gradientní sestup}{18}{}%

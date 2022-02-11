@@ -1,11 +1,11 @@
 # Fdb version 3
-["pdflatex"] 1640714455 "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" "bachelor_thesis.pdf" "bachelor_thesis" 1640714456
+["pdflatex"] 1644586272 "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" "bachelor_thesis.pdf" "bachelor_thesis" 1644586273
   "Images/TITLE/cvut.pdf" 1636111174 8834 aae85eda4be094453c958955829d71c0 ""
   "Images/TITLE/fjfi.pdf" 1636111174 6374 f1bb5f82c5ddffa0dc5ee811955ab358 ""
-  "bachelor_thesis.aux" 1640714456 3156 0e3086e1ea7bdf398d0955362c79cc78 "pdflatex"
-  "bachelor_thesis.tex" 1640714453 20744 67326c3f957fb04ad59b05357c0be206 ""
-  "bachelor_thesis.toc" 1640714456 1691 2b4f6c8790b96639ce8b2bc9f94d80ef "pdflatex"
-  "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" 1640714453 20744 67326c3f957fb04ad59b05357c0be206 ""
+  "bachelor_thesis.aux" 1644586273 2699 af9f4f32eda9fc8941cf74e7f690b69c "pdflatex"
+  "bachelor_thesis.tex" 1644586271 24632 cce675f8a0ac5e064707b9e701a8be12 ""
+  "bachelor_thesis.toc" 1644586273 1399 1d622684c61888eba9fafe0bb549acde "pdflatex"
+  "c:/Users/stani/Documents/school/BP/robust/robust/TeX/bachelor_thesis.tex" 1644586271 24632 cce675f8a0ac5e064707b9e701a8be12 ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc" 1636051308 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2021/texmf-dist/fonts/map/fontname/texfonts.map" 1636051660 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2021/texmf-dist/fonts/tfm/jknappen/ec/ecrm1095.tfm" 1636051338 3584 929cdff2b7a8c11bd4d49fd68cb0ae70 ""
@@ -105,7 +105,7 @@
   "c:/texlive/2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1636055953 2805262 9af4c9312b4f033220b04fa670c7b103 ""
   "c:/texlive/2021/texmf.cnf" 1636055820 713 e69b156964470283e0530f5060668171 ""
   (generated)
-  "bachelor_thesis.pdf"
-  "bachelor_thesis.log"
   "bachelor_thesis.toc"
+  "bachelor_thesis.log"
+  "bachelor_thesis.pdf"
   "bachelor_thesis.aux"

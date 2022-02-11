@@ -307,7 +307,7 @@ Pojem neuronové sítě představuje výpočetní jednotku, která svou univerz�
 % Umělý neuron
 Princip fungování neuronové sítě spočívá v poskládání celku z dílčích výpočetních jednotek - umělých neuronů.
 Takovýto neuron je standardně funkcí více proměnných, jehož výstup je proměnná jediná.
-Typickým modelem umělého neuronu je funkce definovaná předpisem
+Typickým modelem umělého neuronu je funkce $f: \mathbb{R}^n \rightarrow \mathbb{R}$ definovaná předpisem
 \begin{equation} \label{neuron}
 	f(x_1, ..., x_n) = \sigma (\sum_{i=1}^n w_i x_i + b) ,
 \end{equation}
@@ -321,13 +321,13 @@ Je-li váha u nějakého vstupu vysoká, pak je výstup citlivější na daný v
 Práh pro změnu určuje posunutí citlivosti neuronu na všechny vstupy jako celku.
 
 Poslední, avšak velmi důležitou charakteristikou tohoto modelu neuronu je aktivační funkce.
-Za aktivační funkci lze vzít libovolnou funkci $f : \mathbb{R} \rightarrow \mathbb{R}$,
+Za aktivační funkci lze vzít libovolnou funkci $\sigma : \mathbb{R} \rightarrow \mathbb{R}$,
 existuje však základní sada:
 \begin{itemize}
-	\item Sigmoid: $f(x) = \frac{1}{1 + e^{-x}}$
-	\item ReLU: $f(x) = max(0, x)$
-	\item LeakyReLU: $f(x) = max(0, x) + \alpha * min(x, 0)$, kde $\alpha \in \mathbb{R}^+$
-	\item Tanh: $f(x) = tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}$
+	\item Sigmoid: $\sigma(x) = \frac{1}{1 + e^{-x}}$
+	\item ReLU: $\sigma(x) = max(0, x)$
+	\item LeakyReLU: $\sigma(x) = max(0, x) + \alpha * min(x, 0)$, kde $\alpha \in \mathbb{R}^+$
+	\item Tanh: $\sigma(x) = tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}$
 \end{itemize}
 Tyto funkce lze doplnit o jejich mírné modifikace.
 Moderní doporučenou praxí je užívat ReLU jako aktivační funkci a (\ref{neuron}) jako model neuronu dle \cite{Goodfellow}.
@@ -347,25 +347,28 @@ Má-li neuronová síť tuto architekturu, hovoří se o \emph{dopředné neuron
 Má-li navíc alespoň jednu skrytou vrstvu, lze mluvit o \emph{hluboké dopředné neuronové síti}.
 
 Se znalostí pojmu vrstvy neuronů lze přistoupit k poznámce o tzv. \emph{softmax funkci}.
-Jedná se o vektorovou funkci $f: \mathbb{R}^n \rightarrow \mathbb{R}^n$, kde
+Jedná se o vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$, kde
 \begin{equation*}
-	f(x_1, ..., x_n)_i = \frac{e^{x_i}}{\sum_{j=1}^n e^{x_j}}.
+	s(x_1, ..., x_m)_i = \frac{e^{x_i}}{\sum_{j=1}^m e^{x_j}},
 \end{equation*}
+kde $i \in \hat{m}$.
 Její užití je nasnadě: Výstup této funkce lze totiž interpretovat jako diskrétní pravděpodobnostní distribuci,
 a proto ji lze užít jako aktivační funkci výstupní vrstvy, je-li cílem dané neuronové sítě klasifikace vstupu do kategorií.
-Potom $i_m = argmax\{f(x_1, ..., x_n)_i | i = 1, ..., n\}$ představuje index predikované kategorie a příslušné maximum jistotu predikce.
 
 Další poznámka se bude věnovat zjednodušení zápisu akce vrstvy na vstup.
 Podle modelu neuronu v (\ref{neuron}) se akce jednodnoho neuronu na vstup sestává z násobení,
 následného sčítání, přičtení prahu a aplikací aktivační funkce.
 Tato procedura nastává pro každý neuron ve vrstvě.
 Tak lze sestavit z jednotlivých vah $w_i^{(j)}$ (\emph{i}-tá váha \emph{j}-tého neuronu ve vrstvě) matici $\mathbb{A}$,
-jejímiž prvky jsou právě ony váhy $(\mathbb{A})_{j,i} = w_i^{(j)}$, z prahů pak vektor $b$, kde $b_i = b^{(i)}$
-- práh \emph{i}-tého neuronu ve vrstvě.
-Potom při ztotožnění aktivační funkce $\sigma$ s její vektorovou variantou,
-za označení vektoru vstupu vrstvy jako $x_{in}$ a výstupu vrstvy jako $x_{out}$ lze psát:
+jejímiž prvky jsou právě ony váhy $(\mathbb{A})_{j,i} = w_i^{(j)}$,
+z~prahů pak vektor $b$, jehož $j$-tá složka je rovna prahu $j$-tého neuronu.
+Dále zaveďme vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$ - ať už jako výše zmíněnou softmax funkci,
+nebo jako po složkách aplikovanou libovolnou aktivační funkci $\sigma$
+ve smyslu $s(x_1, ... x_m)_i = \sigma(x_i)$ pro $i \in \hat{m}$. 
+Pak lze psát, že aplikace vrstvy neuronů je zobrazení $\phi : \mathbb{R}^n \rightarrow \mathbb{R}^m$
+působící na vektor $x$ následovně:
 \begin{equation} \label{layer}
-	x_{out} = \sigma(\mathbb{A}x_{in} + b)
+	\phi(x) = s(\mathbb{A}x + b)
 \end{equation}
 Tedy stěžejní operací se stává maticové násobení, respektive násebení vektoru maticí zprava.
 
@@ -385,51 +388,54 @@ obrázky nebo videa.
 Středobodem konvolučních sítí je, jak již název napovídá, operace \emph{konvoluce}.
 Ta nahrazuje maticové násobení, kterým lze reprezentovat operace ve výše popsaném modelu hluboké dopředné sítě.
 
-Další nedílnou součástí konvolučních sítí je tzv. \emph{pooling}.
-Spolu s konvolucí tak tvoří mocný nástroj, který ve formě konvolučních a pooling vrstev hlubokých neuronových sítí
-přináší například invarianci sítě vůči malému posunutí \cite{Goodfellow}.
+% \subsection{Konvoluce}
 
-\subsection{Konvoluce}
-
-Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma číselnými funkcemi $f$ a $g$ se stejným definičním oborem.
-Operací kovoluce, jež se standardně značí $*$, vzniká nová číselná funkce:
+Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma číselnými funkcemi $g$ a $h$ se stejným definičním oborem,
+jejíž výstupem je nová číselná funkce standardně označovaná jako $g*h$.
+Uveďme zde definici konvoluce pro reálné funkce definované na $\mathbb{R}^d$,
+tedy $g,h: \mathbb{R}^d \rightarrow \mathbb{R}$:
 \begin{equation*}
-	(f * g)(t) = \int_{\mathbb{R}^{d}} f(x) g(t - x) dx,
+	(g * h)(t) = \int_{\mathbb{R}^{d}} g(x) h(t - x) dx
 \end{equation*}
-a to za předpokladu, že integrál na pravé straně konverguje.
+Důležitým předpokladem pro možnost konvoluce je samozřejmě konvergence integrálu na pravé straně.
 
 Ačkoliv je konvoluce komutativní operací, v kontextu strojového učení se mezi oběma funkcemi vstupujícími do konvoluce rozlišuje.
 Funkce vstupující jako první se nazývá vstup a druhá funkce se nazývá jádrem.
-Dále se v kontextu konvolučních sítí standardně objevují diskrétní funkce, které nabývají nenulových hodnot pouze v konečně mnoha bodech.
+Dále se v kontextu konvolučních sítí standardně objevují diskrétní funkce,
+které nabývají nenulových hodnot pouze v konečně mnoha bodech.
 Potom integrál přes $\mathbb{R}^d$ přechází v konečnou sumu:
 \begin{equation}
-	(I * K)(i_1, ..., i_n) = \sum_{j_1} ... \sum_{j_n} I(j_1, ..., j_n) K(i_1 - j_1, ..., i_n - j_n)
+	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(j_1, ..., j_d) h(i_1 - j_1, ..., i_d - j_d)
 \end{equation}
 Díky komutativitě konvoluce lze též psát:
 \begin{equation}
-	(I * K)(i_1, ..., i_n) = \sum_{j_1} ... \sum_{j_n} I(i_1 - j_1, ..., i_n - j_n) K(j_1, ..., j_n)
+	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 - j_1, ..., i_d - j_d) h(j_1, ..., j_d)
 \end{equation}
 Při aplikaci komutativity došlo k tzv. \emph{překlopení jádra} (termín pochází z anglického kernel flipping).
 Za vynechání překlopení jádra lze dojít ke \emph{křížové korelaci}:
 \begin{equation}
-	(I * K)(i_1, ..., i_n) = \sum_{j_1} ... \sum_{j_n} I(i_1 + j_1, ..., i_n + j_n) K(j_1, ..., j_n)
+	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 + j_1, ..., i_d + j_d) h(j_1, ..., j_d)
 \end{equation}
 Mnoho knihoven zabývajících se neuronovými sítěmi dle \cite{Goodfellow} implementují křížovou korelaci namísto konvoluce,
 ačkoliv tuto svou implementaci nazývají konvolucí.
 
-\subsection{Pooling}
-Standardní konvoluční vrstva neuronové sítě sestává ze tří fází.
-První fáze provádí paralelně několik konvolucí, které produkují sadu aktivcí.
-Druhá fáze, někdy označovaná jako \emph{detekční fáze}, aplikuje na výstupy první fáze aktivační funkci.
-Třetí fáze potom provádí tzv. \emph{pooling}.
+% \subsection{Pooling}
+Další nedílnou součástí konvolučních sítí je tzv. \emph{pooling}.
+Spolu s konvolucí tvoří mocný nástroj, který ve formě konvolučních a pooling vrstev hlubokých neuronových sítí
+přináší například invarianci sítě vůči malému posunutí vstupu (dle \cite{Goodfellow}).
 
 Pooling je funkce, která nahrazuje hodnoty v bodech nějakou souhrnou statistikou určitého okolí daného bodu.
 Např. \emph{max pooling} aplikovaný na matici se podívá na obdélníkové okolí předem definovaných rozměrů daného bodu
 a jako svůj výstup vybere maximální hodnotu nalezenou v onom okolí.
 Jiné oblíbené pooling funkce zahrnují funkce reportující průměr či $L^2$ normu daného obdelníkového okolí.
 
-Dle \cite{Goodfellow} pooling přidává neuronové síti tu vlastnost, že je \emph{invariantní vůči malým translacím} na vstupu.
-Tj. dojde-li k posunutí hodnot vstupu o malou hodnotu, díky poolingu dojde ke změně výstupu konvoluční vrstvy jen v malém počtu výstupů.
+Standardní konvoluční vrstva neuronové sítě pak sestává ze tří fází.
+První fáze provádí paralelně několik konvolucí, které produkují sadu aktivcí.
+Druhá fáze, někdy označovaná jako \emph{detekční fáze}, aplikuje na výstupy první fáze aktivační funkci.
+Třetí fáze potom provádí \emph{pooling}.
+
+% Dle \cite{Goodfellow} pooling přidává neuronové síti tu vlastnost, že je \emph{invariantní vůči malým translacím} na vstupu.
+% Tj. dojde-li k posunutí hodnot vstupu o malou hodnotu, díky poolingu dojde ke změně výstupu konvoluční vrstvy jen v malém počtu výstupů.
 
 % Učení neuronové sítě
 \chapter{Učení neuronové sítě}
@@ -451,19 +457,76 @@ Je-li dána trénovací sada a značky, lze definovat účelovou funkci jako jak
 jak moc se trénovaná neuronová síť mýlí, je-li vpuštěna na vzorky trénovací sady.
 Tomuto přístupu k učení neuronové sítě se také říká učení s učitelem.
 
-\subsection{Střední kvadratická chyba}
+% \subsection{Střední kvadratická chyba}
 
 Jedna z klasických účelových funkcí je funkce střední kvadratické chyby.
 Je dána přepisem:
 \begin{equation}
-	L(x, y) = \frac{1}{n} \sum_{i=1}^n (f(x)_i - y_i)^2,
+	L(\theta) = \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m(F_\theta(x^{(i)})_j - y^{(i)}_j)^2,
 \end{equation}
-kde $x$ je vektor vzorku, $y$ je vektor značky, $f$ je funkce neuronové sítě a $n$ je rozměr vektoru značky.
-Jedná se o kritérium ukazující, jak moc se neuronová síť mýlí v predikci u konkrétního vzorku. 
+nebo
+\begin{equation}
+	L(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2
+\end{equation}
+kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$. 
 
-\subsection{Ztráta křížové entropie}
+% \subsection{Ztráta záporného logaritmu věrohodnosti}
+
+Další účelová funkce, která nachází uplatnění v klasifikačních problémech, je křížová entropie.
+Lze ji vypočíst následovně:
+\begin{equation}
+	L(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j * \ln (F_\theta(x^{(i)})_j)
+\end{equation}
+nebo
+\begin{equation}
+	L(\theta) = - \frac{1}{N} \sum_{i=1}^N H(y^{(i)}, F_\theta(x^{(i)})),
+\end{equation}
+kde H označuje právě onu křížovou entropii mezi pravděpodobnostními distribucemi.
+Připomeňme, že klasifikační neuronová síť produkuje diskrétní pravděpodobnostní distribuce,
+a proto lze na výstup takovéto neuronové sítě a její značky (také pravděpodobnostní distribuce) aplikovat křížovou entropii.
+
+
+% Aby bylo možné zadefinovat učeovou funkci pomocí \emph{záporného logaritmu věrohodnosti} (ZLV),
+% je nutné uvést na scénu jiný pohled na neuronové sítě, a to jako na statistický model.
+% Tento model potom určuje pravděpodobnost pozorování daných hodnot $y^{(i)}$ za podmínky, že vstupem je $x^{(i)}$ a parametry modelu jsou $\theta$.
+% Cílem učení je potom nalezení vhodných parametrů $\theta$.
+% Myšlenka je, že nejvhodnějšími parametry $\theta$ budou ty parametry, které maximalizují pravděpodobnost, že při $x^{(1)}$, ... $x^{(N)}$
+% jakožto vzorcích dojde k napozorování značek $y^{(1)}$, ... $y^{(N)}$.
+% Provádí se tedy bodový odhad parametrů modelu odhadem maximální věrohodnosti.
+% Cílené parametry lze potom za předpokladu nezávislosti výběru vzorků získat jako:
+% \begin{equation}
+% 	\hat{\theta} = \arg\max_{\theta} \prod_{i=1}^N P[y^{(i)}|x^{(i)}; \theta]
+% \end{equation}
+% S takovýmto součinem je ovšem pracné nakládat, proto lze využít vlastností přirozeného logaritmu a problém přeformulovat následovně:
+% \begin{equation}
+% 	\hat{\theta} = \arg\max_{\theta} \sum_{i=1}^N \ln P[y^{(i)}|x^{(i)}; \theta]
+% \end{equation}
+% Aby byl problém formulován jako minimalizační, je nutné před sumu vložit jedno mínus:
+% \begin{equation}
+% 	\hat{\theta} = \arg\min_{\theta} - \sum_{i=1}^N \ln P[y^{(i)}|x^{(i)}; \theta]
+% \end{equation}
+
+% Pro úkol klasifikce, kdy výstupem neuronové sítě je diskrétní pravděpodobnostní distribuce, lze ve výpočtu ZLV postoupit dále.
+% Potom je třeba spočítat, s jakou pravděpodobností dojde k napozorování jevu klasifikace za třídu $y$ při daném vstupu $x$.
+% No, to je ovšem $f(x; \theta)_j$, kde $f$ je daná neuronová síť a~$j$~je index příslušný dané třídě $y$.
+% Lze tedy psát:
+% \begin{equation}
+% 	\hat{\theta} = \arg\min_{\theta} - \sum_{i=1}^N \ln f(x; \theta)_{j_i}
+% \end{equation}
+% Při reprezentaci značky $y$ pomocí one-hot-encoding techniky bude ztráta pro daný vzorek $x$ a značku $y = (0, ..., 1, ..., 0)^T$:
+% \begin{equation}
+% 	L(x, y) = - \ln \sum_{j=1}^n y_j * f(x; \theta)_j,
+% \end{equation}
+% kde $n$ je rozměr $y$ jakožto vektoru.
 
 \section{Algoritmus zpětného šíření chyby}
+
+Nejčastější metody učení neuronové sítě ve svém chodu pracují s gradientem účelové funkce.
+K tomu je tedy nutné umět onen gradient spočíst.
+A k tomu právě slouží \emph{algoritmus zpětného šíření chyby} (angl. \emph{backpropagation}).
+
+
 
 \section{Algoritmy učení}
 
@@ -506,6 +569,9 @@ Text závěru....
 
 \bibitem{NumericalOptim} J. Nocedal, S. Wright,
 \emph{Numerical optimization}. Springer Science \& Business Media, 2006.
+
+\bibitem{Nielsen}M. A. Nielsen, 
+\emph{Neural Networks and Deep Learning}. Determination Press, 2018.
 
 \end{thebibliography}
 
