@@ -6,6 +6,9 @@ import torch.nn as nn
 
 
 class MnistCnnAlfred(nn.Module):
+    """
+    Simpler Mnist CNN model
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
@@ -27,8 +30,12 @@ class MnistCnnAlfred(nn.Module):
         out = self.third_activation(self.third_layer(out))
         out = self.out_activation(self.out_layer(out))
         return out
+
 
 class MnistCnnBerta(nn.Module):
+    """
+    Simpler Mnist CNN model
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
@@ -51,7 +58,11 @@ class MnistCnnBerta(nn.Module):
         out = self.out_activation(self.out_layer(out))
         return out
 
+
 class MnistCnnCyril(nn.Module):
+    """
+    Seven layer CNN
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
@@ -85,6 +96,9 @@ class MnistCnnCyril(nn.Module):
 
 
 class MnistCnnDouglas(nn.Module):
+    """
+    Seven layer CNN
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
@@ -118,6 +132,9 @@ class MnistCnnDouglas(nn.Module):
 
 
 class MnistCnnEdmund(nn.Module):
+    """
+    Seven layer CNN
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
@@ -151,6 +168,9 @@ class MnistCnnEdmund(nn.Module):
 
 
 class MnistCnnFiona(nn.Module):
+    """
+    Seven layer CNN
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
@@ -182,7 +202,11 @@ class MnistCnnFiona(nn.Module):
         out = self.seventh_activation(self.seventh_linear(out))
         return out
 
+
 class MnistCnnGerta(nn.Module):
+    """
+    Simpler Mnist CNN model
+    """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)

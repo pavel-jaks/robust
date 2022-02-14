@@ -469,22 +469,26 @@ nebo
 	L(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2
 \end{equation}
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$. 
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$.
 
 % \subsection{Ztráta záporného logaritmu věrohodnosti}
 
-Další účelová funkce, která nachází uplatnění v klasifikačních problémech, je křížová entropie.
-Lze ji vypočíst následovně:
-\begin{equation}
-	L(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j * \ln (F_\theta(x^{(i)})_j)
-\end{equation}
-nebo
-\begin{equation}
+Další účelová funkce, která nachází uplatnění v klasifikačních problémech, se vypočte pomocí křížové entropie:
+\begin{equation} \label{crossentropy}
 	L(\theta) = - \frac{1}{N} \sum_{i=1}^N H(y^{(i)}, F_\theta(x^{(i)})),
 \end{equation}
 kde H označuje právě onu křížovou entropii mezi pravděpodobnostními distribucemi.
 Připomeňme, že klasifikační neuronová síť produkuje diskrétní pravděpodobnostní distribuce,
-a proto lze na výstup takovéto neuronové sítě a její značky (také pravděpodobnostní distribuce) aplikovat křížovou entropii.
+a proto lze na výstup takovéto neuronové sítě a její značky (také pravděpodobnostní distribuce)
+aplikovat křížovou entropii.
+Onen výraz v (\ref{crossentropy}) lze spočíst následovně:
+\begin{equation}
+	L(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j * \ln (F_\theta(x^{(i)})_j),
+\end{equation}
+přičemž $x^{(i)}$ je $i$-tý vektor trénovací sady,
+$y^{(i)}$ je $i$-tý vektor trénovacích značek,
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+parametrizovaná parametry $\theta$.
 
 
 % Aby bylo možné zadefinovat učeovou funkci pomocí \emph{záporného logaritmu věrohodnosti} (ZLV),
@@ -522,9 +526,59 @@ a proto lze na výstup takovéto neuronové sítě a její značky (také pravd�
 
 \section{Algoritmus zpětného šíření chyby}
 
-Nejčastější metody učení neuronové sítě ve svém chodu pracují s gradientem účelové funkce.
-K tomu je tedy nutné umět onen gradient spočíst.
-A k tomu právě slouží \emph{algoritmus zpětného šíření chyby} (angl. \emph{backpropagation}).
+Nejčastější metody učení neuronové sítě ve svém chodu pracují s gradientem účelové funkce podle parametrů neuronové sítě
+$\nabla_\theta L(\theta)$,
+který lze spočíst pomocí \emph{algoritmu zpětného šíření chyby} (angl. \emph{backpropagation}).
+Tento algoritmus však lze použít nejen v takto úzce specializovaném prostředí strojového učení,
+nýbrž i pro výpočet Jacobiho matice libovolné funkce (dle \cite{Goodfellow}).
+
+Pro celkový popis algoritmu zaveďme pojem \emph{výpočetního grafu}.
+Nechť vrcholy grafu představují proměnné, a to libovolných rozměrů,
+hrany grafu nechť jsou barevné a orientované, kde barva značí jednu z prováděných operací
+a orientace značí, jaká proměnná vznikla ze které pomocí dané operace.
+
+Pojem výpočetního grafu lze ilustrovat následujícím příkladem:
+Nechť proměnná $u$ je číslo a proměnné $v$ a $w$ vektory stejných rozměrů a platí,
+že proměnnou $u$ lze získat jako $u = v \cdot w$.
+Potom tomuto příkladu náleží výpočetní graf o třech vrcholech, a to vrcholech proměnných $v$, $w$ a $u$,
+a dvou hranách - první z $v$ do $u$ o barvě odpovídající tomu býti prvním argumentem skalárního součinu
+a druhá z $w$ do $u$ o barvě odpovídající tomu býti druhým argumentem skalárního součinu.
+
+Dále je zapotřebí uvést \emph{řetězové pravidlo} pro výpočet derivace složené funkce, o které se algoritmus opírá.
+Nechť $g: \mathbb{R}^n \rightarrow \mathbb{R}^m$ a $h: \mathbb{R}^m \rightarrow \mathbb{R}^p$, $x \in \mathbb{R}^n$,
+potom: 
+\begin{equation}
+D(h \circ g)(f(x)) = Dh(g(x)) \cdot Dg(x),
+\end{equation}
+kde $D$ značí totální diferenciál.
+Zúžíme-li se na $p = 1$, dostáváme:
+\begin{equation} \label{jacobigradientmul}
+	\nabla (h \circ g)(x) = \nabla h (g(x)) \cdot D g(x)
+\end{equation}
+a podíváme-li se na $i$-tou komponentu gradientu $h \circ g$:
+\begin{equation}
+	\partial_i (h \circ g)(x) = \sum_{j=1}^m \partial_j h(g(x)) \cdot \partial_i g_j(x),
+\end{equation}
+kde $g_j$ značí $j$-tou komponentu vektorové funkce $g$.
+
+Tedy jak lze vidět v (\ref{jacobigradientmul}),
+pro algoritmus bude stěžejní násobení vektoru gradientu s maticí totálního diferenciálu.
+Vrcholy výpočetního grafu jsou ovšem libovolných rozměrů.
+Potom lze dané proměnné urovnat do vektorů
+a spočíst gradient opět násobením vektoru gradientu s maticí totálního diferenciálu
+a následně převést vypočtený gradient zpět do příslušného tvaru.
+
+Nyní lze nahlédnout na výpočet funkce jejíž gradient je žádoucí spočíst,
+například účelové funkce neuronové sítě, pomocí výpočetního grafu.
+Potom algoritmus zpětného šíření chyby postupuje po výpočetním grafu od výsledné proměnné k listovým vrcholům
+a aplikuje řetězové pravidlo.
+
+V praxi je ovšem snadné natrefit na velmi složité výpočetní grafy, které vedou k vyhodnocovýní mnoha podvýrazů.
+Navíc mnoho takovýchto podvýrazů může být stejných.
+Při implementaci je tedy namístě otázka, zda již vyhodnocené výrazy uložit do paměti
+či je pokaždé vyhodnotit znovu.
+Je-li žádoucí co nejkratší doba běhu, pak je odpovědí vyhodnocené výrazy ukládat.
+Opačný přístup lze uplatnit při nedostatku paměti stroje.
 
 
 
