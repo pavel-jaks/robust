@@ -573,7 +573,7 @@ například účelové funkce neuronové sítě, pomocí výpočetního grafu.
 Potom algoritmus zpětného šíření chyby postupuje po výpočetním grafu od výsledné proměnné k listovým vrcholům
 a aplikuje řetězové pravidlo.
 
-V praxi je ovšem snadné natrefit na velmi složité výpočetní grafy, které vedou k vyhodnocovýní mnoha podvýrazů.
+V praxi je ovšem snadné natrefit na velmi složité výpočetní grafy, které vedou k vyhodnocování mnoha podvýrazů.
 Navíc mnoho takovýchto podvýrazů může být stejných.
 Při implementaci je tedy namístě otázka, zda již vyhodnocené výrazy uložit do paměti
 či je pokaždé vyhodnotit znovu.
@@ -584,11 +584,38 @@ Opačný přístup lze uplatnit při nedostatku paměti stroje.
 
 \section{Algoritmy učení}
 
-\subsection{Gradientní sestup}
+% \subsection{Gradientní sestup}
 
-\subsection{Stochastický gradientní sestup}
+Základním algoritmem pro učení neuronové sítě je \emph{gradientní sestup} (angl. \emph{gradient descent}).
+Opírá se o fakt, že gradient reálné funkce určuje směr největšího spádu dané funkce v daném bodě.
+Proto, máme-li účelovou funkci $L(\theta)$, kde $\theta$ jsou parametry neuronové sítě,
+má smysl tyto parametry aktualizovat proti směru gradientu funkce $L$ následujícím způsobem:
+\begin{equation}
+	\theta \leftarrow \theta - \epsilon \cdot \nabla_\theta L(\theta),
+\end{equation}
+kde $\epsilon$ je tzv. \emph{řád učení} (angl. \emph{learning rate})
+- kladné číslo, které určuje velikost jednoho kroku;
+jedná se o další hyper-parametr neuronové sítě.
+Takovouto aktualizaci parametrů neuronové sítě lze provést několikrát, a to například tolikrát,
+dokud účelová funkce nedosáhne přijatelné hodnoty.
+Ideální by bylo, kdybychom gradientním sestupem dosáhli globálního minima účelové funkce,
+to ovšem není v žádném případě zaručeno, že se stane, gradientní sestup totiž dokáže nalézt pouze lokální minimum
+- ale to je pro reálné aplikace mnohdy dostačující.
 
-\subsection{Adam}
+% \subsection{Stochastický gradientní sestup}
+
+Gradientní sestup má ovšem nevýhodu v tom, že v každém kroku počítá gradient účelové funkce přes celou trénovací sadu.
+Ta mnohdy sestává z tolika vzorků, že opakovaný výpočet gradientu učelové funkce pro účely učení
+je časově velmi náročný a pro reálné aplikace nevhodný.
+Z těchto důvodů je vhodnější použít \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}).
+Ten narozdíl od obyčejného gradientního sestupu nepočítá gradient účelové funkce přesně,
+nýbrž jej odhaduje výpočtem gradientu modifikované účelové funkce,
+kde modifikace účelové funkce spočívá v jejím vyhodnocování pouze na znatelně menší podmnožině trénovacích vzorků.
+Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každém kroku stochastického gradientního sestupu jiná
+a může obsahovat od jednotek po stovky vzorků.
+Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
+
+% \subsection{Adam}
 
 
 % Adversariální vzorky
