@@ -230,6 +230,26 @@ class MnistCnnGerta(nn.Module):
         return out
 
 
+class MnistMLPHubert(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.first_linear = nn.Linear(28 * 28, 16)
+        self.first_activation = nn.ReLU()
+        self.second_linear = nn.Linear(16, 16)
+        self.second_activation = nn.ReLU()
+        self.third_linear = nn.Linear(16, 10)
+        self.third_activation = nn.ReLU()
+        self.fourth_linear = nn.Linear(10, 10)
+        self.fourth_activation = nn.Softmax(dim=1)
+
+    def forward(self, t: torch.Tensor):
+        out = t.reshape(len(t), 28 * 28)
+        out = self.first_activation(self.first_linear(out))
+        out = self.second_activation(self.second_linear(out))
+        out = self.third_activation(self.third_linear(out))
+        return self.fourth_activation(self.fourth_linear(out))
+
+
 class ModelType(Enum):
     MnistCnnAlfred = MnistCnnAlfred
     MnistCnnBerta = MnistCnnBerta
@@ -238,6 +258,7 @@ class ModelType(Enum):
     MnistCnnEdmund = MnistCnnEdmund
     MnistCnnFiona = MnistCnnFiona
     MnistCnnGerta = MnistCnnGerta
+    MnistMLPHubert = MnistMLPHubert
 
 class ModelManager:
     @staticmethod
