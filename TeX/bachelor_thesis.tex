@@ -615,7 +615,35 @@ Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každ
 a může obsahovat od jednotek po stovky vzorků.
 Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
 
+Tento krok stranou ke stochastickému gradientnímu sestupu se ovšem dle \cite{Goodfellow}
+nevhodně projeví nestabilitou algoritmu v pozdější fázi učení,
+kdy ačkoli se účelová funkce pohybuje kolem lokálního minima,
+odhad gradientu se neblíží nulovému vektoru, a proto dochází k oscilacím účelové funkce.
+Tomuto jevu lze předejít pomocí \emph{proměnného řádu učení}, a to v tom smyslu,
+že s postupem učení řád klesá.
+
+% \subsection{Hybnost}
+
+Další modifikací stochastického gradientního sestupu je zakomponování tzv. \emph{hybnosti}.
+To uvádí na scénu novou proměnnou - \emph{rychlost} $v$ (z angl. \emph{velocity}),
+která je stejných rozměrů jako gradient účelové funkce
+a nese v sobě informaci o předchozích odhadech gradientu účelové funkce.
+Její role v algoritmu učení je následující:
+\begin{align}
+	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta L(\theta) \\
+	\theta &\leftarrow \theta + v
+\end{align}
+Užití hybnosti vede tedy k představení dalšího hyper-parametru, a to parametru $\alpha \in [0, 1)$,
+který určuje míru ovlivnění dalšího kroku předchozími odhady gradientu.
+Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čísla $0.5$, $0.9$ a $0.99$.
+Pro úplnost lze poznamenat, že i parametr $\alpha$ lze s postupem učení přizpůsobovat, a to konkrétně zvětšovat.
+
+% \subsection{AdaGrad}
+
+% \subsection{RMSProp}
+
 % \subsection{Adam}
+
 
 
 % Adversariální vzorky
