@@ -638,6 +638,16 @@ který určuje míru ovlivnění dalšího kroku předchozími odhady gradientu.
 Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čísla $0.5$, $0.9$ a $0.99$.
 Pro úplnost lze poznamenat, že i parametr $\alpha$ lze s postupem učení přizpůsobovat, a to konkrétně zvětšovat.
 
+% \subsection{Něstěrov}
+
+Jinou modifikací stochastického gradientního sestupu, která je obdobou hybnosti, je \emph{Něstěrovova hybnost}.
+Ta má následující předpis:
+\begin{align}
+	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta L(\theta + \alpha \cdot v) \\
+	\theta &\leftarrow \theta + v
+\end{align}
+
+
 % \subsection{AdaGrad}
 
 % \subsection{RMSProp}
