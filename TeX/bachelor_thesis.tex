@@ -658,6 +658,10 @@ se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure}
 Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
 úspěšnější, byť jen o málo. Totéž potvrzuje experiment Ivan.
 Co se týče srovnání metody hybnosti a metody Něstěrovovy hybnosti, ty jsou dle experimentů stejně úspěšné.
+Důležité je však poznamenat, že v těchto experimentech řád učení pro stochastický gradientní sestup byl
+desetkrát větší než u metod hybností. Byl-li by býval stejný, buď by se neuronové sítě pomocí metod hybností
+vůbec nic nenaučili (pro řád učení $10^{-2}$), nebo by stochastický gradientní sestup nedosahoval takovývh výkonů
+(pro řád učení $10^{-3}$).
 
 Existují ale i další algoritmy, které stojí za zmínění se. Jedná se o algoritmy s přizpůsobivým řádem učení.
 Jmenovitě \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.

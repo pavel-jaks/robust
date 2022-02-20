@@ -277,6 +277,33 @@ class MnistCnnIvan(nn.Module):
         return out
 
 
+class MnistCnnJelena(nn.Module):
+    """
+    Simpler Mnist CNN model
+    """
+    def __init__(self):
+        super().__init__()
+        self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
+        self.first_activation = nn.ReLU()
+        self.second_layer = nn.Linear(9216, 32)
+        self.second_activation = nn.ReLU()
+        self.third_layer = nn.Linear(32, 16)
+        self.third_activation = nn.ReLU()
+        self.out_layer = nn.Linear(16, 10)
+        self.out_activation = nn.Softmax(dim=1)
+
+    def forward(self, t: torch.Tensor):
+        out = self.first_activation(self.first_conv_layer(t))
+        dim = 1
+        for i in range(1, len(out.shape)):
+            dim *= out.shape[i]
+        out = out.reshape(len(t), dim)
+        out = self.second_activation(self.second_layer(out))
+        out = self.third_activation(self.third_layer(out))
+        out = self.out_activation(self.out_layer(out))
+        return out
+
+
 class ModelType(Enum):
     MnistCnnAlfred = MnistCnnAlfred
     MnistCnnBerta = MnistCnnBerta
@@ -287,6 +314,7 @@ class ModelType(Enum):
     MnistCnnGerta = MnistCnnGerta
     MnistMLPHubert = MnistMLPHubert
     MnistCnnIvan = MnistCnnIvan
+    MnistCnnJelena = MnistCnnJelena
 
 class ModelManager:
     @staticmethod

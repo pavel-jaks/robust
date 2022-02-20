@@ -22,8 +22,8 @@ Repozitář vypracování bakalářské práce
 
 ## TODO - 19. 2. 2022
 
-* [ ] Srovnat SGD, Momentum a Nesterova
-* [ ] Provést Experiment Ivan pro 100 opakování
+* [x] Srovnat SGD, Momentum a Nesterova
+* [x] Provést Experiment Ivan pro 100 opakování
 * [x] Zapsat, co to je testovací dataset
 * [ ] Zapsat, jak se inicializují parametry neuronové sítě
 * [x] Zapsat, jak jsem měřil, co je lepší algoritmus - a co jsem měřil
