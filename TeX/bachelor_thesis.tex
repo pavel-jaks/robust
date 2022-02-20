@@ -654,9 +654,25 @@ Ta má následující předpis:
 \end{align}
 
 Pro srovnání stochastického gradientního sestupu, metody hybnosti a metody Něstěrovovy hybnosti
-se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. ).
-Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbzlými dvěma metodami
-úspěšnější, byť jen o málo.
+se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. \ref{cnn_figure}).
+Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
+úspěšnější, byť jen o málo. Totéž potvrzuje experiment Ivan.
+Co se týče srovnání metody hybnosti a metody Něstěrovovy hybnosti, ty jsou dle experimentů stejně úspěšné.
+
+Existují ale i další algoritmy, které stojí za zmínění se. Jedná se o algoritmy s přizpůsobivým řádem učení.
+Jmenovitě \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.
+
+% \subsection{AdaGrad}
+
+
+
+% \subsection{RMSProp}
+
+
+
+% \subsection{Adam}
+
+
 
 \begin{figure}[p] \label{mlp_figure}
 	\centering
@@ -668,6 +684,11 @@ Experiment Hubert naznačuje, že standardní stochastický gradientní sestup j
 	a toto její objevení se je pseudo-náhodné, pak to, kam vybraný algoritmus dovede danou neuronovou síť
 	v onom parametrickém prostoru, lze brát jako náhodný jev, a tedy úspěšnost neuronové sítě na testovací sadě
 	jako náhodnou veličinu.
+	Potom lze algoritmy učení porovnávat na základě distribučních funkcí těchto náhodných veličin.
+	Prakticky takové porovnání pak proběhne následovně:
+	Je-li graf dané distribuční funkce více vpravo, pak daná distribuce je více štědrá
+	a naděluje lépe natrénované modely - tedy jí odpovídající algoritmus je v daném nastavení lepší.
+	Nyní k tomuto konkrétnímu obrázku:
 	Graf označený jako \emph{Simple} znázorňuje výsledky \emph{standardního stochastického gradientního sestupu},
 	kde bylo provedeno 5001 iterací, gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
 	řád učení byl $10^{-2}$;
@@ -685,13 +706,26 @@ Experiment Hubert naznačuje, že standardní stochastický gradientní sestup j
 
 \end{figure}
 
-
-% \subsection{AdaGrad}
-
-% \subsection{RMSProp}
-
-% \subsection{Adam}
-
+\begin{figure}[p] \label{cnn_figure}
+	\centering
+	\includegraphics[scale=0.75]{Images/Graphics/simple_momentum_nesterov_cnn_110.png}
+	\caption{Srovnání algoritmů učení - experiment Ivan}
+	Obdobně jako Obr. \ref{mlp_figure} tento obrázek znázorňuje tři experimentálně zjištěné distribuční funkce.
+	Graf označený jako \emph{Simple} znázorňuje výsledky \emph{standardního stochastického gradientního sestupu},
+	kde bylo provedeno 5001 iterací, gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	řád učení byl $10^{-2}$;
+	graf označený jako \emph{Momentum} znázorňuje výsledky \emph{stochastického gradientního sestupu
+	za použití hybnosti}, kde bylo provedeno 5001 iterací,
+	gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$;
+	graf označený jako \emph{Nesterov} znázorňuje výsledky stochastického gradientního sestupu
+	za použití \emph{Něstěrovovy hybnosti}, kde bylo provedeno 5001 iterací,
+	gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$.
+	Všechny tyto výsledky byly dosaženy učením stejného modelu konvoluční neuronové sítě,
+	a to na sadě dat MNIST.
+	Každá distribuční funkce byla sestavena na základě 110 pozorování.
+\end{figure}
 
 
 % Adversariální vzorky
