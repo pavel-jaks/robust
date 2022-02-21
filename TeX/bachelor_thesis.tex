@@ -453,7 +453,7 @@ Nutným předpokladem ke konstrukci vhodné účelové funkce je tzv. \emph{tré
 Jedná se o množinu možných vstupů, které jsou vybaveny správným výstupem.
 Je-li dána trénovací sada a značky, lze definovat účelovou funkci jako jakési měřidlo ukazující,
 jak moc se trénovaná neuronová síť mýlí, je-li vpuštěna na vzorky trénovací sady.
-Tomuto přístupu k učení neuronové sítě se také říká učení s učitelem.
+Tomuto přístupu k učení neuronové sítě se také říká \emph{učení s učitelem}.
 
 Pro úplnost poznamenejme, že standardní sada dat pro neuronové sítě též obsahuje kromě trénovací sady další sadu,
 a to tzv. \emph{testovací sadu} - opět spolu se správnými značkami.
@@ -489,7 +489,7 @@ a proto lze na výstup takovéto neuronové sítě a její značky (také pravd�
 aplikovat křížovou entropii.
 Onen výraz v (\ref{crossentropy}) lze spočíst následovně:
 \begin{equation}
-	L(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j * \ln (F_\theta(x^{(i)})_j),
+	L(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j \cdot \ln (F_\theta(x^{(i)})_j),
 \end{equation}
 přičemž $x^{(i)}$ je $i$-tý vektor trénovací sady,
 $y^{(i)}$ je $i$-tý vektor trénovacích značek,
@@ -624,7 +624,7 @@ Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků ř�
 % \subsection{Hybnost}
 
 Modifikací stochastického gradientního sestupu je tzv. \emph{metoda hybnosti}.
-To uvádí na scénu novou proměnnou - \emph{rychlost} $v$ (z angl. \emph{velocity}),
+Ta uvádí na scénu novou proměnnou - \emph{rychlost} $v$ (z angl. \emph{velocity}),
 která je stejných rozměrů jako gradient účelové funkce
 a~nese v sobě informaci o předchozích odhadech gradientu účelové funkce.
 Její role v algoritmu učení je následující:
@@ -639,8 +639,8 @@ Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čís
 
 % \subsection{Něstěrov}
 
-Jinou modifikací stochastického gradientního sestupu, která je obdobou hybnosti, je \emph{Něstěrovova hybnost}.
-Ta má následující předpis:
+Jinou modifikací stochastického gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
+Ta má následující předpis iterace:
 \begin{align}
 	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta L(\theta + \alpha \cdot v) \\
 	\theta &\leftarrow \theta + v
@@ -662,7 +662,7 @@ Krok stranou ke stochastickému gradientnímu sestupu od klasického gradientní
 nevhodně projeví nestabilitou algoritmu v pozdější fázi učení,
 kdy ačkoli se účelová funkce pohybuje kolem lokálního minima,
 odhad gradientu se neblíží nulovému vektoru, a proto dochází k oscilacím účelové funkce.
-Tomuto jevu lze předejít právě pomocí \emph{proměnného řádu učení}, a to v tom smyslu,
+Tomuto jevu lze předejít pomocí \emph{proměnného řádu učení}, a to v tom smyslu,
 že s~postupem učení řád vhodným způsobem klesá.
 
 Existují ale i sofistikovanější algoritmy, které pracují s proměnným řádem učení.

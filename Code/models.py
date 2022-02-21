@@ -331,6 +331,42 @@ class MnistCnnKarel(nn.Module):
         return out
 
 
+class MnistCnnLena(nn.Module):
+    """
+    Seven layer CNN
+    """
+    def __init__(self):
+        super().__init__()
+        self.first_conv_layer = nn.Conv2d(1, 16, kernel_size=5)
+        self.first_activation = nn.ReLU()
+        self.second_pooling = nn.MaxPool2d(2)
+        self.second_activation = nn.ReLU()
+        self.third_conv = nn.Conv2d(16, 10, kernel_size=3)
+        self.third_activation = nn.ReLU()
+        self.fourth_pooling = nn.MaxPool2d(2)
+        self.fourth_activation = nn.ReLU()
+        self.fifth_linear = nn.Linear(10 * 5 * 5, 32)
+        self.fifth_activation = nn.ReLU()
+        self.sixth_linear = nn.Linear(32, 16)
+        self.sixth_activation = nn.ReLU()
+        self.seventh_linear = nn.Linear(16, 10)
+        self.seventh_activation = nn.Softmax(dim=1)
+    
+    def forward(self, t: torch.Tensor):
+        out = self.first_activation(self.first_conv_layer(t))
+        out = self.second_activation(self.second_pooling(out))
+        out = self.third_activation(self.third_conv(out))
+        out = self.fourth_activation(self.fourth_pooling(out))
+        dim = 1
+        for i in range(1, len(out.shape)):
+            dim *= out.shape[i]
+        out = out.reshape(len(t), dim)
+        out = self.fifth_activation(self.fifth_linear(out))
+        out = self.sixth_activation(self.sixth_linear(out))
+        out = self.seventh_activation(self.seventh_linear(out))
+        return out
+
+
 class ModelType(Enum):
     MnistCnnAlfred = MnistCnnAlfred
     MnistCnnBerta = MnistCnnBerta
@@ -343,7 +379,8 @@ class ModelType(Enum):
     MnistCnnIvan = MnistCnnIvan
     MnistCnnJelena = MnistCnnJelena
     MnistCnnKarel = MnistCnnKarel
-    
+    MnistCnnLena = MnistCnnLena
+
 
 class ModelManager:
     @staticmethod

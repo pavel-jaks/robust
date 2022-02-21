@@ -26,12 +26,12 @@ class Coach:
             loss.backward()
             optimizer.step()
             if epoch % noisy == 0 or epoch == 0:
-                print(f'Epoch {epoch}: {loss.item()}')
+                print(f'Epoch {epoch}: {loss.item()}: {Coach.measure_performance(model, training_data, False)}')
         tt = time.time()
         print(f'Training finished at {tt}; lasted {tt - t} seconds.')
 
     @staticmethod
-    def measure_performance(model: nn.Module, data: utils.AbstractData):
+    def measure_performance(model: nn.Module, data: utils.AbstractData, noisy: bool = True):
         preds = 0
         succeeded = 0
         if data.get_data_storage_type() == utils.DataStorageType.ClassificationWithIndexes:
@@ -48,7 +48,8 @@ class Coach:
                 if index == label:
                     succeeded += 1
                 preds += 1
-        print(f'{succeeded / preds * 100} % success on test data')
+        if noisy:
+            print(f'{succeeded / preds * 100} % success on test data')
         return succeeded / preds
 
     @staticmethod
