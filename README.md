@@ -16,7 +16,7 @@ Repozitář vypracování bakalářské práce
 
 * [x] Sjednotit značení; provést odchaotičnění
 * [x] Zjednodušit kód; zavést hot reload
-* [?] Rozumět kódu
+* [x] Rozumět kódu
 * [x] Popsat v BP to, co je v kódu
 * [x] Zavést při učení NN mini-batche
 
