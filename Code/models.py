@@ -233,13 +233,13 @@ class MnistCnnGerta(nn.Module):
 class MnistMLPHubert(nn.Module):
     def __init__(self):
         super().__init__()
-        self.first_linear = nn.Linear(28 * 28, 16)
+        self.first_linear = nn.Linear(28 * 28, 512)
         self.first_activation = nn.ReLU()
-        self.second_linear = nn.Linear(16, 16)
+        self.second_linear = nn.Linear(512, 256)
         self.second_activation = nn.ReLU()
-        self.third_linear = nn.Linear(16, 10)
+        self.third_linear = nn.Linear(256, 128)
         self.third_activation = nn.ReLU()
-        self.fourth_linear = nn.Linear(10, 10)
+        self.fourth_linear = nn.Linear(128, 10)
         self.fourth_activation = nn.Softmax(dim=1)
 
     def forward(self, t: torch.Tensor):
@@ -367,6 +367,39 @@ class MnistCnnLena(nn.Module):
         return out
 
 
+class MnistCnnMilano(nn.Module):
+    """
+    Broader CNN
+    """
+    def __init__(self):
+        super().__init__()
+        self.first_conv_layer = nn.Conv2d(1, 32, kernel_size=9)
+        self.first_activation = nn.ReLU()
+        self.second_pooling = nn.MaxPool2d(4)
+        self.second_activation = nn.ReLU()
+        self.third_linear = nn.Linear(32 * 5 * 5, 512)
+        self.third_activation = nn.ReLU()
+        self.fourth_linear = nn.Linear(512, 512)
+        self.fourth_activation = nn.ReLU()
+        self.fifth_linear = nn.Linear(512, 256)
+        self.fifth_activation = nn.ReLU()
+        self.sixth_linear = nn.Linear(256, 10)
+        self.sixth_activation = nn.Softmax(dim=1)
+    
+    def forward(self, t: torch.Tensor):
+        out = self.first_activation(self.first_conv_layer(t))
+        out = self.second_activation(self.second_pooling(out))
+        dim = 1
+        for i in range(1, len(out.shape)):
+            dim *= out.shape[i]
+        out = out.reshape(len(t), dim)
+        out = self.third_activation(self.third_linear(out))
+        out = self.fourth_activation(self.fourth_linear(out))
+        out = self.fifth_activation(self.fifth_linear(out))
+        out = self.sixth_activation(self.sixth_linear(out))
+        return out
+
+
 class ModelType(Enum):
     MnistCnnAlfred = MnistCnnAlfred
     MnistCnnBerta = MnistCnnBerta
@@ -380,6 +413,7 @@ class ModelType(Enum):
     MnistCnnJelena = MnistCnnJelena
     MnistCnnKarel = MnistCnnKarel
     MnistCnnLena = MnistCnnLena
+    MnistCnnMilano = MnistCnnMilano
 
 
 class ModelManager:
