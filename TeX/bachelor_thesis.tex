@@ -463,36 +463,56 @@ a celkového počtu vzorků v testovcí sadě.
 
 \section{Účelové funkce}
 
+Standardní účelová funkce je sestavena jako součet nebo průměr dílčích ztrát,
+které neuronová síť dosahuje na vzorcích trénovací sady:
+\begin{equation}
+	J(\theta) = \sum_{i=1}^N L(F_{\theta}(x^{(i)}), y^{(i)}),
+\end{equation}
+případně:
+\begin{equation} \label{averageloss}
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N L(F_{\theta}(x^{(i)}), y^{(i)}),
+\end{equation}
+kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
+$N$ je velikost trénovací sady,
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+parametrizovaná parametry $\theta$,
+$L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce. 
+V tomto textu se držme tvaru v~(\ref{averageloss}).
+
+
 % \subsection{Střední kvadratická chyba}
 
 Jedna z klasických účelových funkcí je funkce střední kvadratické chyby.
 Je dána přepisem:
 \begin{equation}
-	L(\theta) = \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m(F_\theta(x^{(i)})_j - y^{(i)}_j)^2,
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m(F_\theta(x^{(i)})_j - y^{(i)}_j)^2,
 \end{equation}
 nebo
 \begin{equation}
-	L(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2
 \end{equation}
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$.
+$N$ je velikost trénovací sady,
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$
+a $\|\cdot\|_2$ je $L^2$ norma.
 
-% \subsection{Ztráta záporného logaritmu věrohodnosti}
+% \subsection{Ztráta křížové entropie}
 
 Další účelová funkce, která nachází uplatnění v klasifikačních problémech, se vypočte pomocí křížové entropie:
 \begin{equation} \label{crossentropy}
-	L(\theta) = - \frac{1}{N} \sum_{i=1}^N H(y^{(i)}, F_\theta(x^{(i)})),
+	J(\theta) = - \frac{1}{N} \sum_{i=1}^N H(y^{(i)}, F_\theta(x^{(i)})),
 \end{equation}
-kde H označuje právě onu křížovou entropii mezi pravděpodobnostními distribucemi.
+kde $H$ označuje právě onu křížovou entropii mezi pravděpodobnostními distribucemi.
 Připomeňme, že klasifikační neuronová síť produkuje diskrétní pravděpodobnostní distribuce,
 a proto lze na výstup takovéto neuronové sítě a její značky (také pravděpodobnostní distribuce)
 aplikovat křížovou entropii.
 Onen výraz v (\ref{crossentropy}) lze spočíst následovně:
 \begin{equation}
-	L(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j \cdot \ln (F_\theta(x^{(i)})_j),
+	J(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j \cdot \ln (F_\theta(x^{(i)})_j),
 \end{equation}
 přičemž $x^{(i)}$ je $i$-tý vektor trénovací sady,
 $y^{(i)}$ je $i$-tý vektor trénovacích značek,
+$N$ je velikost trénovací sady,
 $F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
 parametrizovaná parametry $\theta$.
 
@@ -533,7 +553,7 @@ parametrizovaná parametry $\theta$.
 \section{Algoritmus zpětného šíření chyby}
 
 Nejčastější metody učení neuronové sítě ve svém chodu pracují s gradientem účelové funkce podle parametrů neuronové sítě
-$\nabla_\theta L(\theta)$,
+$\nabla_\theta J(\theta)$,
 který lze spočíst pomocí \emph{algoritmu zpětného šíření chyby} (angl. \emph{backpropagation}).
 Tento algoritmus však lze použít nejen v takto úzce specializovaném prostředí strojového učení,
 nýbrž i pro výpočet Jacobiho matice libovolné funkce (dle \cite{Goodfellow}).
@@ -551,19 +571,19 @@ a dvou hranách - první z $v$ do $u$ o barvě odpovídající tomu býti první
 a druhá z $w$ do $u$ o~barvě odpovídající tomu býti druhým argumentem skalárního součinu.
 
 Dále je zapotřebí uvést \emph{řetězové pravidlo} pro výpočet derivace složené funkce, o které se algoritmus opírá.
-Nechť $g: \mathbb{R}^n \rightarrow \mathbb{R}^m$ a $h: \mathbb{R}^m \rightarrow \mathbb{R}^p$, $x \in \mathbb{R}^n$,
-potom: 
+Nechť $g: \mathbb{R}^n \rightarrow \mathbb{R}^m$ a $h: \mathbb{R}^m \rightarrow \mathbb{R}^p$, $a \in \mathbb{R}^n$,
+potom:
 \begin{equation}
-D(h \circ g)(f(x)) = Dh(g(x)) \cdot Dg(x),
+D(h \circ g)(a) = Dh(g(a)) \cdot Dg(a),
 \end{equation}
 kde $D$ značí totální diferenciál.
 Zúžíme-li se na $p = 1$, dostáváme:
 \begin{equation} \label{jacobigradientmul}
-	\nabla (h \circ g)(x) = \nabla h (g(x)) \cdot D g(x)
+	\nabla (h \circ g)(a) = \nabla h (g(a)) \cdot D g(a)
 \end{equation}
 a podíváme-li se na $i$-tou komponentu gradientu $h \circ g$:
 \begin{equation}
-	\partial_i (h \circ g)(x) = \sum_{j=1}^m \partial_j h(g(x)) \cdot \partial_i g_j(x),
+	\partial_i (h \circ g)(a) = \sum_{j=1}^m \partial_j h(g(a)) \cdot \partial_i g_j(a),
 \end{equation}
 kde $g_j$ značí $j$-tou komponentu vektorové funkce $g$.
 
@@ -594,10 +614,10 @@ Opačný přístup lze uplatnit při~nedostatku paměti stroje.
 
 Základním algoritmem pro učení neuronové sítě je \emph{gradientní sestup} (angl. \emph{gradient descent}).
 Opírá se o fakt, že gradient reálné funkce určuje směr největšího spádu dané funkce v daném bodě.
-Proto, máme-li účelovou funkci $L(\theta)$, kde $\theta$ jsou parametry neuronové sítě,
-má smysl tyto parametry aktualizovat proti směru gradientu funkce $L$ následujícím způsobem:
+Proto, máme-li účelovou funkci $J(\theta)$, kde $\theta$ jsou parametry neuronové sítě,
+má smysl tyto parametry aktualizovat proti směru gradientu funkce $J$ následujícím způsobem:
 \begin{equation}
-	\theta \leftarrow \theta - \epsilon \cdot \nabla_\theta L(\theta),
+	\theta \leftarrow \theta - \epsilon \cdot \nabla_\theta J(\theta),
 \end{equation}
 kde $\epsilon$ je tzv. \emph{řád učení} (angl. \emph{learning rate})
 - kladné číslo, které určuje velikost jednoho kroku;
@@ -608,28 +628,15 @@ Ideální by bylo, kdybychom gradientním sestupem dosáhli globálního minima 
 to ovšem není v žádném případě zaručeno, že se stane, gradientní sestup totiž dokáže nalézt pouze lokální minimum
 - ale to je pro reálné aplikace mnohdy dostačující.
 
-% \subsection{Stochastický gradientní sestup}
-
-Gradientní sestup má ovšem nevýhodu v tom, že v každém kroku počítá gradient účelové funkce přes celou trénovací sadu.
-Ta mnohdy sestává z tolika vzorků, že opakovaný výpočet gradientu učelové funkce pro účely učení
-je časově velmi náročný a pro reálné aplikace nevhodný.
-Z těchto důvodů je vhodnější použít \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}).
-Ten narozdíl od~obyčejného gradientního sestupu nepočítá gradient účelové funkce přesně,
-nýbrž jej odhaduje výpočtem gradientu modifikované účelové funkce,
-kde modifikace účelové funkce spočívá v jejím vyhodnocování pouze na~znatelně menší podmnožině trénovacích vzorků.
-Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každém kroku stochastického gradientního sestupu jiná
-a může obsahovat od~jednotek po stovky vzorků.
-Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
-
 % \subsection{Hybnost}
 
-Modifikací stochastického gradientního sestupu je tzv. \emph{metoda hybnosti}.
+Modifikací gradientního sestupu je tzv. \emph{metoda hybnosti}.
 Ta uvádí na scénu novou proměnnou - \emph{rychlost} $v$ (z angl. \emph{velocity}),
 která je stejných rozměrů jako gradient účelové funkce
 a~nese v sobě informaci o předchozích odhadech gradientu účelové funkce.
 Její role v algoritmu učení je následující:
 \begin{align}
-	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta L(\theta) \\
+	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta) \\
 	\theta &\leftarrow \theta + v
 \end{align}
 Užití hybnosti vede tedy k představení dalšího hyper-parametru, a to parametru $\alpha \in [0, 1)$,
@@ -639,35 +646,22 @@ Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čís
 
 % \subsection{Něstěrov}
 
-Jinou modifikací stochastického gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
+Jinou modifikací gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
 Ta má následující předpis iterace:
 \begin{align}
-	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta L(\theta + \alpha \cdot v) \\
+	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta + \alpha \cdot v) \\
 	\theta &\leftarrow \theta + v
 \end{align}
 
-Pro srovnání stochastického gradientního sestupu, metody hybnosti a metody Něstěrovovy hybnosti
-se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. \ref{cnn_figure}).
-Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
-úspěšnější, byť jen o málo. Totéž potvrzuje experiment Ivan.
-Co se týče srovnání metody hybnosti a metody Něstěrovovy hybnosti, ty jsou dle experimentů stejně úspěšné.
-Důležité je však poznamenat, že v těchto experimentech řád učení pro stochastický gradientní sestup byl
-desetkrát větší než u metod hybností ($10^{-2}$ oproti~$10^{-3}$).
-Byl-li by býval stejný, buď by se neuronové sítě pomocí metod hybností
-vůbec nic nenaučili (pro~společný řád učení $10^{-2}$),
-nebo by stochastický gradientní sestup nedosahoval takovývh výkonů
-(pro~společný řád učení $10^{-3}$).
+% Krok stranou ke stochastickému gradientnímu sestupu od klasického gradientního sestupu se dle \cite{Goodfellow}
+% nevhodně projeví nestabilitou algoritmu v pozdější fázi učení,
+% kdy ačkoli se účelová funkce pohybuje kolem lokálního minima,
+% odhad gradientu se neblíží nulovému vektoru, a proto dochází k oscilacím účelové funkce.
+% Tomuto jevu lze předejít pomocí \emph{proměnného řádu učení}, a to v tom smyslu,
+% že s~postupem učení řád vhodným způsobem klesá.
 
-Krok stranou ke stochastickému gradientnímu sestupu od klasického gradientního sestupu se dle \cite{Goodfellow}
-nevhodně projeví nestabilitou algoritmu v pozdější fázi učení,
-kdy ačkoli se účelová funkce pohybuje kolem lokálního minima,
-odhad gradientu se neblíží nulovému vektoru, a proto dochází k oscilacím účelové funkce.
-Tomuto jevu lze předejít pomocí \emph{proměnného řádu učení}, a to v tom smyslu,
-že s~postupem učení řád vhodným způsobem klesá.
-
-Existují ale i sofistikovanější algoritmy, které pracují s proměnným řádem učení.
-Jedná se o \emph{algoritmy s přizpůsobivým řádem učení}:
-Jmenovitě \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.
+Existují další algoritmy, které pracují s proměnným řádem učení.
+Jedná se o \emph{algoritmy s přizpůsobivým řádem učení}: \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.
 Tyto algoritmy přizpůsobují řád učení jednotlivým parametrům zvlášť.
 
 % \subsection{AdaGrad}
@@ -681,7 +675,7 @@ malé hodnoty parciálních derivací učelové funkce, mají úměrně tomu pom
 Celkový efekt tedy je, že se síť pohybuje rychleji ve směrech menšího spádu.
 Jedna iterace by potom mohla vypadat následovně:
 \begin{align}
-	g &\leftarrow \nabla_\theta L(\theta), \\
+	g &\leftarrow \nabla_\theta J(\theta), \\
 	r &\leftarrow r + g \odot g, \\
 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
 \end{align}
@@ -696,7 +690,7 @@ Proto je namístě uvést další algoritmus - \emph{RMSProp}.
 Tento algoritmus nahrazuje součet přes všechny hodnoty gradientu exponenciálně tlumeným váženým průměrem,
 a to způsobem, kde jedna iterace vypadá následovně:
 \begin{align}
-	g &\leftarrow \nabla_\theta L(\theta), \\
+	g &\leftarrow \nabla_\theta J(\theta), \\
 	r &\leftarrow \rho \cdot r + (1 - \rho) \cdot g \odot g, \\
 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
 \end{align}
@@ -715,7 +709,7 @@ Druhým aspektem, ve kterém se algoritmus liší od prostého RMSProp s hybnost
 jsou korekce pomocí prahu prováděné na odhadech prvního a druhého obecného momentu gradientu.
 Jedna iterace algoritmu vypadá:
 \begin{align}
-	g &\leftarrow \nabla_\theta L(\theta), \\
+	g &\leftarrow \nabla_\theta J(\theta), \\
 	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
 	r &\leftarrow \rho_2 \cdot r + (1 - \rho_2) \cdot g \odot g, \\
 	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t} \\
@@ -726,6 +720,33 @@ kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin, výraz zlomku a~odmocniny na šestém řádku je myšlen po složkách,
 $t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou \emph{řády úpadku}.
 
+
+\section{Stochastické algoritmy učení}
+
+Gradientní sestup má ovšem nevýhodu v tom, že v každém kroku počítá gradient účelové funkce přes celou trénovací sadu.
+Ta mnohdy sestává z tolika vzorků, že opakovaný výpočet gradientu učelové funkce pro účely učení
+je časově velmi náročný a pro reálné aplikace nevhodný.
+Z těchto důvodů je vhodnější použít \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}).
+Ten narozdíl od~obyčejného gradientního sestupu nepočítá gradient účelové funkce přesně,
+nýbrž jej odhaduje výpočtem gradientu modifikované účelové funkce,
+kde modifikace účelové funkce spočívá v jejím vyhodnocování pouze na~znatelně menší podmnožině trénovacích vzorků.
+Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každém kroku stochastického gradientního sestupu jiná
+a může obsahovat od~jednotek po stovky vzorků.
+Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
+
+\section{Srovnání algoritmů učení}
+
+Pro srovnání stochastického gradientního sestupu, metody hybnosti a metody Něstěrovovy hybnosti
+se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. \ref{cnn_figure}).
+Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
+úspěšnější, byť jen o málo. Totéž potvrzuje experiment Ivan.
+Co se týče srovnání metody hybnosti a metody Něstěrovovy hybnosti, ty jsou dle experimentů stejně úspěšné.
+Důležité je však poznamenat, že v těchto experimentech řád učení pro stochastický gradientní sestup byl
+desetkrát větší než u metod hybností ($10^{-2}$ oproti~$10^{-3}$).
+Byl-li by býval stejný, buď by se neuronové sítě pomocí metod hybností
+vůbec nic nenaučili (pro~společný řád učení $10^{-2}$),
+nebo by stochastický gradientní sestup nedosahoval takovývh výkonů
+(pro~společný řád učení $10^{-3}$).
 
 \begin{figure}[p] \label{mlp_figure}
 	\centering

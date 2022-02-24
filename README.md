@@ -26,3 +26,11 @@ Repozitář vypracování bakalářské práce
 * [x] Provést Experiment Ivan pro 100 opakování
 * [x] Zapsat, co to je testovací dataset
 * [x] Zapsat, jak jsem měřil, co je lepší algoritmus - a co jsem měřil
+
+## Konzultace 24. 2. 2022
+
+* [ ] Separovat SGD
+* [*] Sjednotit značení podruhé
+* [ ] Rozepsat se více o test datasetu
+* [ ] Rozepsat se více o svých numerických experimentech
+* [ ] Překlady do češtiny - používat anglické výrazy
