@@ -29,8 +29,8 @@ Repozitář vypracování bakalářské práce
 
 ## Konzultace 24. 2. 2022
 
-* [ ] Separovat SGD
-* [*] Sjednotit značení podruhé
+* [x] Separovat SGD
+* [x] Sjednotit značení podruhé
 * [ ] Rozepsat se více o test datasetu
 * [ ] Rozepsat se více o svých numerických experimentech
 * [ ] Překlady do češtiny - používat anglické výrazy

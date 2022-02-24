@@ -309,7 +309,7 @@ Princip fungování neuronové sítě spočívá v poskládání celku z dílč�
 Takovýto neuron je standardně funkcí více proměnných, jehož výstup je proměnná jediná.
 Typickým modelem umělého neuronu je funkce $f: \mathbb{R}^n \rightarrow \mathbb{R}$ definovaná předpisem
 \begin{equation} \label{neuron}
-	f(x_1, ..., x_n) = \sigma (\sum_{i=1}^n w_i x_i + b) ,
+	f(a_1, ..., a_n) = \sigma (\sum_{i=1}^n w_i a_i + b) ,
 \end{equation}
 kde \emph{n} je počet vstupujících proměnných, \emph{$w_i$} jsou tzv. váhy (w z anglického slova weight),
 \emph{b} je práh (b~z~anglického slova bias), \emph{$\sigma$} označuje tzv. aktivační funkci.
@@ -324,10 +324,10 @@ Poslední, avšak velmi důležitou charakteristikou tohoto modelu neuronu je ak
 Za aktivační funkci lze vzít libovolnou funkci $\sigma : \mathbb{R} \rightarrow \mathbb{R}$,
 existuje však základní sada:
 \begin{itemize}
-	\item Sigmoid: $\sigma(x) = \frac{1}{1 + e^{-x}}$
-	\item ReLU: $\sigma(x) = max(0, x)$
-	\item LeakyReLU: $\sigma(x) = max(0, x) + \alpha * min(x, 0)$, kde $\alpha \in \mathbb{R}^+$
-	\item Tanh: $\sigma(x) = tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}$
+	\item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$
+	\item ReLU: $\sigma(z) = max(0, z)$
+	\item LeakyReLU: $\sigma(z) = max(0, z) + \alpha * min(z, 0)$, kde $\alpha \in \mathbb{R}^+$
+	\item Tanh: $\sigma(z) = tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$
 \end{itemize}
 Tyto funkce lze doplnit o jejich mírné modifikace.
 Moderní doporučenou praxí je užívat ReLU jako aktivační funkci a (\ref{neuron}) jako model neuronu dle \cite{Goodfellow}.
@@ -349,7 +349,7 @@ Má-li navíc alespoň jednu skrytou vrstvu, lze mluvit o \emph{hluboké dopřed
 Se znalostí pojmu vrstvy neuronů lze přistoupit k poznámce o tzv. \emph{softmax funkci}.
 Jedná se o vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$, kde
 \begin{equation*}
-	s(x_1, ..., x_m)_i = \frac{e^{x_i}}{\sum_{j=1}^m e^{x_j}},
+	s(a_1, ..., a_m)_i = \frac{e^{a_i}}{\sum_{j=1}^m e^{a_j}},
 \end{equation*}
 kde $i \in \hat{m}$.
 Její užití je nasnadě: Výstup této funkce lze totiž interpretovat jako diskrétní pravděpodobnostní distribuci,
@@ -364,11 +364,11 @@ jejímiž prvky jsou právě ony váhy $(\mathbb{A})_{j,i} = w_i^{(j)}$,
 z~prahů pak vektor $b$, jehož $j$-tá složka je rovna prahu $j$-tého neuronu.
 Dále zaveďme vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$ - ať už jako výše zmíněnou softmax funkci,
 nebo jako po složkách aplikovanou libovolnou aktivační funkci $\sigma$
-ve smyslu $s(x_1, ... x_m)_i = \sigma(x_i)$ pro $i \in \hat{m}$. 
+ve smyslu $s(a_1, ... a_m)_i = \sigma(a_i)$ pro $i \in \hat{m}$. 
 Pak lze psát, že aplikace vrstvy neuronů je zobrazení $\phi : \mathbb{R}^n \rightarrow \mathbb{R}^m$
-působící na vektor $x$ následovně:
+působící na vektor $a$ následovně:
 \begin{equation} \label{layer}
-	\phi(x) = s(\mathbb{A}x + b)
+	\phi(a) = s(\mathbb{A}a + b)
 \end{equation}
 Tedy stěžejní operací se stává maticové násobení, respektive násebení vektoru maticí zprava.
 
@@ -395,7 +395,7 @@ jejíž výstupem je nová číselná funkce standardně označovaná jako $g*h$
 Uveďme zde definici konvoluce pro reálné funkce definované na $\mathbb{R}^d$,
 tedy $g,h: \mathbb{R}^d \rightarrow \mathbb{R}$:
 \begin{equation*}
-	(g * h)(t) = \int_{\mathbb{R}^{d}} g(x) h(t - x) dx
+	(g * h)(t) = \int_{\mathbb{R}^{d}} g(\tau) h(t - \tau) d\tau
 \end{equation*}
 Důležitým předpokladem pro možnost konvoluce je samozřejmě konvergence integrálu na pravé straně.
 
@@ -582,7 +582,7 @@ Zúžíme-li se na $p = 1$, dostáváme:
 	\nabla (h \circ g)(a) = \nabla h (g(a)) \cdot D g(a)
 \end{equation}
 a podíváme-li se na $i$-tou komponentu gradientu $h \circ g$:
-\begin{equation}
+\begin{equation} \label{chainrule}
 	\partial_i (h \circ g)(a) = \sum_{j=1}^m \partial_j h(g(a)) \cdot \partial_i g_j(a),
 \end{equation}
 kde $g_j$ značí $j$-tou komponentu vektorové funkce $g$.
@@ -723,16 +723,49 @@ $t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou \emph{řády úpadku}
 
 \section{Stochastické algoritmy učení}
 
-Gradientní sestup má ovšem nevýhodu v tom, že v každém kroku počítá gradient účelové funkce přes celou trénovací sadu.
-Ta mnohdy sestává z tolika vzorků, že opakovaný výpočet gradientu učelové funkce pro účely učení
-je časově velmi náročný a pro reálné aplikace nevhodný.
-Z těchto důvodů je vhodnější použít \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}).
-Ten narozdíl od~obyčejného gradientního sestupu nepočítá gradient účelové funkce přesně,
-nýbrž jej odhaduje výpočtem gradientu modifikované účelové funkce,
-kde modifikace účelové funkce spočívá v jejím vyhodnocování pouze na~znatelně menší podmnožině trénovacích vzorků.
-Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každém kroku stochastického gradientního sestupu jiná
-a může obsahovat od~jednotek po stovky vzorků.
-Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
+Výše zmíněné metody, jak je patrné z jejich předpisů, počítají gradient účelové funkce $\nabla_\theta J(\theta)$.
+Tento krok je ovšem velmi časově náročný, protože standardní trénovací sady mívají velmi mnoho vzorků.
+Při připomenutí (\ref{averageloss}) se výpočet sestává z $N$ výpočtů dílčích gradientů:
+\begin{equation}
+	\nabla_\theta J(\theta) = \frac{1}{N} \sum_{i=1}^N \nabla_\theta L(F_{\theta}(x^{(i)}), y^{(i)}),
+\end{equation}
+kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
+$N$ je velikost trénovací sady,
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+parametrizovaná parametry $\theta$,
+$L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
+
+Proto je doporučenou praxí dle \cite{Goodfellow} aproximovat gradient účelové funkce $\nabla_\theta J(\theta)$
+pomocí výpočtu na tzv. \emph{mini-dávce} (z angl. \emph{mini-batch}).
+Jedná se v každém kroku gradientního sestupu nebo jeho modifikací o to,
+že se z trénovací sady rovnoměrně vybere $M \ll N$ vzorků gradient se odhadne pomocí výpočtu na těchto $M$ vzorcích:
+\begin{equation}
+	\nabla_\theta J(\theta) \approx \sum_{j=1}^M \nabla_\theta L(F_{\theta}(x^{(i_j)}), y^{(i_j)}),
+\end{equation}
+kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
+$M$ je velikost mini-dávky,
+$i_j~\sim~U\{1, N\}$ jsou indexy vzorků vybraných do mini-dávky,
+$F_\theta$ je neuronová síť jakožto funkce $F_\theta:~\mathbb{R}^n~\rightarrow~\mathbb{R}^m$
+parametrizovaná parametry $\theta$,
+$L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
+
+Číslo $M$ lze vybírat dle \cite{Goodfellow} v řádu jednotek až stovek.
+Při aplikaci této apriximace během standardního gradientního sestupu se algoritmu
+říká \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}),
+ovšem tento úkrok stranou lze provést i v případě ostatních představených algoritmech,
+ty však pro svou stochastickou variantu nemají speciální název.
+
+
+% Gradientní sestup má ovšem nevýhodu v tom, že v každém kroku počítá gradient účelové funkce přes celou trénovací sadu.
+% Ta mnohdy sestává z tolika vzorků, že opakovaný výpočet gradientu učelové funkce pro účely učení
+% je časově velmi náročný a pro reálné aplikace nevhodný.
+% Z těchto důvodů je vhodnější použít \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}).
+% Ten narozdíl od~obyčejného gradientního sestupu nepočítá gradient účelové funkce přesně,
+% nýbrž jej odhaduje výpočtem gradientu modifikované účelové funkce,
+% kde modifikace účelové funkce spočívá v jejím vyhodnocování pouze na~znatelně menší podmnožině trénovacích vzorků.
+% Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každém kroku stochastického gradientního sestupu jiná
+% a může obsahovat od~jednotek po stovky vzorků.
+% Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
 
 \section{Srovnání algoritmů učení}
 
