@@ -782,6 +782,38 @@ ty však pro svou stochastickou variantu nemají speciální název.
 
 \section{Srovnání algoritmů učení}
 
+% \subsection{Kritérium srovnávání}
+
+Pro účely srovnávání algoritmů učení neuronové sítě lze zvolit mnoho kritérií.
+Jedním z nich by mohl být samotný průběh účelové funkce v závislosti na počtu provedených iterací vybraného algoritmu,
+když všechny představené algoritmy mají iterativní charakter.
+
+Jiným přístupem je užití tzv. \emph{testovací sady} $\mathbb{S}$ (angl. \emph{test dataset}).
+Svou strukturou testovací sada kopíruje sadu trénovací, jedná se tedy o uspořádanou dvojici
+množin vzorků $\mathbb{X} = \{x^{(i)} | i \in \hat{S} \}$
+a značek $\mathbb{Y} = \{y^{(i)} | i \in \hat{S} \}$,
+kde $S$ je velikost testovací sady.
+
+Je-li neuronová síť svým charakterem síť klasifikační, pak lze sledovat podíl správných predikcí na testovacím datasetu
+vůči celkovému počtu vzorků.
+Výhodou tohoto přístupu je fakt, že při svém učení neuronová síť na vzorky testovacího datasetu nenarazila,
+což má za důsledek to, že lze očekávat stejnou úspěšnost sítě při její aplikaci.
+Tento přístup je využit v tomto textu.
+
+% \subsection{Inicializace parametrů sítě a stochasticita algoritmu učení}
+
+% \subsection{Dataset MNIST}
+
+Nedílnou ingrediencí pro srovnání algoritmů uční je samotná sada dat a k nim příslušný úkol,
+zda se jedná o klasifikaci či o regresi.
+Tato část textu se věnuje úkolu klasifikace ručně psaných číslic z černobílého obrázku.
+Sada dat, která je zde použita je nazvána MNIST.
+Její trénovací sada $\mathbb{T}$ obsahuje 60~000 vzorků (a k nim odpovídajících značek)
+a testovací sada $\mathbb{S}$ obsahuje 10~000 vzorků (a k nim odpovídajících značek).
+Vzorky jsou ve své podstatě matice o rozměrech 28 řádků a 28 sloupečků,
+jejichž prvky jsou nezáporná celá čísla o hodnotě nejvýše 255.
+Tyto matice lze interpretovat jako obrázky.
+
 Pro srovnání stochastického gradientního sestupu, metody hybnosti a metody Něstěrovovy hybnosti
 se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. \ref{cnn_figure}).
 Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
