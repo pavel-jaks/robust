@@ -440,28 +440,41 @@ Třetí fáze potom provádí \emph{pooling}.
 % Učení neuronové sítě
 \chapter{Učení neuronové sítě}
 
-Předchozí kapitola představuje neuronové sítě jakožto složené zobrazení s mnoha parametry.
-Aby takováto neuronová síť byla k něčemu užitečná, např. ke klasifikaci obrázků, musí dané zkonstruované zobrazení
-vracet smysluplné výsledky k daným vstupům.
-Toho se v praxi dociluje vhodným nastavením hyper-parametrů sítě a následným nalezením hodnot parametrů daného složeného zobrazení,
-které odpovídají funkční neuronové síti.
-Toto hledání parametrů se též nazývá jako \emph{učení neuronové sítě}
-a provádí se metodami numerické optimalizace jistého vhodně zvoleného kritéria,
-které se označuje jako \emph{účelová} či \emph{ztrátová funkce}.
+Standardní přístup k \emph{učení neuronové sítě}, což je termín,
+kterým se označuje vhodné nalezení parametrů neuronové sítě,
+je paradigma učení s učitelem.
+Tento pohled na učení neuronové sítě předpokládá existenci
+tzv. \emph{trénovací sady dat} $\mathbb{T}$ (angl. \emph{training dataset}),
+což je uspořádaná dvojice obsahující množinu \emph{vzorků} $\mathbb{X} = \{x^{(i)} | i \in \hat{N} \}$
+a k nim příslušné \emph{značky} $\mathbb{Y} = \{y^{(i)} | i \in \hat{N} \}$,
+kde pojem vzorek představuje vstup neuronové sítě jakožto zobrazení
+a pojem značka představuje správný výstup neuronové sítě;
+$N$ je potom velikost trénovací sady $\mathbb{T}$.
+Trénovací sada pak hraje roli učitele.
 
-Nutným předpokladem ke konstrukci vhodné účelové funkce je tzv. \emph{trénovací sada} vzorků a k nim příslušné \emph{značky}.
-Jedná se o množinu možných vstupů, které jsou vybaveny správným výstupem.
-Je-li dána trénovací sada a značky, lze definovat účelovou funkci jako jakési měřidlo ukazující,
-jak moc se trénovaná neuronová síť mýlí, je-li vpuštěna na vzorky trénovací sady.
-Tomuto přístupu k učení neuronové sítě se také říká \emph{učení s učitelem}.
+% Předchozí kapitola představuje neuronové sítě jakožto složené zobrazení s mnoha parametry.
+% Aby takováto neuronová síť byla k něčemu užitečná, např. ke klasifikaci obrázků, musí dané zkonstruované zobrazení
+% vracet smysluplné výsledky k daným vstupům.
+% Toho se v praxi dociluje vhodným nastavením hyper-parametrů sítě a následným nalezením hodnot parametrů daného složeného zobrazení,
+% které odpovídají funkční neuronové síti.
+% Toto hledání parametrů se též nazývá jako \emph{učení neuronové sítě}
+% a provádí se metodami numerické optimalizace jistého vhodně zvoleného kritéria,
+% které se označuje jako \emph{účelová} či \emph{ztrátová funkce}.
 
-Pro úplnost poznamenejme, že standardní sada dat pro neuronové sítě též obsahuje kromě trénovací sady další sadu,
-a to tzv. \emph{testovací sadu} - opět spolu se správnými značkami.
-Tato sada slouží jako míra určující úspěšnost natrénované sítě.
-Konkrétně tak lze vzít podíl počtu vzorků testovací sady, pro které neuronová síť provedla správnou predikci,
-a celkového počtu vzorků v testovcí sadě.
+% Nutným předpokladem ke konstrukci vhodné účelové funkce je tzv. \emph{trénovací sada} vzorků a k nim příslušné \emph{značky}.
+% Jedná se o množinu možných vstupů, které jsou vybaveny správným výstupem.
+% Je-li dána trénovací sada a značky, lze definovat účelovou funkci jako jakési měřidlo ukazující,
+% jak moc se trénovaná neuronová síť mýlí, je-li vpuštěna na vzorky trénovací sady.
+% Tomuto přístupu k učení neuronové sítě se také říká \emph{učení s učitelem}.
+
 
 \section{Účelové funkce}
+
+Je-li pojem trenovací sady objasněn, lze přistoupit k termínu \emph{účelové funkce}
+nebo též \emph{ztrátové funkce}.
+Jedná se o reálnou funkci, která měří, jak moc se trénovaná neuronová síť mýlí
+ve svých predikcích na vzorcích trénovací sady.
+Úloha učení je potom převedena na úlohu optimalizace tohoto vhodně zvoleného kritéria.
 
 Standardní účelová funkce je sestavena jako součet nebo průměr dílčích ztrát,
 které neuronová síť dosahuje na vzorcích trénovací sady:
@@ -780,6 +793,12 @@ Byl-li by býval stejný, buď by se neuronové sítě pomocí metod hybností
 vůbec nic nenaučili (pro~společný řád učení $10^{-2}$),
 nebo by stochastický gradientní sestup nedosahoval takovývh výkonů
 (pro~společný řád učení $10^{-3}$).
+
+Pro úplnost poznamenejme, že standardní sada dat pro neuronové sítě též obsahuje kromě trénovací sady další sadu,
+a to tzv. \emph{testovací sadu} - opět spolu se správnými značkami.
+Tato sada slouží jako míra určující úspěšnost natrénované sítě.
+Konkrétně tak lze vzít podíl počtu vzorků testovací sady, pro které neuronová síť provedla správnou predikci,
+a celkového počtu vzorků v testovcí sadě.
 
 \begin{figure}[p] \label{mlp_figure}
 	\centering
