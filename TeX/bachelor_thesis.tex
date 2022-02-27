@@ -802,6 +802,19 @@ Tento přístup je využit v tomto textu.
 
 % \subsection{Inicializace parametrů sítě a stochasticita algoritmu učení}
 
+Nyní je namístě vyslovit poznámku o inicializaci parametrů neuronové sítě před samotným učením.
+Dle \cite{Goodfellow} je standardním postupem pro inicializaci vybírat hodnoty parametrů náhodně,
+a to z rovnoměrného rozdělení na rozumném intervalu.
+Konkrétní experimenty v tomto textu pracují s následujícím rozdělením vah, prahů a prvků konvolučních jader
+\begin{equation}
+	(W)_{i, j}, b_i \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
+\end{equation}
+kde $n$ je v případě vah počet sloupečků matice vah, v případě prahů velikost vektoru prahů.
+Závěrem této poznámky tedy je, že inicializace parametrů neuronové sítě je náhodný proces.
+To má za důsledek fakt, že na proces učení neuronové sítě lze nahlížet očima statistika.
+Tento text konkrétně nahlíží na úspěšnost neuronové sítě na testovací sadě jako na náhodnou veličinu.
+Potom lze totiž porovnávat jednotlivé algoritmy na základě distribuční funkce této specifické náhodné veličiny.
+
 % \subsection{Dataset MNIST}
 
 Nedílnou ingrediencí pro srovnání algoritmů učení je samotná sada dat a k nim příslušný úkol,
@@ -849,75 +862,101 @@ Tyto matice lze interpretovat jako obrázky.
 	\caption{Datová sada MNIST}
 \end{figure}
 
-Pro srovnání stochastického gradientního sestupu, metody hybnosti a metody Něstěrovovy hybnosti
-se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. \ref{cnn_figure}).
-Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
-úspěšnější, byť jen o málo. Totéž potvrzuje experiment Ivan.
-Co se týče srovnání metody hybnosti a metody Něstěrovovy hybnosti, ty jsou dle experimentů stejně úspěšné.
-Důležité je však poznamenat, že v těchto experimentech řád učení pro stochastický gradientní sestup byl
-desetkrát větší než u metod hybností ($10^{-2}$ oproti~$10^{-3}$).
-Byl-li by býval stejný, buď by se neuronové sítě pomocí metod hybností
-vůbec nic nenaučili (pro~společný řád učení $10^{-2}$),
-nebo by stochastický gradientní sestup nedosahoval takovývh výkonů
-(pro~společný řád učení $10^{-3}$).
+Přistupme nyní k samotnému srovnání algoritmů stochastický gradientní sestup,
+metoda hybnosti a metoda Něstěrovovy hybnosti (obě ve stochastické verzi).
+Pro srovnání těchto algoritmů byly provedeny následující dva experimenty:
+První se týká trénování jedné hluboké dopředné neuronové sítě těmito algoritmy pro úkol datové sady MNIST,
+jež je uvedena výše v textu, a to konkrétně aplikací 5~000 iterací algoritmu
+na nově inicializovanou síť.
+Pro stochastický gradientní sestup byl použit řád učení o hodnotě $10^{-2}$,
+pro obě metody hybnosti byl použit řád učení $10^{-3}$ a koeficient $\alpha = 0.9$.
+Dále uveďme velikost mini-dávky $M = 30$ pro všechny tři algoritmy.
+V takovémto nastavení byly všechny tři algoritmy spuštěny stokrát.
+Na výsledné distribuční funkce lze nahlédnout v obrázku (\ref{mlp_figure}).
+Z grafu lze vyčíst takřka zanedbatelný rozdíl mezi metodou hybnosti a metodou Něstěrovovy hybnosti.
+Dále graf vyjadřuje nemalou větší úspěšnost obyčejného stochastického gradientního sestupu.
 
-Pro úplnost poznamenejme, že standardní sada dat pro neuronové sítě též obsahuje kromě trénovací sady další sadu,
-a to tzv. \emph{testovací sadu} - opět spolu se správnými značkami.
-Tato sada slouží jako míra určující úspěšnost natrénované sítě.
-Konkrétně tak lze vzít podíl počtu vzorků testovací sady, pro které neuronová síť provedla správnou predikci,
-a celkového počtu vzorků v testovcí sadě.
 
-\begin{figure}[p] \label{mlp_figure}
+% Pro srovnání stochastického gradientního sestupu, metody hybnosti a metody Něstěrovovy hybnosti
+% se lze opřít o výsledky experimentů Hubert a Ivan (viz Obr. \ref{mlp_figure} a Obr. \ref{cnn_figure}).
+% Experiment Hubert naznačuje, že standardní stochastický gradientní sestup je v porovnání se zbylými dvěma metodami
+% úspěšnější, byť jen o málo. Totéž potvrzuje experiment Ivan.
+% Co se týče srovnání metody hybnosti a metody Něstěrovovy hybnosti, ty jsou dle experimentů stejně úspěšné.
+% Důležité je však poznamenat, že v těchto experimentech řád učení pro stochastický gradientní sestup byl
+% desetkrát větší než u metod hybností ($10^{-2}$ oproti~$10^{-3}$).
+% Byl-li by býval stejný, buď by se neuronové sítě pomocí metod hybností
+% vůbec nic nenaučili (pro~společný řád učení $10^{-2}$),
+% nebo by stochastický gradientní sestup nedosahoval takovývh výkonů
+% (pro~společný řád učení $10^{-3}$).
+
+% Pro úplnost poznamenejme, že standardní sada dat pro neuronové sítě též obsahuje kromě trénovací sady další sadu,
+% a to tzv. \emph{testovací sadu} - opět spolu se správnými značkami.
+% Tato sada slouží jako míra určující úspěšnost natrénované sítě.
+% Konkrétně tak lze vzít podíl počtu vzorků testovací sady, pro které neuronová síť provedla správnou predikci,
+% a celkového počtu vzorků v testovcí sadě.
+
+\begin{figure} \label{mlp_figure}
 	\centering
 	\includegraphics[scale=0.75]{Images/Graphics/simple_momentum_nesterov_100.png}
-	\caption{Srovnání algoritmů učení - experiment Hubert}
-	Obrázek znázorňuje experimentálně zjištěné distribuční funkce tří pseudo-náhodných veličin,
-	a to úspěšností neuronové sítě na testovací sadě natrénované vybraným algoritmem.
-	Uvážíme-li že se nenatrénovaná neuronová síť objeví kdesi v parametrickém prostoru,
-	a toto její objevení se je pseudo-náhodné, pak to, kam vybraný algoritmus dovede danou neuronovou síť
-	v onom parametrickém prostoru, lze brát jako náhodný jev, a tedy úspěšnost neuronové sítě na testovací sadě
-	jako náhodnou veličinu.
-	Potom lze algoritmy učení porovnávat na základě distribučních funkcí těchto náhodných veličin.
-	Prakticky takové porovnání pak proběhne následovně:
-	Je-li graf dané distribuční funkce více vpravo, pak daná distribuce je více štědrá
-	a naděluje lépe natrénované modely - tedy jí odpovídající algoritmus je v daném nastavení lepší.
-	Nyní k tomuto konkrétnímu obrázku:
-	Graf označený jako \emph{Simple} znázorňuje výsledky \emph{standardního stochastického gradientního sestupu},
-	kde bylo provedeno 5001 iterací, gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
-	řád učení byl $10^{-2}$;
-	graf označený jako \emph{Momentum} znázorňuje výsledky \emph{stochastického gradientního sestupu
-	za použití hybnosti}, kde bylo provedeno 5001 iterací,
-	gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
-	řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$;
-	graf označený jako \emph{Nesterov} znázorňuje výsledky stochastického gradientního sestupu
-	za použití \emph{Něstěrovovy hybnosti}, kde bylo provedeno 5001 iterací,
-	gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
-	řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$.
-	Všechny tyto výsledky byly dosaženy učením stejného modelu hluboké dopředné neuronové sítě,
-	a to na sadě dat MNIST.
-	Každá distribuční funkce byla sestavena na základě 100 pozorování.
+	\caption{Srovnání algoritmů učení na MLP}
+	\emph{Simple} - stochastický gradientní sestup;
+	\emph{Momentum} - metoda hybnosti;
+	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
+	% Obrázek znázorňuje experimentálně zjištěné distribuční funkce tří pseudo-náhodných veličin,
+	% a to úspěšností neuronové sítě na testovací sadě natrénované vybraným algoritmem.
+	% Uvážíme-li že se nenatrénovaná neuronová síť objeví kdesi v parametrickém prostoru,
+	% a toto její objevení se je pseudo-náhodné, pak to, kam vybraný algoritmus dovede danou neuronovou síť
+	% v onom parametrickém prostoru, lze brát jako náhodný jev, a tedy úspěšnost neuronové sítě na testovací sadě
+	% jako náhodnou veličinu.
+	% Potom lze algoritmy učení porovnávat na základě distribučních funkcí těchto náhodných veličin.
+	% Prakticky takové porovnání pak proběhne následovně:
+	% Je-li graf dané distribuční funkce více vpravo, pak daná distribuce je více štědrá
+	% a naděluje lépe natrénované modely - tedy jí odpovídající algoritmus je v daném nastavení lepší.
+	% Nyní k tomuto konkrétnímu obrázku:
+	% Graf označený jako \emph{Simple} znázorňuje výsledky \emph{standardního stochastického gradientního sestupu},
+	% kde bylo provedeno 5001 iterací, gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	% řád učení byl $10^{-2}$;
+	% graf označený jako \emph{Momentum} znázorňuje výsledky \emph{stochastického gradientního sestupu
+	% za použití hybnosti}, kde bylo provedeno 5001 iterací,
+	% gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	% řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$;
+	% graf označený jako \emph{Nesterov} znázorňuje výsledky stochastického gradientního sestupu
+	% za použití \emph{Něstěrovovy hybnosti}, kde bylo provedeno 5001 iterací,
+	% gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	% řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$.
+	% Všechny tyto výsledky byly dosaženy učením stejného modelu hluboké dopředné neuronové sítě,
+	% a to na sadě dat MNIST.
+	% Každá distribuční funkce byla sestavena na základě 100 pozorování.
 
 \end{figure}
 
-\begin{figure}[p] \label{cnn_figure}
+Druhý experiment je téměř totožný, jen je použit jiný model neuronové sítě, a to konkrétně se zakomponovanou konvolucí.
+Jinak je experiment totožný.
+Proto lze z Obr. (\ref{cnn_figure}) odezřít opět stejné výsledky, a to konkrétně, že stochastický gradientní sestup
+má mírně lepší výkonnost.
+
+\begin{figure} \label{cnn_figure}
 	\centering
 	\includegraphics[scale=0.75]{Images/Graphics/simple_momentum_nesterov_cnn_110.png}
-	\caption{Srovnání algoritmů učení - experiment Ivan}
-	Obdobně jako Obr. \ref{mlp_figure} tento obrázek znázorňuje tři experimentálně zjištěné distribuční funkce.
-	Graf označený jako \emph{Simple} znázorňuje výsledky \emph{standardního stochastického gradientního sestupu},
-	kde bylo provedeno 5001 iterací, gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
-	řád učení byl $10^{-2}$;
-	graf označený jako \emph{Momentum} znázorňuje výsledky \emph{stochastického gradientního sestupu
-	za použití hybnosti}, kde bylo provedeno 5001 iterací,
-	gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
-	řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$;
-	graf označený jako \emph{Nesterov} znázorňuje výsledky stochastického gradientního sestupu
-	za použití \emph{Něstěrovovy hybnosti}, kde bylo provedeno 5001 iterací,
-	gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
-	řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$.
-	Všechny tyto výsledky byly dosaženy učením stejného modelu konvoluční neuronové sítě,
-	a to na sadě dat MNIST.
-	Každá distribuční funkce byla sestavena na základě 110 pozorování.
+	\caption{Srovnání algoritmů učení CNN}
+	\emph{Simple} - stochastický gradientní sestup;
+	\emph{Momentum} - metoda hybnosti;
+	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
+	% Obdobně jako Obr. \ref{mlp_figure} tento obrázek znázorňuje tři experimentálně zjištěné distribuční funkce.
+	% Graf označený jako \emph{Simple} znázorňuje výsledky \emph{standardního stochastického gradientního sestupu},
+	% kde bylo provedeno 5001 iterací, gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	% řád učení byl $10^{-2}$;
+	% graf označený jako \emph{Momentum} znázorňuje výsledky \emph{stochastického gradientního sestupu
+	% za použití hybnosti}, kde bylo provedeno 5001 iterací,
+	% gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	% řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$;
+	% graf označený jako \emph{Nesterov} znázorňuje výsledky stochastického gradientního sestupu
+	% za použití \emph{Něstěrovovy hybnosti}, kde bylo provedeno 5001 iterací,
+	% gradient aproximován výpočtem gradientu na dávce o velikosti 30 vzorků,
+	% řád učení byl $10^{-3}$ a koeficient $\alpha = 0.9$.
+	% Všechny tyto výsledky byly dosaženy učením stejného modelu konvoluční neuronové sítě,
+	% a to na sadě dat MNIST.
+	% Každá distribuční funkce byla sestavena na základě 110 pozorování.
 \end{figure}
 
 
