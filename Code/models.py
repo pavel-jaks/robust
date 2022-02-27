@@ -400,6 +400,26 @@ class MnistCnnMilano(nn.Module):
         return out
 
 
+class MnistMLPNevil(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.first_linear = nn.Linear(28 * 28, 512)
+        self.first_activation = nn.ReLU()
+        self.second_linear = nn.Linear(512, 256)
+        self.second_activation = nn.ReLU()
+        self.third_linear = nn.Linear(256, 128)
+        self.third_activation = nn.ReLU()
+        self.fourth_linear = nn.Linear(128, 10)
+        self.fourth_activation = nn.Softmax(dim=1)
+
+    def forward(self, t: torch.Tensor):
+        out = t.reshape(len(t), 28 * 28)
+        out = self.first_activation(self.first_linear(out))
+        out = self.second_activation(self.second_linear(out))
+        out = self.third_activation(self.third_linear(out))
+        return self.fourth_activation(self.fourth_linear(out))
+
+
 class ModelType(Enum):
     MnistCnnAlfred = MnistCnnAlfred
     MnistCnnBerta = MnistCnnBerta
@@ -414,6 +434,7 @@ class ModelType(Enum):
     MnistCnnKarel = MnistCnnKarel
     MnistCnnLena = MnistCnnLena
     MnistCnnMilano = MnistCnnMilano
+    MnistMLPNevil = MnistMLPNevil
 
 
 class ModelManager:
