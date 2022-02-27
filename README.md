@@ -31,6 +31,6 @@ Repozitář vypracování bakalářské práce
 
 * [x] Separovat SGD
 * [x] Sjednotit značení podruhé
-* [ ] Rozepsat se více o test datasetu
-* [ ] Rozepsat se více o svých numerických experimentech
+* [x] Rozepsat se více o test datasetu
+* [x] Rozepsat se více o svých numerických experimentech
 * [ ] Překlady do češtiny - používat anglické výrazy
