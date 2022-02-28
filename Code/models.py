@@ -403,13 +403,13 @@ class MnistCnnMilano(nn.Module):
 class MnistMLPNevil(nn.Module):
     def __init__(self):
         super().__init__()
-        self.first_linear = nn.Linear(28 * 28, 512)
+        self.first_linear = nn.Linear(28 * 28, 16)
         self.first_activation = nn.ReLU()
-        self.second_linear = nn.Linear(512, 256)
+        self.second_linear = nn.Linear(16, 16)
         self.second_activation = nn.ReLU()
-        self.third_linear = nn.Linear(256, 128)
+        self.third_linear = nn.Linear(16, 10)
         self.third_activation = nn.ReLU()
-        self.fourth_linear = nn.Linear(128, 10)
+        self.fourth_linear = nn.Linear(10, 10)
         self.fourth_activation = nn.Softmax(dim=1)
 
     def forward(self, t: torch.Tensor):
