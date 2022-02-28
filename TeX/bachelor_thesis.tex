@@ -907,16 +907,17 @@ Pro srovnání algoritmů \emph{stochastický gradientní sestup}, \emph{AdaGrad
 lze využít podkladů na obrázku (\ref{mlp_advanced_figure}),
 který zachycuje výsledky obdobných experimentů jako popsaných výše.
 Nastavení tohoto pokusu bylo následující:
-Pro stochastický gradientní sestup byl použit řád učení o hodnotě $10^{-2}$,
-pro algoritmy AdaGrad, RMSProp i Adam $10^{-3}$.
+Pro stochastický gradientní sestup a algoritmus AdaGrad byl použit řád učení o hodnotě $10^{-2}$,
+pro algoritmy RMSProp a Adam $10^{-3}$.
 Pro AdaGrad bylo dále použito $\delta = 10^{-10}$,
 pro RMSProp $\delta = 10^{-8}$ a $\rho = 0.99$,
 pro Adam $\delta = 10^{-8}$, $\rho_1 = 0.9$ a $\rho_2 = 0.999$.
 Úkol byl stejný - natrénovat tentýž model dopředné neuronové sítě pro klasifikaci číslic datové sady MNIST
 za použití 5~000 iterací daného algoritmu.
 Učení sítě vždy proběhlo stokrát.
-Ze zmíněného obrázku jasně vyplývá, že algoritmus AdaGrad není tak výkonný jako ostatní algoritmy,
-mezi nimiž dominují algoritmy RMSProp a Adam.
+Ze zmíněného obrázku vyplývá, že algoritmus AdaGrad je v tomto nastavení srovnatelný
+se stochastickým gradientním sestupem
+a že algoritmy RMSProp a Adam jsou minimálně pro toto specifické nastavení lepší.
 
 \begin{figure}
 	\centering
