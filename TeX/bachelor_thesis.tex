@@ -930,6 +930,29 @@ a že algoritmy RMSProp a Adam jsou minimálně pro toto specifické nastavení 
 	\emph{Adam} - algoritmus Adam
 \end{figure}
 
+Dále se pro srovnání algoritmů \emph{stochastický gradientní sestup}, \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}
+lze opřít o výsledky vyobrazené na obrázku (\ref{cnn_advanced_figure}).
+Ten zachycuje výsledky totožného nastavení jako obrázek (\ref{mlp_advanced_figure}) jen s rozdílem použitého modelu.
+V tomto případě byl použit model konvoluční neuronové sítě.
+Jak lze nahlédnout, algoritmus AdaGrad byl pro tuto úlohu nevhodný.
+Algoritmus Adam dosáhl přijatelné úrovně neuronové sítě
+(tedy úspěšnost na testovací datové sadě vyšší než 95~\%) zhruba v 60~\% případů,
+algoritmus RMSProp zhruba v 90~\% případů
+a stochastický gradientní sestup v 95~\% případů.
+Ovšem kvalita přijatelně natrénovaných neuronových sítí byla v případě RMSProp vyšší
+než u stochastického gradientního sestupu.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.75]{Images/Graphics/sgd_adagrad_rmsprop_adam_cnn_100.png}
+	\caption{Srovnání algoritmů učení \Romannum{4}}
+	\label{cnn_advanced_figure}
+	\emph{SGD} - stochastický gradientní sestup;
+	\emph{AdaGrad} - algoritmus AdaGrad;
+	\emph{RMSProp} - algoritmus RMSProp;
+	\emph{Adam} - algoritmus Adam
+\end{figure}
+
 % Adversariální vzorky
 \chapter{Adversariální vzorky}
 
