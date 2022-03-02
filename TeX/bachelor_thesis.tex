@@ -436,9 +436,6 @@ První fáze provádí paralelně několik konvolucí, které produkují sadu ak
 Druhá fáze, někdy označovaná jako \emph{detekční fáze}, aplikuje na výstupy první fáze aktivační funkci.
 Třetí fáze potom provádí \emph{pooling}.
 
-% Dle \cite{Goodfellow} pooling přidává neuronové síti tu vlastnost, že je \emph{invariantní vůči malým translacím} na vstupu.
-% Tj. dojde-li k posunutí hodnot vstupu o malou hodnotu, díky poolingu dojde ke změně výstupu konvoluční vrstvy jen v malém počtu výstupů.
-
 % Učení neuronové sítě
 \chapter{Učení neuronové sítě}
 
@@ -453,22 +450,6 @@ kde pojem vzorek představuje vstup neuronové sítě jakožto zobrazení
 a pojem značka představuje správný výstup neuronové sítě;
 $N$ je potom velikost trénovací sady $\mathbb{T}$.
 Trénovací sada pak hraje roli učitele.
-
-% Předchozí kapitola představuje neuronové sítě jakožto složené zobrazení s mnoha parametry.
-% Aby takováto neuronová síť byla k něčemu užitečná, např. ke klasifikaci obrázků, musí dané zkonstruované zobrazení
-% vracet smysluplné výsledky k daným vstupům.
-% Toho se v praxi dociluje vhodným nastavením hyper-parametrů sítě a následným nalezením hodnot parametrů daného složeného zobrazení,
-% které odpovídají funkční neuronové síti.
-% Toto hledání parametrů se též nazývá jako \emph{učení neuronové sítě}
-% a provádí se metodami numerické optimalizace jistého vhodně zvoleného kritéria,
-% které se označuje jako \emph{účelová} či \emph{ztrátová funkce}.
-
-% Nutným předpokladem ke konstrukci vhodné účelové funkce je tzv. \emph{trénovací sada} vzorků a k nim příslušné \emph{značky}.
-% Jedná se o množinu možných vstupů, které jsou vybaveny správným výstupem.
-% Je-li dána trénovací sada a značky, lze definovat účelovou funkci jako jakési měřidlo ukazující,
-% jak moc se trénovaná neuronová síť mýlí, je-li vpuštěna na vzorky trénovací sady.
-% Tomuto přístupu k učení neuronové sítě se také říká \emph{učení s učitelem}.
-
 
 \section{Účelové funkce}
 
@@ -657,7 +638,6 @@ Její role v algoritmu učení je následující:
 Užití hybnosti vede tedy k představení dalšího hyper-parametru, a to parametru $\alpha \in [0, 1)$,
 který určuje míru ovlivnění dalšího kroku předchozími odhady gradientu.
 Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čísla $0.5$, $0.9$ a $0.99$.
-% Pro úplnost lze poznamenat, že i parametr $\alpha$ lze s postupem učení přizpůsobovat, a to konkrétně zvětšovat.
 
 % \subsection{Něstěrov}
 
@@ -667,13 +647,6 @@ Ta má následující předpis iterace:
 	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta + \alpha \cdot v) \\
 	\theta &\leftarrow \theta + v
 \end{align}
-
-% Krok stranou ke stochastickému gradientnímu sestupu od klasického gradientního sestupu se dle \cite{Goodfellow}
-% nevhodně projeví nestabilitou algoritmu v pozdější fázi učení,
-% kdy ačkoli se účelová funkce pohybuje kolem lokálního minima,
-% odhad gradientu se neblíží nulovému vektoru, a proto dochází k oscilacím účelové funkce.
-% Tomuto jevu lze předejít pomocí \emph{proměnného řádu učení}, a to v tom smyslu,
-% že s~postupem učení řád vhodným způsobem klesá.
 
 Existují další algoritmy, které pracují s proměnným řádem učení.
 Jedná se o \emph{algoritmy s přizpůsobivým řádem učení}: \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.
@@ -769,18 +742,6 @@ Při aplikaci této apriximace během standardního gradientního sestupu se alg
 říká \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}),
 ovšem tento úkrok stranou lze provést i v případě ostatních představených algoritmech,
 ty však pro svou stochastickou variantu nemají speciální název.
-
-
-% Gradientní sestup má ovšem nevýhodu v tom, že v každém kroku počítá gradient účelové funkce přes celou trénovací sadu.
-% Ta mnohdy sestává z tolika vzorků, že opakovaný výpočet gradientu učelové funkce pro účely učení
-% je časově velmi náročný a pro reálné aplikace nevhodný.
-% Z těchto důvodů je vhodnější použít \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}).
-% Ten narozdíl od~obyčejného gradientního sestupu nepočítá gradient účelové funkce přesně,
-% nýbrž jej odhaduje výpočtem gradientu modifikované účelové funkce,
-% kde modifikace účelové funkce spočívá v jejím vyhodnocování pouze na~znatelně menší podmnožině trénovacích vzorků.
-% Tato podmnožina trénovacích vzorků je ideálně náhodně vybraná a v každém kroku stochastického gradientního sestupu jiná
-% a může obsahovat od~jednotek po stovky vzorků.
-% Pro úplnost lze poznamenat, že se této podmnožině trénovacích vzorků říká \emph{mini-dávka} (angl. \emph{mini-batch}).
 
 \section{Srovnání algoritmů učení}
 
