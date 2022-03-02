@@ -711,7 +711,7 @@ a to způsobem, kde jedna iterace vypadá následovně:
 \end{align}
 kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
-Objevil se tu však nový hyper-parametr $\rho \in [0, 1)$ - \emph{řád úpadku} (angl. \emph{decay rate}).
+Objevil se tu však nový hyper-parametr $\rho \in [0, 1)$ - \emph{decay rate} (bez překladu).
 
 % \subsection{Adam}
 
@@ -733,7 +733,7 @@ Jedna iterace algoritmu vypadá:
 \end{align}
 kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin, výraz zlomku a~odmocniny na šestém řádku je myšlen po složkách,
-$t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou \emph{řády úpadku}.
+$t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou hyper-parametry nazvané \emph{decay rate}.
 
 
 \section{Stochastické algoritmy učení}
@@ -809,7 +809,7 @@ Dle \cite{Goodfellow} je standardním postupem pro inicializaci vybírat hodnoty
 a to z rovnoměrného rozdělení na rozumném intervalu.
 Konkrétní experimenty v tomto textu pracují s následujícím rozdělením vah a prahů:
 \begin{equation}
-	(W)_{i, j}, b_i \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
+	(\mathbb{A})_{i, j}, b_i \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
 \end{equation}
 kde $n$ je v případě vah počet sloupečků matice vah, v případě prahů velikost vektoru prahů.
 Závěrem této poznámky tedy je, že inicializace parametrů neuronové sítě je náhodný proces.

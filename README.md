@@ -33,4 +33,4 @@ Repozitář vypracování bakalářské práce
 * [x] Sjednotit značení podruhé
 * [x] Rozepsat se více o test datasetu
 * [x] Rozepsat se více o svých numerických experimentech
-* [ ] Překlady do češtiny - používat anglické výrazy
+* [x] Překlady do češtiny - používat anglické výrazy
