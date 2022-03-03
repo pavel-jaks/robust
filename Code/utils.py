@@ -39,17 +39,19 @@ class AbstractData(ABC):
 
 
 class MnistData(AbstractData):
-    def __init__(self):
+    def __init__(self, requires_grad: bool = False):
         mnist_data = MNIST('samples')
 
         training_images, training_labels = mnist_data.load_training()
         self.training_images = torch.tensor(training_images).type(torch.FloatTensor) / 255
         self.training_images = torch.reshape(self.training_images, (len(training_images), 28, 28)).unsqueeze(1)
+        self.training_images.requires_grad = requires_grad
         self.training_labels = torch.tensor(training_labels)
 
         test_images, test_labels = mnist_data.load_testing()
         self.test_images = torch.tensor(test_images).type(torch.FloatTensor) / 255
         self.test_images = torch.reshape(self.test_images, (len(test_images), 28, 28)).unsqueeze(1)
+        self.test_images.requires_grad = requires_grad
         self.test_labels = torch.tensor(test_labels)
         
         self.data_storage_type = DataStorageType.ClassificationWithIndexes
