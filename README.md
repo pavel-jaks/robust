@@ -38,4 +38,5 @@ Repozitář vypracování bakalářské práce
 ## TODO 4. 3. 2022
 
 * [x] Očárkovat a otečkovat rovnice
-* [ ] Zvektorizovat grafy
+* [x] Zvektorizovat grafy
+* [ ] Začít si s adversariálními vzorky
