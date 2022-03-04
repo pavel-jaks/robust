@@ -1,0 +1,600 @@
+--- (0) ---
+Training started at 1645303065.553907
+Epoch 0: 69.06207275390625
+Epoch 5000: 44.8350830078125
+Training finished at 1645303103.7758129; lasted 38.22190594673157 seconds.
+96.35000000000001 % success on test data
+--- (1) ---
+Training started at 1645303104.9694326
+Epoch 0: 69.0570297241211
+Epoch 5000: 44.55046463012695
+Training finished at 1645303143.982259; lasted 39.012826442718506 seconds.
+95.95 % success on test data
+--- (2) ---
+Training started at 1645303145.0658803
+Epoch 0: 69.08260345458984
+Epoch 5000: 47.80250549316406
+Training finished at 1645303182.8199608; lasted 37.75408053398132 seconds.
+87.98 % success on test data
+--- (3) ---
+Training started at 1645303183.949895
+Epoch 0: 68.99569702148438
+Epoch 5000: 43.86082458496094
+Training finished at 1645303221.7178912; lasted 37.767996311187744 seconds.
+95.77 % success on test data
+--- (4) ---
+Training started at 1645303222.8011417
+Epoch 0: 69.05350494384766
+Epoch 5000: 45.38423156738281
+Training finished at 1645303262.3982575; lasted 39.59711575508118 seconds.
+96.31 % success on test data
+--- (5) ---
+Training started at 1645303263.5435073
+Epoch 0: 69.18024444580078
+Epoch 5000: 44.034759521484375
+Training finished at 1645303304.367333; lasted 40.82382559776306 seconds.
+97.24000000000001 % success on test data
+--- (6) ---
+Training started at 1645303305.46002
+Epoch 0: 69.05519104003906
+Epoch 5000: 46.832767486572266
+Training finished at 1645303344.247498; lasted 38.78747797012329 seconds.
+86.97 % success on test data
+--- (7) ---
+Training started at 1645303345.6244116
+Epoch 0: 69.06594848632812
+Epoch 5000: 45.45781707763672
+Training finished at 1645303385.6542652; lasted 40.0298535823822 seconds.
+97.06 % success on test data
+--- (8) ---
+Training started at 1645303386.754436
+Epoch 0: 69.11083984375
+Epoch 5000: 43.83708953857422
+Training finished at 1645303426.5841029; lasted 39.82966685295105 seconds.
+96.33 % success on test data
+--- (9) ---
+Training started at 1645303427.6991465
+Epoch 0: 69.1123275756836
+Epoch 5000: 45.98228454589844
+Training finished at 1645303467.1878777; lasted 39.488731145858765 seconds.
+97.21 % success on test data
+--- (10) ---
+Training started at 1645303468.279115
+Epoch 0: 68.84772491455078
+Epoch 5000: 43.85027313232422
+Training finished at 1645303503.3479521; lasted 35.06883716583252 seconds.
+96.28999999999999 % success on test data
+--- (11) ---
+Training started at 1645303504.4742048
+Epoch 0: 69.03797149658203
+Epoch 5000: 45.996742248535156
+Training finished at 1645303540.612909; lasted 36.13870429992676 seconds.
+96.52 % success on test data
+--- (12) ---
+Training started at 1645303541.712469
+Epoch 0: 69.0348892211914
+Epoch 5000: 44.83457565307617
+Training finished at 1645303580.4687893; lasted 38.7563202381134 seconds.
+96.53 % success on test data
+--- (13) ---
+Training started at 1645303581.5350268
+Epoch 0: 68.96039581298828
+Epoch 5000: 45.54644012451172
+Training finished at 1645303617.5510392; lasted 36.01601243019104 seconds.
+96.84 % success on test data
+--- (14) ---
+Training started at 1645303618.6279244
+Epoch 0: 68.99610137939453
+Epoch 5000: 45.831111907958984
+Training finished at 1645303654.5027988; lasted 35.87487435340881 seconds.
+96.96000000000001 % success on test data
+--- (15) ---
+Training started at 1645303655.6172154
+Epoch 0: 69.05094909667969
+Epoch 5000: 44.63439178466797
+Training finished at 1645303694.870465; lasted 39.253249645233154 seconds.
+94.85 % success on test data
+--- (16) ---
+Training started at 1645303695.9383318
+Epoch 0: 69.02268981933594
+Epoch 5000: 44.88433074951172
+Training finished at 1645303731.8868659; lasted 35.94853401184082 seconds.
+96.72 % success on test data
+--- (17) ---
+Training started at 1645303732.9769375
+Epoch 0: 69.08983612060547
+Epoch 5000: 44.45993423461914
+Training finished at 1645303772.623578; lasted 39.64664053916931 seconds.
+96.6 % success on test data
+--- (18) ---
+Training started at 1645303773.708457
+Epoch 0: 69.13178253173828
+Epoch 5000: 44.01545333862305
+Training finished at 1645303810.121513; lasted 36.41305589675903 seconds.
+95.67999999999999 % success on test data
+--- (19) ---
+Training started at 1645303811.2163281
+Epoch 0: 69.07614135742188
+Epoch 5000: 45.95672607421875
+Training finished at 1645303847.786119; lasted 36.569790840148926 seconds.
+87.6 % success on test data
+--- (20) ---
+Training started at 1645303848.9311483
+Epoch 0: 69.08296966552734
+Epoch 5000: 45.52809143066406
+Training finished at 1645303890.2759607; lasted 41.34481239318848 seconds.
+96.84 % success on test data
+--- (21) ---
+Training started at 1645303891.395774
+Epoch 0: 69.04932403564453
+Epoch 5000: 44.8638916015625
+Training finished at 1645303927.2354085; lasted 35.83963465690613 seconds.
+97.15 % success on test data
+--- (22) ---
+Training started at 1645303928.3455443
+Epoch 0: 69.10504150390625
+Epoch 5000: 44.81584167480469
+Training finished at 1645303964.7668798; lasted 36.42133545875549 seconds.
+96.7 % success on test data
+--- (23) ---
+Training started at 1645303965.9435475
+Epoch 0: 69.14180755615234
+Epoch 5000: 50.7869987487793
+Training finished at 1645304003.5497687; lasted 37.606221199035645 seconds.
+87.41 % success on test data
+--- (24) ---
+Training started at 1645304004.6731615
+Epoch 0: 69.09038543701172
+Epoch 5000: 43.8726806640625
+Training finished at 1645304041.4871862; lasted 36.814024686813354 seconds.
+95.56 % success on test data
+--- (25) ---
+Training started at 1645304042.6769717
+Epoch 0: 69.05979919433594
+Epoch 5000: 44.797142028808594
+Training finished at 1645304083.7259634; lasted 41.048991680145264 seconds.
+97.15 % success on test data
+--- (26) ---
+Training started at 1645304084.8245578
+Epoch 0: 69.1655044555664
+Epoch 5000: 44.83440399169922
+Training finished at 1645304121.373448; lasted 36.548890113830566 seconds.
+96.02000000000001 % success on test data
+--- (27) ---
+Training started at 1645304122.5270665
+Epoch 0: 69.03866577148438
+Epoch 5000: 43.83451461791992
+Training finished at 1645304162.643908; lasted 40.116841554641724 seconds.
+96.66 % success on test data
+--- (28) ---
+Training started at 1645304163.734127
+Epoch 0: 68.85160827636719
+Epoch 5000: 44.07100296020508
+Training finished at 1645304204.6770442; lasted 40.94291710853577 seconds.
+96.89999999999999 % success on test data
+--- (29) ---
+Training started at 1645304205.7860475
+Epoch 0: 69.07864379882812
+Epoch 5000: 44.83638000488281
+Training finished at 1645304245.4719813; lasted 39.68593382835388 seconds.
+96.92 % success on test data
+--- (30) ---
+Training started at 1645304246.5539906
+Epoch 0: 69.00611877441406
+Epoch 5000: 45.96091842651367
+Training finished at 1645304283.1386724; lasted 36.58468174934387 seconds.
+96.47 % success on test data
+--- (31) ---
+Training started at 1645304284.216564
+Epoch 0: 69.16796875
+Epoch 5000: 46.09454345703125
+Training finished at 1645304321.0752418; lasted 36.85867786407471 seconds.
+95.34 % success on test data
+--- (32) ---
+Training started at 1645304322.2344992
+Epoch 0: 69.02894592285156
+Epoch 5000: 46.31673049926758
+Training finished at 1645304360.291399; lasted 38.05689978599548 seconds.
+95.41 % success on test data
+--- (33) ---
+Training started at 1645304361.362646
+Epoch 0: 68.98458862304688
+Epoch 5000: 45.815635681152344
+Training finished at 1645304402.4677293; lasted 41.10508322715759 seconds.
+96.82 % success on test data
+--- (34) ---
+Training started at 1645304403.65199
+Epoch 0: 69.08328247070312
+Epoch 5000: 44.4395751953125
+Training finished at 1645304443.0691907; lasted 39.417200803756714 seconds.
+96.53 % success on test data
+--- (35) ---
+Training started at 1645304444.2874715
+Epoch 0: 69.1976318359375
+Epoch 5000: 45.05615997314453
+Training finished at 1645304485.4422414; lasted 41.15476989746094 seconds.
+96.95 % success on test data
+--- (36) ---
+Training started at 1645304486.539186
+Epoch 0: 69.09264373779297
+Epoch 5000: 44.65430450439453
+Training finished at 1645304527.0184097; lasted 40.47922372817993 seconds.
+95.39 % success on test data
+--- (37) ---
+Training started at 1645304528.18433
+Epoch 0: 69.25640869140625
+Epoch 5000: 48.780548095703125
+Training finished at 1645304566.304945; lasted 38.120615005493164 seconds.
+87.22999999999999 % success on test data
+--- (38) ---
+Training started at 1645304567.4697068
+Epoch 0: 69.06165313720703
+Epoch 5000: 43.889984130859375
+Training finished at 1645304604.6856477; lasted 37.215940952301025 seconds.
+96.41 % success on test data
+--- (39) ---
+Training started at 1645304605.8315382
+Epoch 0: 69.04096221923828
+Epoch 5000: 46.6879768371582
+Training finished at 1645304643.181365; lasted 37.34982681274414 seconds.
+95.91 % success on test data
+--- (40) ---
+Training started at 1645304644.2666838
+Epoch 0: 69.03337097167969
+Epoch 5000: 43.83460235595703
+Training finished at 1645304680.0562615; lasted 35.78957772254944 seconds.
+95.06 % success on test data
+--- (41) ---
+Training started at 1645304681.1215155
+Epoch 0: 69.12281036376953
+Epoch 5000: 44.82841491699219
+Training finished at 1645304722.404991; lasted 41.283475399017334 seconds.
+97.00999999999999 % success on test data
+--- (42) ---
+Training started at 1645304723.5114143
+Epoch 0: 69.1135482788086
+Epoch 5000: 45.80689239501953
+Training finished at 1645304759.903106; lasted 36.3916916847229 seconds.
+96.39999999999999 % success on test data
+--- (43) ---
+Training started at 1645304761.0128784
+Epoch 0: 69.07742309570312
+Epoch 5000: 46.68280029296875
+Training finished at 1645304800.1358495; lasted 39.122971057891846 seconds.
+96.5 % success on test data
+--- (44) ---
+Training started at 1645304801.210595
+Epoch 0: 69.13325500488281
+Epoch 5000: 43.837100982666016
+Training finished at 1645304838.4505544; lasted 37.239959478378296 seconds.
+95.91 % success on test data
+--- (45) ---
+Training started at 1645304839.5505018
+Epoch 0: 68.97818756103516
+Epoch 5000: 44.001365661621094
+Training finished at 1645304877.0786948; lasted 37.52819299697876 seconds.
+96.02000000000001 % success on test data
+--- (46) ---
+Training started at 1645304878.1947885
+Epoch 0: 69.08213806152344
+Epoch 5000: 45.817970275878906
+Training finished at 1645304915.58469; lasted 37.389901638031006 seconds.
+96.28 % success on test data
+--- (47) ---
+Training started at 1645304916.6435308
+Epoch 0: 69.04939270019531
+Epoch 5000: 44.83441162109375
+Training finished at 1645304954.264697; lasted 37.62116622924805 seconds.
+96.03 % success on test data
+--- (48) ---
+Training started at 1645304955.3400662
+Epoch 0: 68.98149871826172
+Epoch 5000: 45.80939483642578
+Training finished at 1645304993.7714517; lasted 38.43138551712036 seconds.
+95.37 % success on test data
+--- (49) ---
+Training started at 1645304994.8994732
+Epoch 0: 69.09648895263672
+Epoch 5000: 43.83527755737305
+Training finished at 1645305031.9960577; lasted 37.09658455848694 seconds.
+96.6 % success on test data
+--- (50) ---
+Training started at 1645305033.1445353
+Epoch 0: 69.06517791748047
+Epoch 5000: 45.1229133605957
+Training finished at 1645305074.6435533; lasted 41.49901795387268 seconds.
+96.21 % success on test data
+--- (51) ---
+Training started at 1645305075.791607
+Epoch 0: 69.1642074584961
+Epoch 5000: 45.170623779296875
+Training finished at 1645305113.259308; lasted 37.46770119667053 seconds.
+96.38 % success on test data
+--- (52) ---
+Training started at 1645305114.3290892
+Epoch 0: 69.10352325439453
+Epoch 5000: 44.850341796875
+Training finished at 1645305153.2340457; lasted 38.904956579208374 seconds.
+96.15 % success on test data
+--- (53) ---
+Training started at 1645305154.5005796
+Epoch 0: 69.00318908691406
+Epoch 5000: 45.569671630859375
+Training finished at 1645305193.4467516; lasted 38.94617199897766 seconds.
+97.27 % success on test data
+--- (54) ---
+Training started at 1645305194.5390272
+Epoch 0: 69.14726257324219
+Epoch 5000: 45.83232879638672
+Training finished at 1645305232.043816; lasted 37.504788875579834 seconds.
+96.74000000000001 % success on test data
+--- (55) ---
+Training started at 1645305233.1222422
+Epoch 0: 69.03125
+Epoch 5000: 44.398193359375
+Training finished at 1645305270.6094246; lasted 37.48718237876892 seconds.
+97.00999999999999 % success on test data
+--- (56) ---
+Training started at 1645305271.6696794
+Epoch 0: 69.1329345703125
+Epoch 5000: 44.83469009399414
+Training finished at 1645305307.0580676; lasted 35.38838815689087 seconds.
+96.63000000000001 % success on test data
+--- (57) ---
+Training started at 1645305308.106299
+Epoch 0: 69.02812957763672
+Epoch 5000: 44.34564971923828
+Training finished at 1645305344.546917; lasted 36.44061803817749 seconds.
+96.17999999999999 % success on test data
+--- (58) ---
+Training started at 1645305345.6283023
+Epoch 0: 69.1496353149414
+Epoch 5000: 43.834510803222656
+Training finished at 1645305382.4763896; lasted 36.848087310791016 seconds.
+96.72 % success on test data
+--- (59) ---
+Training started at 1645305383.5882032
+Epoch 0: 69.0761947631836
+Epoch 5000: 44.35940933227539
+Training finished at 1645305420.82944; lasted 37.24123692512512 seconds.
+96.22 % success on test data
+--- (60) ---
+Training started at 1645305421.9476304
+Epoch 0: 69.15797424316406
+Epoch 5000: 46.83484649658203
+Training finished at 1645305460.32451; lasted 38.37687969207764 seconds.
+95.07 % success on test data
+--- (61) ---
+Training started at 1645305461.4197862
+Epoch 0: 69.0341796875
+Epoch 5000: 44.84443664550781
+Training finished at 1645305502.152411; lasted 40.732624769210815 seconds.
+86.18 % success on test data
+--- (62) ---
+Training started at 1645305503.2207217
+Epoch 0: 69.03148651123047
+Epoch 5000: 51.67860794067383
+Training finished at 1645305540.2908459; lasted 37.07012414932251 seconds.
+87.29 % success on test data
+--- (63) ---
+Training started at 1645305541.3943732
+Epoch 0: 69.18341064453125
+Epoch 5000: 44.13145446777344
+Training finished at 1645305578.7968736; lasted 37.40250039100647 seconds.
+96.81 % success on test data
+--- (64) ---
+Training started at 1645305579.8710282
+Epoch 0: 69.18878173828125
+Epoch 5000: 46.61652755737305
+Training finished at 1645305616.276848; lasted 36.4058198928833 seconds.
+95.5 % success on test data
+--- (65) ---
+Training started at 1645305617.3640022
+Epoch 0: 68.99598693847656
+Epoch 5000: 44.82510757446289
+Training finished at 1645305655.0133553; lasted 37.64935302734375 seconds.
+96.46000000000001 % success on test data
+--- (66) ---
+Training started at 1645305656.1454759
+Epoch 0: 69.12996673583984
+Epoch 5000: 43.83462142944336
+Training finished at 1645305695.2215307; lasted 39.07605481147766 seconds.
+96.78 % success on test data
+--- (67) ---
+Training started at 1645305696.3865628
+Epoch 0: 69.15223693847656
+Epoch 5000: 44.833953857421875
+Training finished at 1645305736.2272208; lasted 39.84065794944763 seconds.
+97.05 % success on test data
+--- (68) ---
+Training started at 1645305737.3260684
+Epoch 0: 69.12380981445312
+Epoch 5000: 44.70916748046875
+Training finished at 1645305777.4951887; lasted 40.16912031173706 seconds.
+97.02 % success on test data
+--- (69) ---
+Training started at 1645305778.5859363
+Epoch 0: 68.9804916381836
+Epoch 5000: 49.79772186279297
+Training finished at 1645305815.978389; lasted 37.39245271682739 seconds.
+87.53999999999999 % success on test data
+--- (70) ---
+Training started at 1645305817.0162702
+Epoch 0: 69.13319396972656
+Epoch 5000: 44.77113342285156
+Training finished at 1645305855.6756542; lasted 38.65938401222229 seconds.
+95.89 % success on test data
+--- (71) ---
+Training started at 1645305856.7510557
+Epoch 0: 69.10907745361328
+Epoch 5000: 46.82591247558594
+Training finished at 1645305897.0356002; lasted 40.284544467926025 seconds.
+87.94 % success on test data
+--- (72) ---
+Training started at 1645305898.12623
+Epoch 0: 69.03752899169922
+Epoch 5000: 44.62934112548828
+Training finished at 1645305939.4254541; lasted 41.29922413825989 seconds.
+95.88 % success on test data
+--- (73) ---
+Training started at 1645305940.460472
+Epoch 0: 69.10265350341797
+Epoch 5000: 44.836708068847656
+Training finished at 1645305980.4048414; lasted 39.944369316101074 seconds.
+97.07000000000001 % success on test data
+--- (74) ---
+Training started at 1645305981.46454
+Epoch 0: 69.00340270996094
+Epoch 5000: 43.83549880981445
+Training finished at 1645306028.0235882; lasted 46.55904817581177 seconds.
+96.97 % success on test data
+--- (75) ---
+Training started at 1645306029.114533
+Epoch 0: 68.95890045166016
+Epoch 5000: 46.85142135620117
+Training finished at 1645306066.812114; lasted 37.69758105278015 seconds.
+96.12 % success on test data
+--- (76) ---
+Training started at 1645306067.9083693
+Epoch 0: 69.07745361328125
+Epoch 5000: 45.43589782714844
+Training finished at 1645306105.764208; lasted 37.855838775634766 seconds.
+96.78999999999999 % success on test data
+--- (77) ---
+Training started at 1645306106.8845015
+Epoch 0: 69.003173828125
+Epoch 5000: 45.39841079711914
+Training finished at 1645306145.5941522; lasted 38.70965075492859 seconds.
+96.72 % success on test data
+--- (78) ---
+Training started at 1645306146.7549112
+Epoch 0: 69.14994812011719
+Epoch 5000: 47.58683776855469
+Training finished at 1645306186.9463995; lasted 40.19148826599121 seconds.
+96.02000000000001 % success on test data
+--- (79) ---
+Training started at 1645306188.0552814
+Epoch 0: 69.02714538574219
+Epoch 5000: 47.17697525024414
+Training finished at 1645306226.0187626; lasted 37.963481187820435 seconds.
+95.84 % success on test data
+--- (80) ---
+Training started at 1645306227.0942447
+Epoch 0: 69.06565856933594
+Epoch 5000: 45.3670654296875
+Training finished at 1645306265.2944815; lasted 38.200236797332764 seconds.
+96.09 % success on test data
+--- (81) ---
+Training started at 1645306266.3538213
+Epoch 0: 69.1531982421875
+Epoch 5000: 43.83488082885742
+Training finished at 1645306304.3933952; lasted 38.03957390785217 seconds.
+97.11999999999999 % success on test data
+--- (82) ---
+Training started at 1645306305.4538767
+Epoch 0: 69.00196075439453
+Epoch 5000: 43.83460998535156
+Training finished at 1645306344.4585252; lasted 39.00464844703674 seconds.
+96.93 % success on test data
+--- (83) ---
+Training started at 1645306345.5332015
+Epoch 0: 69.16592407226562
+Epoch 5000: 45.07017517089844
+Training finished at 1645306385.0563142; lasted 39.523112773895264 seconds.
+96.59 % success on test data
+--- (84) ---
+Training started at 1645306386.165111
+Epoch 0: 69.0482177734375
+Epoch 5000: 44.83449935913086
+Training finished at 1645306426.994498; lasted 40.829386949539185 seconds.
+96.92 % success on test data
+--- (85) ---
+Training started at 1645306428.3247588
+Epoch 0: 69.08721160888672
+Epoch 5000: 44.49230194091797
+Training finished at 1645306468.4425375; lasted 40.11777877807617 seconds.
+96.50999999999999 % success on test data
+--- (86) ---
+Training started at 1645306469.4766817
+Epoch 0: 69.10612487792969
+Epoch 5000: 44.87267303466797
+Training finished at 1645306506.5924857; lasted 37.115803956985474 seconds.
+96.32 % success on test data
+--- (87) ---
+Training started at 1645306507.6325643
+Epoch 0: 69.0351791381836
+Epoch 5000: 49.8607292175293
+Training finished at 1645306550.054741; lasted 42.42217659950256 seconds.
+87.61 % success on test data
+--- (88) ---
+Training started at 1645306551.1734953
+Epoch 0: 69.06297302246094
+Epoch 5000: 44.83477783203125
+Training finished at 1645306588.3037684; lasted 37.13027310371399 seconds.
+96.89 % success on test data
+--- (89) ---
+Training started at 1645306589.4232361
+Epoch 0: 69.08418273925781
+Epoch 5000: 44.95472717285156
+Training finished at 1645306628.227259; lasted 38.804022789001465 seconds.
+96.54 % success on test data
+--- (90) ---
+Training started at 1645306629.3217685
+Epoch 0: 68.99858093261719
+Epoch 5000: 44.55561065673828
+Training finished at 1645306668.4326236; lasted 39.11085510253906 seconds.
+96.13000000000001 % success on test data
+--- (91) ---
+Training started at 1645306669.524205
+Epoch 0: 69.1295394897461
+Epoch 5000: 44.88214874267578
+Training finished at 1645306705.9567902; lasted 36.4325852394104 seconds.
+96.58 % success on test data
+--- (92) ---
+Training started at 1645306706.9994469
+Epoch 0: 69.03472900390625
+Epoch 5000: 43.83878707885742
+Training finished at 1645306743.6305466; lasted 36.631099700927734 seconds.
+96.33 % success on test data
+--- (93) ---
+Training started at 1645306744.6792104
+Epoch 0: 69.15161895751953
+Epoch 5000: 44.89146423339844
+Training finished at 1645306780.2985559; lasted 35.61934542655945 seconds.
+96.6 % success on test data
+--- (94) ---
+Training started at 1645306781.3764322
+Epoch 0: 69.11831665039062
+Epoch 5000: 43.908382415771484
+Training finished at 1645306817.2027667; lasted 35.82633447647095 seconds.
+96.99 % success on test data
+--- (95) ---
+Training started at 1645306818.2967088
+Epoch 0: 69.16509246826172
+Epoch 5000: 46.85394287109375
+Training finished at 1645306855.5661006; lasted 37.269391775131226 seconds.
+88.14 % success on test data
+--- (96) ---
+Training started at 1645306856.6273353
+Epoch 0: 68.99604797363281
+Epoch 5000: 45.181007385253906
+Training finished at 1645306896.5417898; lasted 39.91445446014404 seconds.
+96.94 % success on test data
+--- (97) ---
+Training started at 1645306897.6720552
+Epoch 0: 69.00499725341797
+Epoch 5000: 43.834590911865234
+Training finished at 1645306937.4739523; lasted 39.801897048950195 seconds.
+96.67 % success on test data
+--- (98) ---
+Training started at 1645306938.675812
+Epoch 0: 68.98365783691406
+Epoch 5000: 43.84633255004883
+Training finished at 1645306978.6963089; lasted 40.02049684524536 seconds.
+96.53 % success on test data
+--- (99) ---
+Training started at 1645306979.8085637
+Epoch 0: 69.23402404785156
+Epoch 5000: 44.83473205566406
+Training finished at 1645307019.6191142; lasted 39.81055045127869 seconds.
+95.91 % success on test data

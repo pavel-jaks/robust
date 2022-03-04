@@ -34,3 +34,8 @@ Repozitář vypracování bakalářské práce
 * [x] Rozepsat se více o test datasetu
 * [x] Rozepsat se více o svých numerických experimentech
 * [x] Překlady do češtiny - používat anglické výrazy
+
+## TODO 4. 3. 2022
+
+* [x] Očárkovat a otečkovat rovnice
+* [ ] Zvektorizovat grafy
