@@ -326,10 +326,10 @@ Poslední, avšak velmi důležitou charakteristikou tohoto modelu neuronu je ak
 Za aktivační funkci lze vzít libovolnou funkci $\sigma : \mathbb{R} \rightarrow \mathbb{R}$,
 existuje však základní sada:
 \begin{itemize}
-	\item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$
-	\item ReLU: $\sigma(z) = max(0, z)$
-	\item LeakyReLU: $\sigma(z) = max(0, z) + \alpha * min(z, 0)$, kde $\alpha \in \mathbb{R}^+$
-	\item Tanh: $\sigma(z) = tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$
+	\item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$,
+	\item ReLU: $\sigma(z) = max(0, z)$,
+	\item LeakyReLU: $\sigma(z) = max(0, z) + \alpha * min(z, 0)$, kde $\alpha \in \mathbb{R}^+$,
+	\item Tanh: $\sigma(z) = tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$.
 \end{itemize}
 Tyto funkce lze doplnit o jejich mírné modifikace.
 Moderní doporučenou praxí je užívat ReLU jako aktivační funkci a (\ref{neuron}) jako model neuronu dle \cite{Goodfellow}.
@@ -370,7 +370,7 @@ ve smyslu $s(a_1, ... a_m)_i = \sigma(a_i)$ pro $i \in \hat{m}$.
 Pak lze psát, že aplikace vrstvy neuronů je zobrazení $\phi : \mathbb{R}^n \rightarrow \mathbb{R}^m$
 působící na vektor $a$ následovně:
 \begin{equation} \label{layer}
-	\phi(a) = s(\mathbb{A}a + b)
+	\phi(a) = s(\mathbb{A}a + b).
 \end{equation}
 Tedy stěžejní operací se stává maticové násobení, respektive násebení vektoru maticí zprava.
 
@@ -397,7 +397,7 @@ jejíž výstupem je nová číselná funkce standardně označovaná jako $g*h$
 Uveďme zde definici konvoluce pro reálné funkce definované na $\mathbb{R}^d$,
 tedy $g,h: \mathbb{R}^d \rightarrow \mathbb{R}$:
 \begin{equation*}
-	(g * h)(t) = \int_{\mathbb{R}^{d}} g(\tau) h(t - \tau) d\tau
+	(g * h)(t) = \int_{\mathbb{R}^{d}} g(\tau) h(t - \tau) d\tau.
 \end{equation*}
 Důležitým předpokladem pro možnost konvoluce je samozřejmě konvergence integrálu na pravé straně.
 
@@ -407,16 +407,16 @@ Dále se v kontextu konvolučních sítí standardně objevují diskrétní funk
 které nabývají nenulových hodnot pouze v konečně mnoha bodech.
 Potom integrál přes $\mathbb{R}^d$ přechází v konečnou sumu:
 \begin{equation}
-	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(j_1, ..., j_d) h(i_1 - j_1, ..., i_d - j_d)
+	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(j_1, ..., j_d) h(i_1 - j_1, ..., i_d - j_d).
 \end{equation}
 Díky komutativitě konvoluce lze též psát:
 \begin{equation}
-	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 - j_1, ..., i_d - j_d) h(j_1, ..., j_d)
+	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 - j_1, ..., i_d - j_d) h(j_1, ..., j_d).
 \end{equation}
 Při aplikaci komutativity došlo k tzv. \emph{překlopení jádra} (termín pochází z anglického kernel flipping).
 Za~vynechání překlopení jádra lze dojít ke \emph{křížové korelaci}:
 \begin{equation}
-	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 + j_1, ..., i_d + j_d) h(j_1, ..., j_d)
+	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 + j_1, ..., i_d + j_d) h(j_1, ..., j_d).
 \end{equation}
 Mnoho knihoven zabývajících se neuronovými sítěmi dle \cite{Goodfellow} implementují křížovou korelaci namísto konvoluce,
 ačkoliv tuto svou implementaci nazývají konvolucí.
@@ -481,11 +481,11 @@ V tomto textu se držme tvaru v~(\ref{averageloss}).
 Jedna z klasických účelových funkcí je funkce střední kvadratické chyby.
 Je dána přepisem:
 \begin{equation}
-	J(\theta) = \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m(F_\theta(x^{(i)})_j - y^{(i)}_j)^2,
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m(F_\theta(x^{(i)})_j - y^{(i)}_j)^2
 \end{equation}
 nebo
 \begin{equation}
-	J(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2,
 \end{equation}
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
 $N$ je velikost trénovací sady,
@@ -575,9 +575,9 @@ D(h \circ g)(a) = Dh(g(a)) \cdot Dg(a),
 kde $D$ značí totální diferenciál.
 Zúžíme-li se na $p = 1$, dostáváme:
 \begin{equation} \label{jacobigradientmul}
-	\nabla (h \circ g)(a) = \nabla h (g(a)) \cdot D g(a)
+	\nabla (h \circ g)(a) = \nabla h (g(a)) \cdot D g(a),
 \end{equation}
-a podíváme-li se na $i$-tou komponentu gradientu $h \circ g$:
+podíváme-li se na $i$-tou komponentu gradientu $h \circ g$:
 \begin{equation} \label{chainrule}
 	\partial_i (h \circ g)(a) = \sum_{j=1}^m \partial_j h(g(a)) \cdot \partial_i g_j(a),
 \end{equation}
@@ -632,8 +632,8 @@ která je stejných rozměrů jako gradient účelové funkce
 a~nese v sobě informaci o předchozích odhadech gradientu účelové funkce.
 Její role v algoritmu učení je následující:
 \begin{align}
-	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta) \\
-	\theta &\leftarrow \theta + v
+	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta), \\
+	\theta &\leftarrow \theta + v.
 \end{align}
 Užití hybnosti vede tedy k představení dalšího hyper-parametru, a to parametru $\alpha \in [0, 1)$,
 který určuje míru ovlivnění dalšího kroku předchozími odhady gradientu.
@@ -644,8 +644,8 @@ Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čís
 Jinou modifikací gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
 Ta má následující předpis iterace:
 \begin{align}
-	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta + \alpha \cdot v) \\
-	\theta &\leftarrow \theta + v
+	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta + \alpha \cdot v), \\
+	\theta &\leftarrow \theta + v.
 \end{align}
 
 Existují další algoritmy, které pracují s proměnným řádem učení.
@@ -700,8 +700,8 @@ Jedna iterace algoritmu vypadá:
 	g &\leftarrow \nabla_\theta J(\theta), \\
 	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
 	r &\leftarrow \rho_2 \cdot r + (1 - \rho_2) \cdot g \odot g, \\
-	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t} \\
-	\hat{r} &\leftarrow \frac{r}{1 - \rho_2^t} \\
+	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t}, \\
+	\hat{r} &\leftarrow \frac{r}{1 - \rho_2^t}, \\
 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{\hat{r}}} \odot \hat{s},
 \end{align}
 kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
