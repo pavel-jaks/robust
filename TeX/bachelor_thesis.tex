@@ -305,6 +305,8 @@ Pojem neuronové sítě představuje výpočetní jednotku, která svou univerz�
 % Neuronové sítě
 \chapter{Neuronové sítě}
 
+% \pagestyle{headings}
+
 % Úvodní pojednání o neuronových sítích
 % Umělý neuron
 Princip fungování neuronové sítě spočívá v poskládání celku z dílčích výpočetních jednotek - umělých neuronů.
@@ -917,20 +919,92 @@ než u stochastického gradientního sestupu.
 % Adversariální vzorky
 \chapter{Adversariální vzorky}
 
+Szegedy a spol. \cite{szegedy2014intriguing} objevili zvláštní chování klasifikační neuronové sítě,
+které spočívá v nesprávné klasifikaci mírně pozměněných vzorků trénovací sady neuronové sítě,
+kde ono mírné pozměnění nemění správnost příslušné značky.
+Zjištění lze formálně zapsat následovně:
+\begin{equation}
+	(\exists x, y \in \mathbb{T})(\exists \Delta x \in \mathbb{R}^n, \|\Delta x\| < \kappa)
+	(F_\theta(x) = y \land F_\theta(x + \Delta x) \neq y),
+\end{equation}
+kde $\kappa$ je malé číslo.
+Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vzorky}.
 
+Obecně tedy množinu adversariálních vzorků lze definofat jako
+\begin{equation}
+	\widetilde{\mathbb{X}} = \{\tilde{x} \in \mathbb{R}^n
+	| (\exists x, y \in \mathbb{R}^n \times \mathbb{R}^m)
+	(F_\theta(x) = y \land F_\theta(\tilde{x}) \neq y \land \|\tilde{x} - x\| < \kappa)\}.
+\end{equation}
+Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako
+\begin{equation}
+	\widetilde{\mathbb{X}}_x = \{\tilde{x} \in \mathbb{R}^n	| 
+	F_\theta(\tilde{x}) \neq y \land \|\tilde{x} - x\| < \kappa \}.
+\end{equation}
+
+Takto obecná definice adversariálních vzorků ovšem neposkytuje návod na jejich nalezení.
+Proto uveďme metody generování těchto adversariálních vzorků.
 
 \section{Metody generování adversariálních vzorků}
 
-\subsection{FGSM}
+% \subsection{FGSM}
 
-\subsection{Iterativní FGSM}
+První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emph{FGSM}
+(z angl. \emph{fast gradient sign method}).
+Ta využívá mnoho-dimenzionální lineární vztahy neuronové sítě \cite{CSI_algo}
+a má předpis:
+\begin{equation} \label{fgsm}
+	\tilde{x} = x + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))
+\end{equation}
+při zachování značení z minulých kapitol textu,
+označení $sign$ pro znaménkovou funkci a $\gamma$ pro velikost složek perturbace $\Delta x$.
 
+% \subsection{Iterativní FGSM}
+
+Druhá metoda jde o krok dál, vzorec (\ref{fgsm}) aplikuje iterativně několikrát a generuje posloupnost $(x_n)_{n=0}^K$,
+kde $K$ je počet iterací metody.
+Jedná se o metodu \emph{I-FGSM} (z angl. \emph{iterative fast gradient sign method}) představenou v \cite{I_FGSM}
+s předpisem:
+\begin{align} 
+	\tilde{x}_0 &= x \\
+	\tilde{x}_{n+1} &= Clip_x^\kappa \{\tilde{x}_n + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))\}, \label{i_fgsm}
+\end{align}
+kde funkce $Clip$ omezuje výsledný součet, aby byl v $\kappa$-okolí původního vzorku $x$
+a zároveň v definičním oboru neuronové sítě $F_\theta$ -
+například jsou-li vzorky obrázky, funkce $Clip$ zajišťuje, aby hodnoty pixelů nebyly záporné či vyšší než 255.
+Počet iterací je ovšem dalším hyper-parametrem, který je nutno nastavit.
+
+% \subsection{Optimalizační úloha pro adversariální vzorek}
+
+Třetí metoda nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
+\cite{szegedy2014intriguing}, \cite{L_BFGS}:
+\begin{equation} \label{optim_adv}
+	\tilde{x} = \arg \min_{\hat{x} \in D_{F_\theta}} \lambda \cdot \|\hat{x} - x\| + L(F_{\theta}(\hat{x}), y^{adv}),
+\end{equation}
+kde $\lambda > 0$, $D_{F_\theta}$ je definičním oborem $F_\theta$, $y^{adv}$ značí záměrně nesprávnou značku.
+Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
+(angl. \emph{box-constrained L-BFGS}).
+
+% \subsection{PGD}
+
+Další metoda nese název \emph{PGD} (zkratka angl. \emph{projected gradient descent}).
+Tato metoda je silnější variantou I-FGSM \cite{CSI_algo}
+a spočívá v náhodné inicializaci vzorku $\tilde{x}_0$ uvnitř $\kappa$-okolí původního vzorku
+a následných iteracích jako v I-FGSM \cite{PGD}.
+
+% \subsection{C\&W}
+Následující metoda má opět optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
+a má předpis \cite{L_BFGS}, \cite{CSI_algo}:
+\begin{equation} \label{cw}
+	\tilde{x} = \arg \min_{\hat{x} \in D_{F_\theta}} \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y),
+\end{equation}
+kde $c > 0$.
 
 % Robustní učení
 \chapter{Robustní učení neuronové sítě}
 
 
-\pagestyle{headings}
+
 
 \chapter*{Závěr}
 
@@ -942,6 +1016,10 @@ Text závěru....
 \begin{thebibliography}{1}
 \bibitem{Goodfellow}I. Goodfellow, Y. Bengio, A. Courville,
 \emph{Deep Learning}. MIT Press, 2016.
+
+\bibitem{szegedy2014intriguing} C. Szegedy, W. Zaremba, I. Sutskever, J. Bruna, D. Erhan, I. Goodfellow, R. Fergus,
+\emph{Intriguing properties of neural networks}.
+arXiv, 2014.
 
 \bibitem{GoodfellowEtAl} I. Goodfellow, J. Shlens, C. Szegedy,
 \emph{Explaining and Harnessing Adversarial Examples}. In 'International Conference on Learning Representations', ICLR 2015.
@@ -963,6 +1041,17 @@ Volume 82,
 Pattern Recognition,
 Volume 124,
 2022
+
+\bibitem{I_FGSM} A. Kurakin, I. Goodfellow, S. Bengio, 
+\emph{Adversarial examples in the physical world}.
+arXiv 2016.% arXiv preprint arXiv:1607.02533 (2016).
+
+\bibitem{PGD} A. Mądry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu,
+\emph{Towards deep learning models resistant to adversarial attacks}. Stat 1050 9, 2017.
+
+\bibitem{L_BFGS} N. Carlini, D. Wagner,
+\emph{Towards evaluating the robustness of neural networks}.
+IEEE Symposium on Security and Privacy (SP), IEEE, 2017.
 
 \end{thebibliography}
 
