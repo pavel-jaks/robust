@@ -43,6 +43,6 @@ Repozitář vypracování bakalářské práce
 
 ## TODO 6. 3. 2022
 
-* [ ] Targeted vs. untargeted
+* [x] Targeted vs. untargeted
 * [x] definovat útočníka a oběť
 * [ ] Ověřit fenomén na str. 51 sekce A část FGSM v článku Towards Evaluating the Robustness of Neural Networks
