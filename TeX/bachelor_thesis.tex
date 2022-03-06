@@ -472,7 +472,7 @@ případně:
 \end{equation}
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
 $N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: Dom_{F_\theta} \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$
 parametrizovaná parametry $\theta$,
 $L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce. 
 V tomto textu se držme tvaru v~(\ref{averageloss}).
@@ -491,7 +491,7 @@ nebo
 \end{equation}
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
 $N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: Dom_{F_\theta} \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$
 a $\|\cdot\|_2$ je $L^2$ norma.
 
 % \subsection{Ztráta křížové entropie}
@@ -511,7 +511,7 @@ Onen výraz v (\ref{crossentropy}) lze spočíst následovně:
 přičemž $x^{(i)}$ je $i$-tý vektor trénovací sady,
 $y^{(i)}$ je $i$-tý vektor trénovacích značek,
 $N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+$F_\theta$ neuronová síť jakožto funkce $F_\theta: Dom_{F_\theta} \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$
 parametrizovaná parametry $\theta$.
 
 
@@ -721,7 +721,7 @@ Při připomenutí (\ref{averageloss}) se výpočet sestává z $N$ výpočtů d
 \end{equation}
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
 $N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+$F_\theta$ neuronová síť jakožto funkce $F_\theta:~Dom_{F_\theta}~\subset~\mathbb{R}^n \rightarrow \mathbb{R}^m$
 parametrizovaná parametry $\theta$,
 $L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
@@ -735,7 +735,7 @@ Jedná se v každém kroku gradientního sestupu nebo jeho modifikací o to,
 kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
 $M$ je velikost mini-dávky,
 $i_j~\sim~U\{1, N\}$ jsou indexy vzorků vybraných do mini-dávky,
-$F_\theta$ je neuronová síť jakožto funkce $F_\theta:~\mathbb{R}^n~\rightarrow~\mathbb{R}^m$
+$F_\theta$ je neuronová síť jakožto funkce $F_\theta:~Dom_{F_\theta}~\subset~\mathbb{R}^n~\rightarrow~\mathbb{R}^m$
 parametrizovaná parametry $\theta$,
 $L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
@@ -927,15 +927,9 @@ Zjištění lze formálně zapsat následovně:
 	(\exists x, y \in \mathbb{T})(\exists \Delta x \in \mathbb{R}^n, \|\Delta x\| < \kappa)
 	(F_\theta(x) = y \land F_\theta(x + \Delta x) \neq y),
 \end{equation}
-kde $\kappa$ je malé číslo.
+kde $\kappa$ je malé číslo a $\|\cdot\|$ je $L_p$ norma.
 Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vzorky}.
 
-Obecně tedy množinu adversariálních vzorků lze definofat jako
-\begin{equation}
-	\widetilde{\mathbb{X}} = \{\tilde{x} \in \mathbb{R}^n
-	| (\exists x, y \in \mathbb{R}^n \times \mathbb{R}^m)
-	(F_\theta(x) = y \land F_\theta(\tilde{x}) \neq y \land \|\tilde{x} - x\| < \kappa)\}.
-\end{equation}
 Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako
 \begin{equation}
 	\widetilde{\mathbb{X}}_x = \{\tilde{x} \in \mathbb{R}^n	| 
@@ -944,14 +938,35 @@ Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adver
 
 Takto obecná definice adversariálních vzorků ovšem neposkytuje návod na jejich nalezení.
 Proto uveďme metody generování těchto adversariálních vzorků.
+Předtím ovšem pojmenujme neuronovou síť, která je terčem adversariálního útoku, jako \emph{oběť} (angl. \emph{victim}),
+dále pojmenujme strůjce takovéhoto adversariálního útoku jako \emph{útočníka} (angl. \emph{adversary}).
 
 \section{Metody generování adversariálních vzorků}
+
+% \subsection{black-box vs. white-box}
+
+Metody generování adversariálních vzorků se dělí na dvě kategorie dle míry znalosti útočníka o oběti.
+Nemá-li útočník znalost o oběti, hovoří se o tzv. \emph{black-box metodě}.
+V opačném případě - má-li útočník kompletní znalost o oběti - se hovoří o tzv. \emph{white-box metodě}.
+Tento text se zabývá pouze white-box metodami, neboť v black-box nastavení
+si může útočník natrénovat svou vlastní neuronovou síť a generovat adversariální vzorky proti ní -
+díky jevu \emph{přenositelnosti} (angl. \emph{transferability}) jsou tyto vzorky použitelné i proti původní síti
+\cite{transferability}.
+
+% \subsection{targeted vs. untargeted}
+
+Dále se metody generování adversariálních vzorků dělí na \emph{cílené} (angl. \emph{targeted})
+a \emph{necílené} (angl. \emph{untargeted}).
+Cílené útoky generují vzorky $\tilde{x} = x + \Delta x$ tak, aby $F_\theta(\tilde{x}) = \tilde{y}$
+pro pevně zvolenou značku $\tilde{y}$ různou od původní značky $y = F_\theta(x)$.
+Necílené útoky předem nevybírají značku za cíl, nýbrž požadavkem je jen, aby $F_\theta(\tilde{x}) \neq F_\theta(x)$.
+Necílené útoky nebývají tolik účinné jako cílené \cite{L_BFGS}.
 
 % \subsection{FGSM}
 
 První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emph{FGSM}
 (z angl. \emph{fast gradient sign method}).
-Ta využívá mnoho-dimenzionální lineární vztahy neuronové sítě \cite{CSI_algo}
+Jedná se o necílenou metodu, která využívá mnoho-dimenzionální lineární vztahy neuronové sítě \cite{CSI_algo}
 a má předpis:
 \begin{equation} \label{fgsm}
 	\tilde{x} = x + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))
@@ -973,30 +988,32 @@ kde funkce $Clip$ omezuje výsledný součet, aby byl v $\kappa$-okolí původn�
 a zároveň v definičním oboru neuronové sítě $F_\theta$ -
 například jsou-li vzorky obrázky, funkce $Clip$ zajišťuje, aby hodnoty pixelů nebyly záporné či vyšší než 255.
 Počet iterací je ovšem dalším hyper-parametrem, který je nutno nastavit.
+Jedná se tedy o necílenou metodu.
 
 % \subsection{Optimalizační úloha pro adversariální vzorek}
 
-Třetí metoda nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
+Třetí metoda (cílená) nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
 \cite{szegedy2014intriguing}, \cite{L_BFGS}:
 \begin{equation} \label{optim_adv}
-	\tilde{x} = \arg \min_{\hat{x} \in D_{F_\theta}} \lambda \cdot \|\hat{x} - x\| + L(F_{\theta}(\hat{x}), y^{adv}),
+	\tilde{x} = \arg \min_{\hat{x} \in Dom_{F_\theta}} \lambda \cdot \|\hat{x} - x\|
+	+ L(F_{\theta}(\hat{x}), \tilde{y}),
 \end{equation}
-kde $\lambda > 0$, $D_{F_\theta}$ je definičním oborem $F_\theta$, $y^{adv}$ značí záměrně nesprávnou značku.
+kde $\lambda > 0$, $Dom_{F_\theta}$ je definičním oborem $F_\theta$, $\tilde{y}$ značí cílenou nesprávnou značku.
 Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
 (angl. \emph{box-constrained L-BFGS}).
 
 % \subsection{PGD}
 
-Další metoda nese název \emph{PGD} (zkratka angl. \emph{projected gradient descent}).
+Další metoda (necílená) nese název \emph{PGD} (zkratka angl. \emph{projected gradient descent}).
 Tato metoda je silnější variantou I-FGSM \cite{CSI_algo}
 a spočívá v náhodné inicializaci vzorku $\tilde{x}_0$ uvnitř $\kappa$-okolí původního vzorku
 a následných iteracích jako v I-FGSM \cite{PGD}.
 
 % \subsection{C\&W}
-Následující metoda má opět optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
+Následující metoda (necílená) má opět optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
 a má předpis \cite{L_BFGS}, \cite{CSI_algo}:
 \begin{equation} \label{cw}
-	\tilde{x} = \arg \min_{\hat{x} \in D_{F_\theta}} \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y),
+	\tilde{x} = \arg \min_{\hat{x} \in Dom_{F_\theta}} \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y),
 \end{equation}
 kde $c > 0$.
 
@@ -1052,6 +1069,10 @@ arXiv 2016.% arXiv preprint arXiv:1607.02533 (2016).
 \bibitem{L_BFGS} N. Carlini, D. Wagner,
 \emph{Towards evaluating the robustness of neural networks}.
 IEEE Symposium on Security and Privacy (SP), IEEE, 2017.
+
+\bibitem{transferability} N. Papernot, P. McDaniel, I. Goodfellow,
+\emph{Transferability in machine learning: from phenomena to black-box attacks using adversarial samples}.
+arXiv 2016 % arXiv preprint arXiv:1605.07277 (2016).
 
 \end{thebibliography}
 
