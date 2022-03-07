@@ -46,3 +46,8 @@ Repozitář vypracování bakalářské práce
 * [x] Targeted vs. untargeted
 * [x] definovat útočníka a oběť
 * [ ] Ověřit fenomén na str. 51 sekce A část FGSM v článku Towards Evaluating the Robustness of Neural Networks
+
+## TODO 7. 3. 2022
+
+* [ ] Dovymyslet citaci u MNISTu
+* [ ] Zakomponovat Liho

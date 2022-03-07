@@ -628,7 +628,7 @@ to ovšem není v žádném případě zaručeno, že se stane, gradientní sest
 
 % \subsection{Hybnost}
 
-Modifikací gradientního sestupu je tzv. \emph{metoda hybnosti}.
+Modifikací gradientního sestupu je tzv. \emph{metoda hybnosti} \cite{momentum}.
 Ta uvádí na scénu novou proměnnou - \emph{rychlost} $v$ (z angl. \emph{velocity}),
 která je stejných rozměrů jako gradient účelové funkce
 a~nese v sobě informaci o předchozích odhadech gradientu účelové funkce.
@@ -644,7 +644,7 @@ Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čís
 % \subsection{Něstěrov}
 
 Jinou modifikací gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
-Ta má následující předpis iterace:
+Ta má následující předpis iterace \cite{Nesterov}:
 \begin{align}
 	v &\leftarrow \alpha \cdot v - \epsilon \cdot \nabla_\theta J(\theta + \alpha \cdot v), \\
 	\theta &\leftarrow \theta + v.
@@ -656,7 +656,7 @@ Tyto algoritmy přizpůsobují řád učení jednotlivým parametrům zvlášť.
 
 % \subsection{AdaGrad}
 
-Algoritmus \emph{AdaGrad} dle \cite{Goodfellow} přizpůsobuje řád učení každému parametru
+Algoritmus \emph{AdaGrad} dle \cite{AdaGrad} přizpůsobuje řád učení každému parametru
 jednotlivě, a to jeho škálováním nepřímo úměrně druhé odmocnině součtu všech hodnot gradientu,
 jež danému parametru v~průběhu učení příslušel.
 To vede k tomu, že parametry, kterým přísluší velké hodnoty parciálních derivací účelové funkce,
@@ -671,6 +671,7 @@ Jedna iterace by potom mohla vypadat následovně:
 \end{align}
 kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
+Poznamenejme, že dle \cite{Adam} algoritmus AdaGrad funguje dobře s řídkými gradienty.
 
 % \subsection{RMSProp}
 
@@ -678,7 +679,7 @@ Nevýhoda tohoto algoritmu ovšem je jeho paměť - v proměnné $r$ si pamatuje
 což dle \cite{Goodfellow} mnohdy vede k předčasnému poklesu řádu učení.
 Proto je namístě uvést další algoritmus - \emph{RMSProp}.
 Tento algoritmus nahrazuje součet přes všechny hodnoty gradientu exponenciálně tlumeným váženým průměrem,
-a to způsobem, kde jedna iterace vypadá následovně:
+a to způsobem, kde jedna iterace vypadá následovně \cite{RMSProp}:
 \begin{align}
 	g &\leftarrow \nabla_\theta J(\theta), \\
 	r &\leftarrow \rho \cdot r + (1 - \rho) \cdot g \odot g, \\
@@ -697,7 +698,7 @@ Ve skutečnosti však je hybnost zakomponována již v~následujícím,
 a to sice v odhadu prvního obecného momentu gradientu.
 Druhým aspektem, ve kterém se algoritmus liší od prostého RMSProp s hybností,
 jsou korekce pomocí prahu prováděné na odhadech prvního a druhého obecného momentu gradientu.
-Jedna iterace algoritmu vypadá:
+Jedna iterace algoritmu vypadá \cite{Adam}:
 \begin{align}
 	g &\leftarrow \nabla_\theta J(\theta), \\
 	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
@@ -785,7 +786,7 @@ Potom lze totiž porovnávat jednotlivé algoritmy na základě distribuční fu
 Nedílnou ingrediencí pro srovnání algoritmů učení je samotná sada dat a k nim příslušný úkol,
 zda se jedná o klasifikaci či o regresi.
 Tato část textu se věnuje úkolu klasifikace ručně psaných číslic z černobílého obrázku.
-Sada dat, která je zde použita je nazvána MNIST.
+Sada dat, která je zde použita je nazvána MNIST \cite{MNIST}.
 Její trénovací sada $\mathbb{T}$ obsahuje 60~000 vzorků (a k nim odpovídajících značek)
 a testovací sada $\mathbb{S}$ obsahuje 10~000 vzorků (a k nim odpovídajících značek).
 Vzorky jsou ve své podstatě matice o rozměrech 28 řádků a 28 sloupečků,
@@ -827,8 +828,8 @@ Tyto matice lze interpretovat jako obrázky.
 	\caption{Datová sada MNIST}
 \end{figure}
 
-Přistupme nyní k samotnému srovnání algoritmů stochastický gradientní sestup,
-metoda hybnosti a metoda Něstěrovovy hybnosti (obě ve stochastické verzi).
+Přistupme nyní k samotnému srovnání algoritmů \emph{stochastický gradientní sestup},
+\emph{metoda hybnosti} a \emph{metoda Něstěrovovy hybnosti} (obě ve stochastické verzi).
 Pro srovnání těchto algoritmů byly provedeny následující dva experimenty:
 První se týká trénování jedné hluboké dopředné neuronové sítě těmito algoritmy pro úkol datové sady MNIST,
 jež je uvedena výše v textu, a to konkrétně aplikací 5~000 iterací algoritmu
@@ -853,8 +854,8 @@ Dále graf vyjadřuje nemalou větší úspěšnost obyčejného stochastického
 
 Druhý experiment je téměř totožný, jen je použit jiný model neuronové sítě, a to konkrétně se zakomponovanou konvolucí.
 Jinak je experiment totožný.
-Proto lze z Obr. (\ref{cnn_figure}) odezřít opět stejné výsledky, a to konkrétně, že stochastický gradientní sestup
-má mírně lepší výkonnost.
+Proto lze z Obr. (\ref{cnn_figure}) odezřít výsledky, a to konkrétně, že stochastický gradientní sestup
+má v tomto nastavení lepší výkonnost.
 
 \begin{figure}
 	\centering
@@ -1030,49 +1031,96 @@ kde $c > 0$.
 \addcontentsline{toc}{chapter}{Záv\v{e}r}
 
 Text závěru....
+
+
 \begin{thebibliography}{1}
+
 \bibitem{Goodfellow}I. Goodfellow, Y. Bengio, A. Courville,
 \emph{Deep Learning}. MIT Press, 2016.
+% All :D
+
+\bibitem{momentum} B. T. Polyak,
+\emph{Some methods of speeding up the convergence of iteration methods}.
+USSR Computational Mathematics and Mathematical Physics, 1964.
+% Momentum method
+
+\bibitem{Nesterov} I. Sutskever, J. Martens, G. Dahl, G. Hinton,
+\emph{On the importance of initialization and momentum in deep learning}.
+In ICML, 2013.
+% Nesterov momentum in NNs training
+
+\bibitem{AdaGrad} J. Duchi, E. Hazan, Y. Singer,
+\emph{Adaptive subgradient methods for online learning and stochastic optimization}.
+Journal of Machine Learning Research, 2011.
+% AdaGrad
+
+\bibitem{RMSProp} G. Hinton,
+\emph{Neural networks for machine learning}.
+Coursera, video lectures, 2012.
+% RMSProp
+
+\bibitem{Adam} D. Kingma, J. Ba,
+\emph{Adam: A method for stochastic optimization}.
+In 'International Conference on Learning Representations', ICLR 2015.
+% arXiv 2014. % preprint arXiv:1412.6980 .
+% Adam & AdaGrad - for sparse gradients
 
 \bibitem{szegedy2014intriguing} C. Szegedy, W. Zaremba, I. Sutskever, J. Bruna, D. Erhan, I. Goodfellow, R. Fergus,
 \emph{Intriguing properties of neural networks}.
 arXiv, 2014.
+% Existence of Adversarial examples & L-BFGS optim problem
 
 \bibitem{GoodfellowEtAl} I. Goodfellow, J. Shlens, C. Szegedy,
-\emph{Explaining and Harnessing Adversarial Examples}. In 'International Conference on Learning Representations', ICLR 2015.
+\emph{Explaining and Harnessing Adversarial Examples}.
+In 'International Conference on Learning Representations', ICLR 2015.
+% FGSM
 
 \bibitem{NumericalOptim} J. Nocedal, S. Wright,
 \emph{Numerical optimization}. Springer Science \& Business Media, 2006.
+% L-BFGS
 
-\bibitem{Nielsen}M. A. Nielsen, 
-\emph{Neural Networks and Deep Learning}. Determination Press, 2018.
+% \bibitem{Nielsen}M. A. Nielsen, 
+% \emph{Neural Networks and Deep Learning}. Determination Press, 2018.
+% % TODO:
 
 \bibitem{CSI_algo}J. Liu, Q. Zhang, K. Mo, X. Xiang, J. Li, D. Cheng, R. Gao, B. Liu, K. Chen, G. Wei,
 \emph{An efficient adversarial example generation algorithm based on an accelerated gradient iterative fast gradient}.
-Computer Standards \& Interfaces,
-Volume 82,
-2022.
+Computer Standards \& Interfaces, Volume 82, 2022.
+% FGSM - explanation & strength of PGD & CW
 
 \bibitem{robust_learning_algo}Y. Li, B. Wu, Y. Feng, Y. Fan, Y. Jiang, Z. Li, S. Xia,
 \emph{Semi-supervised robust training with generalized perturbed neighborhood}.
-Pattern Recognition,
-Volume 124,
-2022
+Pattern Recognition, Volume 124, 2022.
+% TODO:
 
 \bibitem{I_FGSM} A. Kurakin, I. Goodfellow, S. Bengio, 
 \emph{Adversarial examples in the physical world}.
 arXiv 2016.% arXiv preprint arXiv:1607.02533 (2016).
+% I-FGSM
 
 \bibitem{PGD} A. Mądry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu,
 \emph{Towards deep learning models resistant to adversarial attacks}. Stat 1050 9, 2017.
+% PGD
 
 \bibitem{L_BFGS} N. Carlini, D. Wagner,
 \emph{Towards evaluating the robustness of neural networks}.
 IEEE Symposium on Security and Privacy (SP), IEEE, 2017.
+% CW attacks & Targeted vs. untargeted attacks & L-BFGS method
 
 \bibitem{transferability} N. Papernot, P. McDaniel, I. Goodfellow,
 \emph{Transferability in machine learning: from phenomena to black-box attacks using adversarial samples}.
 arXiv 2016 % arXiv preprint arXiv:1605.07277 (2016).
+% Transferability
+
+\bibitem{MNIST} Y. Lecun, C. Cortes, C. J. Burges,
+\emph{The mnist database of handwritten digits}. 1998. % TODO: dovymyslet citaci
+% MNIST dataset
+
+\bibitem{weng2018evaluating}T. Weng, H. Zhang, P. Chen, J. Yi, D. Su, Y. Gao, C. Hsieh, L. Daniel,
+\emph{Evaluating the Robustness of Neural Networks: An Extreme Value Theory Approach}.
+In 'International Conference on Learning Representations', ICLR 2018.
+% CLEVER score for evaluating the robustness of NNs - TODO:
+
 
 \end{thebibliography}
 
