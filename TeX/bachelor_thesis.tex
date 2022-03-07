@@ -374,7 +374,7 @@ působící na vektor $a$ následovně:
 \begin{equation} \label{layer}
 	\phi(a) = s(\mathbb{A}a + b).
 \end{equation}
-Tedy stěžejní operací se stává maticové násobení, respektive násebení vektoru maticí zprava.
+Tedy stěžejní operací se stává maticové násobení, respektive násobení vektoru maticí zleva.
 
 Při tomto si lze povšimnout, že takováto neuronová síť má řadu parametrů, o kterých není jasné jak je správně nastavit.
 Některé parametry (například váhy a prahy) se nastavují během učení neuronové sítě, čemuž je věnována samostatná kapitola.
@@ -458,7 +458,7 @@ Trénovací sada pak hraje roli učitele.
 Je-li pojem trenovací sady objasněn, lze přistoupit k termínu \emph{účelové funkce}
 nebo též \emph{ztrátové funkce}.
 Jedná se o reálnou funkci, která měří, jak moc se trénovaná neuronová síť mýlí
-ve svých predikcích na vzorcích trénovací sady.
+ve svých predikcích na~vzorcích trénovací sady.
 Úloha učení je potom převedena na úlohu optimalizace tohoto vhodně zvoleného kritéria.
 
 Standardní účelová funkce je sestavena jako součet nebo průměr dílčích ztrát,
@@ -716,7 +716,7 @@ $t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou hyper-parametry nazva
 
 Výše zmíněné metody, jak je patrné z jejich předpisů, počítají gradient účelové funkce $\nabla_\theta J(\theta)$.
 Tento krok je ovšem velmi časově náročný, protože standardní trénovací sady mívají velmi mnoho vzorků.
-Při připomenutí (\ref{averageloss}) se výpočet sestává z $N$ výpočtů dílčích gradientů:
+Při~připomenutí (\ref{averageloss}) se výpočet sestává z $N$ výpočtů dílčích gradientů:
 \begin{equation}
 	\nabla_\theta J(\theta) = \frac{1}{N} \sum_{i=1}^N \nabla_\theta L(F_{\theta}(x^{(i)}), y^{(i)}),
 \end{equation}
@@ -727,9 +727,9 @@ parametrizovaná parametry $\theta$,
 $L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
 Proto je doporučenou praxí dle \cite{Goodfellow} aproximovat gradient účelové funkce $\nabla_\theta J(\theta)$
-pomocí výpočtu na tzv. \emph{mini-dávce} (z angl. \emph{mini-batch}).
+pomocí výpočtu na~tzv. \emph{mini-dávce} (z angl. \emph{mini-batch}).
 Jedná se v každém kroku gradientního sestupu nebo jeho modifikací o to,
-že se z trénovací sady rovnoměrně vybere $M \ll N$ vzorků gradient se odhadne pomocí výpočtu na těchto $M$ vzorcích:
+že se z trénovací sady rovnoměrně vybere $M \ll N$ vzorků gradient se odhadne pomocí výpočtu na~těchto $M$ vzorcích:
 \begin{equation}
 	\nabla_\theta J(\theta) \approx \sum_{j=1}^M \nabla_\theta L(F_{\theta}(x^{(i_j)}), y^{(i_j)}),
 \end{equation}
@@ -760,7 +760,7 @@ množin vzorků $\mathbb{X} = \{x^{(i)} | i \in \hat{S} \}$
 a značek $\mathbb{Y} = \{y^{(i)} | i \in \hat{S} \}$,
 kde $S$ je velikost testovací sady.
 
-Je-li neuronová síť svým charakterem síť klasifikační, pak lze sledovat podíl správných predikcí na testovacím datasetu
+Je-li neuronová síť svým charakterem síť klasifikační, pak lze sledovat podíl správných predikcí na~testovacím datasetu
 vůči celkovému počtu vzorků.
 Výhodou tohoto přístupu je fakt, že při svém učení neuronová síť na vzorky testovacího datasetu nenarazila,
 což má za důsledek to, že lze očekávat stejnou úspěšnost sítě při její aplikaci.
@@ -829,12 +829,12 @@ Tyto matice lze interpretovat jako obrázky.
 \end{figure}
 
 Přistupme nyní k samotnému srovnání algoritmů \emph{stochastický gradientní sestup},
-\emph{metoda hybnosti} a \emph{metoda Něstěrovovy hybnosti} (obě ve stochastické verzi).
+\emph{metoda hybnosti} a~\emph{metoda Něstěrovovy hybnosti} (obě ve stochastické verzi).
 Pro srovnání těchto algoritmů byly provedeny následující dva experimenty:
 První se týká trénování jedné hluboké dopředné neuronové sítě těmito algoritmy pro úkol datové sady MNIST,
 jež je uvedena výše v textu, a to konkrétně aplikací 5~000 iterací algoritmu
 na nově inicializovanou síť.
-Pro stochastický gradientní sestup byl použit řád učení o hodnotě $10^{-2}$,
+Pro stochastický gradientní sestup byl použit řád učení o~hodnotě $10^{-2}$,
 pro obě metody hybnosti byl použit řád učení $10^{-3}$ a koeficient $\alpha = 0.9$.
 Dále uveďme velikost mini-dávky $M = 30$ pro všechny tři algoritmy.
 V takovémto nastavení byly všechny tři algoritmy spuštěny stokrát.
@@ -946,7 +946,7 @@ dále pojmenujme strůjce takovéhoto adversariálního útoku jako \emph{útoč
 
 % \subsection{black-box vs. white-box}
 
-Metody generování adversariálních vzorků se dělí na dvě kategorie dle míry znalosti útočníka o oběti.
+Metody generování adversariálních vzorků se dělí na dvě kategorie dle míry znalosti útočníka o~oběti.
 Nemá-li útočník znalost o oběti, hovoří se o tzv. \emph{black-box metodě}.
 V opačném případě - má-li útočník kompletní znalost o oběti - se hovoří o tzv. \emph{white-box metodě}.
 Tento text se zabývá pouze white-box metodami, neboť v black-box nastavení
@@ -968,7 +968,7 @@ Necílené útoky nebývají tolik účinné jako cílené \cite{L_BFGS}.
 První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emph{FGSM}
 (z angl. \emph{fast gradient sign method}).
 Jedná se o necílenou metodu, která využívá mnoho-dimenzionální lineární vztahy neuronové sítě \cite{CSI_algo}
-a má předpis:
+a~má předpis:
 \begin{equation} \label{fgsm}
 	\tilde{x} = x + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))
 \end{equation}
@@ -1012,7 +1012,7 @@ a následných iteracích jako v I-FGSM \cite{PGD}.
 
 % \subsection{C\&W}
 Následující metoda (necílená) má opět optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
-a má předpis \cite{L_BFGS}, \cite{CSI_algo}:
+a~má předpis \cite{L_BFGS}, \cite{CSI_algo}:
 \begin{equation} \label{cw}
 	\tilde{x} = \arg \min_{\hat{x} \in Dom_{F_\theta}} \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y),
 \end{equation}
