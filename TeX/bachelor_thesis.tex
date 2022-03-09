@@ -746,177 +746,6 @@ Při aplikaci této apriximace během standardního gradientního sestupu se alg
 ovšem tento úkrok stranou lze provést i v případě ostatních představených algoritmech,
 ty však pro svou stochastickou variantu nemají speciální název.
 
-\section{Srovnání algoritmů učení}
-
-% \subsection{Kritérium srovnávání}
-
-Pro účely srovnávání algoritmů učení neuronové sítě lze zvolit mnoho kritérií.
-Jedním z nich by mohl být samotný průběh účelové funkce v závislosti na počtu provedených iterací vybraného algoritmu,
-když všechny představené algoritmy mají iterativní charakter.
-
-Jiným přístupem je užití tzv. \emph{testovací sady} $\mathbb{S}$ (angl. \emph{test dataset}).
-Svou strukturou testovací sada kopíruje sadu trénovací, jedná se tedy o uspořádanou dvojici
-množin vzorků $\mathbb{X} = \{x^{(i)} | i \in \hat{S} \}$
-a značek $\mathbb{Y} = \{y^{(i)} | i \in \hat{S} \}$,
-kde $S$ je velikost testovací sady.
-
-Je-li neuronová síť svým charakterem síť klasifikační, pak lze sledovat podíl správných predikcí na~testovacím datasetu
-vůči celkovému počtu vzorků.
-Výhodou tohoto přístupu je fakt, že při svém učení neuronová síť na vzorky testovacího datasetu nenarazila,
-což má za důsledek to, že lze očekávat stejnou úspěšnost sítě při její aplikaci.
-Tento přístup je využit v tomto textu.
-
-% \subsection{Inicializace parametrů sítě a stochasticita algoritmu učení}
-
-Nyní je namístě vyslovit poznámku o inicializaci parametrů neuronové sítě před samotným učením.
-Dle \cite{Goodfellow} je standardním postupem pro inicializaci vybírat hodnoty parametrů náhodně,
-a to z rovnoměrného rozdělení na rozumném intervalu.
-Konkrétní experimenty v tomto textu pracují s následujícím rozdělením vah a prahů:
-\begin{equation}
-	(\mathbb{A})_{i, j}, b_i \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
-\end{equation}
-kde $n$ je v případě vah počet sloupečků matice vah, v případě prahů velikost vektoru prahů.
-Závěrem této poznámky tedy je, že inicializace parametrů neuronové sítě je náhodný proces.
-To má za důsledek fakt, že na proces učení neuronové sítě lze nahlížet očima statistika.
-Tento text konkrétně nahlíží na úspěšnost neuronové sítě na testovací sadě jako na náhodnou veličinu.
-Potom lze totiž porovnávat jednotlivé algoritmy na základě distribuční funkce této specifické náhodné veličiny.
-
-% \subsection{Dataset MNIST}
-
-Nedílnou ingrediencí pro srovnání algoritmů učení je samotná sada dat a k nim příslušný úkol,
-zda se jedná o klasifikaci či o regresi.
-Tato část textu se věnuje úkolu klasifikace ručně psaných číslic z černobílého obrázku.
-Sada dat, která je zde použita je nazvána MNIST \cite{MNIST}.
-Její trénovací sada $\mathbb{T}$ obsahuje 60~000 vzorků (a k nim odpovídajících značek)
-a testovací sada $\mathbb{S}$ obsahuje 10~000 vzorků (a k nim odpovídajících značek).
-Vzorky jsou ve své podstatě matice o rozměrech 28 řádků a 28 sloupečků,
-jejichž prvky jsou nezáporná celá čísla o hodnotě nejvýše 255.
-Tyto matice lze interpretovat jako obrázky.
-
-\begin{figure}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output0.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output1.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output2.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output3.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output4.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output5.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output6.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output7.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output8.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output9.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output10.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output11.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output12.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output13.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output14.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output15.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output16.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output17.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output18.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output19.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output20.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output21.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output22.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output23.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output24.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output25.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output26.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output27.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output28.png}
-	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output29.png}
-	\centering
-	\caption{Datová sada MNIST}
-\end{figure}
-
-Přistupme nyní k samotnému srovnání algoritmů \emph{stochastický gradientní sestup},
-\emph{metoda hybnosti} a~\emph{metoda Něstěrovovy hybnosti} (obě ve stochastické verzi).
-Pro srovnání těchto algoritmů byly provedeny následující dva experimenty:
-První se týká trénování jedné hluboké dopředné neuronové sítě těmito algoritmy pro úkol datové sady MNIST,
-jež je uvedena výše v textu, a to konkrétně aplikací 5~000 iterací algoritmu
-na nově inicializovanou síť.
-Pro stochastický gradientní sestup byl použit řád učení o~hodnotě $10^{-2}$,
-pro obě metody hybnosti byl použit řád učení $10^{-3}$ a koeficient $\alpha = 0.9$.
-Dále uveďme velikost mini-dávky $M = 30$ pro všechny tři algoritmy.
-V takovémto nastavení byly všechny tři algoritmy spuštěny stokrát.
-Na výsledné distribuční funkce lze nahlédnout v obrázku (\ref{mlp_figure}).
-Z grafu lze vyčíst takřka zanedbatelný rozdíl mezi metodou hybnosti a metodou Něstěrovovy hybnosti.
-Dále graf vyjadřuje nemalou větší úspěšnost obyčejného stochastického gradientního sestupu.
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/hubert.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{1}}
-	\label{mlp_figure}
-	\emph{Simple} - stochastický gradientní sestup;
-	\emph{Momentum} - metoda hybnosti;
-	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
-\end{figure}
-
-Druhý experiment je téměř totožný, jen je použit jiný model neuronové sítě, a to konkrétně se zakomponovanou konvolucí.
-Jinak je experiment totožný.
-Proto lze z Obr. (\ref{cnn_figure}) odezřít výsledky, a to konkrétně, že stochastický gradientní sestup
-má v tomto nastavení lepší výkonnost.
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/ivan.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{2}}
-	\label{cnn_figure}
-	\emph{Simple} - stochastický gradientní sestup;
-	\emph{Momentum} - metoda hybnosti;
-	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
-\end{figure}
-
-Pro srovnání algoritmů \emph{stochastický gradientní sestup}, \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}
-lze využít podkladů na obrázku (\ref{mlp_advanced_figure}),
-který zachycuje výsledky obdobných experimentů jako popsaných výše.
-Nastavení tohoto pokusu bylo následující:
-Pro stochastický gradientní sestup a algoritmus AdaGrad byl použit řád učení o hodnotě $10^{-2}$,
-pro algoritmy RMSProp a Adam $10^{-3}$.
-Pro AdaGrad bylo dále použito $\delta = 10^{-10}$,
-pro RMSProp $\delta = 10^{-8}$ a $\rho = 0.99$,
-pro Adam $\delta = 10^{-8}$, $\rho_1 = 0.9$ a $\rho_2 = 0.999$.
-Úkol byl stejný - natrénovat tentýž model dopředné neuronové sítě pro klasifikaci číslic datové sady MNIST
-za použití 5~000 iterací daného algoritmu.
-Učení sítě vždy proběhlo stokrát.
-Ze zmíněného obrázku vyplývá, že algoritmus AdaGrad je v tomto nastavení srovnatelný
-se stochastickým gradientním sestupem
-a že algoritmy RMSProp a Adam jsou minimálně pro toto specifické nastavení lepší.
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/nevil.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{3}}
-	\label{mlp_advanced_figure}
-	\emph{SGD} - stochastický gradientní sestup;
-	\emph{AdaGrad} - algoritmus AdaGrad;
-	\emph{RMSProp} - algoritmus RMSProp;
-	\emph{Adam} - algoritmus Adam
-\end{figure}
-
-Dále se pro srovnání algoritmů \emph{stochastický gradientní sestup}, \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}
-lze opřít o výsledky vyobrazené na obrázku (\ref{cnn_advanced_figure}).
-Ten zachycuje výsledky totožného nastavení jako obrázek (\ref{mlp_advanced_figure}) jen s rozdílem použitého modelu.
-V tomto případě byl použit model konvoluční neuronové sítě.
-Jak lze nahlédnout, algoritmus AdaGrad byl pro tuto úlohu nevhodný.
-Algoritmus Adam dosáhl přijatelné úrovně neuronové sítě
-(tedy úspěšnost na testovací datové sadě vyšší než 95~\%) zhruba v 60~\% případů,
-algoritmus RMSProp zhruba v 90~\% případů
-a stochastický gradientní sestup v 95~\% případů.
-Ovšem kvalita přijatelně natrénovaných neuronových sítí byla v případě RMSProp vyšší
-než u stochastického gradientního sestupu.
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/oto.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{4}}
-	\label{cnn_advanced_figure}
-	\emph{SGD} - stochastický gradientní sestup;
-	\emph{AdaGrad} - algoritmus AdaGrad;
-	\emph{RMSProp} - algoritmus RMSProp;
-	\emph{Adam} - algoritmus Adam
-\end{figure}
-
 % Adversariální vzorky
 \chapter{Adversariální vzorky}
 
@@ -1021,7 +850,179 @@ kde $c > 0$.
 % Robustní učení
 \chapter{Robustní učení neuronové sítě}
 
+% Srovnání algoritmů učení
+\chapter{Srovnání algoritmů učení}
 
+\section{Kritérium srovnávání}
+
+Pro účely srovnávání algoritmů učení neuronové sítě lze zvolit mnoho kritérií.
+Jedním z nich by mohl být samotný průběh účelové funkce v závislosti na počtu provedených iterací vybraného algoritmu,
+když všechny představené algoritmy mají iterativní charakter.
+
+Jiným přístupem je užití tzv. \emph{testovací sady} $\mathbb{S}$ (angl. \emph{test dataset}).
+Svou strukturou testovací sada kopíruje sadu trénovací, jedná se tedy o uspořádanou dvojici
+množin vzorků $\mathbb{X} = \{x^{(i)} | i \in \hat{S} \}$
+a značek $\mathbb{Y} = \{y^{(i)} | i \in \hat{S} \}$,
+kde $S$ je velikost testovací sady.
+
+Je-li neuronová síť svým charakterem síť klasifikační, pak lze sledovat podíl správných predikcí na~testovacím datasetu
+vůči celkovému počtu vzorků.
+Výhodou tohoto přístupu je fakt, že při svém učení neuronová síť na vzorky testovacího datasetu nenarazila,
+což má za důsledek to, že lze očekávat stejnou úspěšnost sítě při její aplikaci.
+Tento přístup je využit v tomto textu.
+
+\section{Inicializace parametrů sítě a stochasticita algoritmu učení}
+
+Nyní je namístě vyslovit poznámku o inicializaci parametrů neuronové sítě před samotným učením.
+Dle \cite{Goodfellow} je standardním postupem pro inicializaci vybírat hodnoty parametrů náhodně,
+a to z rovnoměrného rozdělení na rozumném intervalu.
+Konkrétní experimenty v tomto textu pracují s následujícím rozdělením vah a prahů:
+\begin{equation}
+	(\mathbb{A})_{i, j}, b_i \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
+\end{equation}
+kde $n$ je v případě vah počet sloupečků matice vah, v případě prahů velikost vektoru prahů.
+Závěrem této poznámky tedy je, že inicializace parametrů neuronové sítě je náhodný proces.
+To má za důsledek fakt, že na proces učení neuronové sítě lze nahlížet očima statistika.
+Tento text konkrétně nahlíží na úspěšnost neuronové sítě na testovací sadě jako na náhodnou veličinu.
+Potom lze totiž porovnávat jednotlivé algoritmy na základě distribuční funkce této specifické náhodné veličiny.
+
+\section{Datová sada MNIST}
+
+Nedílnou ingrediencí pro srovnání algoritmů učení je samotná sada dat a k nim příslušný úkol,
+zda se jedná o klasifikaci či o regresi.
+Tato část textu se věnuje úkolu klasifikace ručně psaných číslic z černobílého obrázku.
+Sada dat, která je zde použita je nazvána MNIST \cite{MNIST}.
+Její trénovací sada $\mathbb{T}$ obsahuje 60~000 vzorků (a k nim odpovídajících značek)
+a testovací sada $\mathbb{S}$ obsahuje 10~000 vzorků (a k nim odpovídajících značek).
+Vzorky jsou ve své podstatě matice o rozměrech 28 řádků a 28 sloupečků,
+jejichž prvky jsou nezáporná celá čísla o hodnotě nejvýše 255.
+Tyto matice lze interpretovat jako obrázky.
+
+\begin{figure}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output0.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output1.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output2.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output3.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output4.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output5.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output6.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output7.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output8.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output9.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output10.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output11.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output12.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output13.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output14.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output15.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output16.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output17.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output18.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output19.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output20.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output21.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output22.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output23.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output24.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output25.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output26.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output27.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output28.png}
+	\includegraphics[scale=0.2]{Images/Graphics/MNIST/output29.png}
+	\centering
+	\caption{Datová sada MNIST}
+\end{figure}
+
+\section{Výsledky}
+
+Přistupme nyní k samotnému srovnání algoritmů \emph{stochastický gradientní sestup},
+\emph{metoda hybnosti} a~\emph{metoda Něstěrovovy hybnosti} (obě ve stochastické verzi).
+Pro srovnání těchto algoritmů byly provedeny následující dva experimenty:
+První se týká trénování jedné hluboké dopředné neuronové sítě těmito algoritmy pro úkol datové sady MNIST,
+jež je uvedena výše v textu, a to konkrétně aplikací 5~000 iterací algoritmu
+na nově inicializovanou síť.
+Pro stochastický gradientní sestup byl použit řád učení o~hodnotě $10^{-2}$,
+pro obě metody hybnosti byl použit řád učení $10^{-3}$ a koeficient $\alpha = 0.9$.
+Dále uveďme velikost mini-dávky $M = 30$ pro všechny tři algoritmy.
+V takovémto nastavení byly všechny tři algoritmy spuštěny stokrát.
+Na výsledné distribuční funkce lze nahlédnout v obrázku (\ref{mlp_figure}).
+Z grafu lze vyčíst takřka zanedbatelný rozdíl mezi metodou hybnosti a metodou Něstěrovovy hybnosti.
+Dále graf vyjadřuje nemalou větší úspěšnost obyčejného stochastického gradientního sestupu.
+
+Druhý experiment je téměř totožný, jen je použit jiný model neuronové sítě, a to konkrétně se zakomponovanou konvolucí.
+Jinak je experiment totožný.
+Proto lze z Obr. (\ref{cnn_figure}) odezřít výsledky, a to konkrétně, že stochastický gradientní sestup
+má v tomto nastavení lepší výkonnost.
+
+Pro srovnání algoritmů \emph{stochastický gradientní sestup}, \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}
+lze využít podkladů na obrázku (\ref{mlp_advanced_figure}),
+který zachycuje výsledky obdobných experimentů jako popsaných výše.
+Nastavení tohoto pokusu bylo následující:
+Pro stochastický gradientní sestup a algoritmus AdaGrad byl použit řád učení o hodnotě $10^{-2}$,
+pro algoritmy RMSProp a Adam $10^{-3}$.
+Pro AdaGrad bylo dále použito $\delta = 10^{-10}$,
+pro RMSProp $\delta = 10^{-8}$ a $\rho = 0.99$,
+pro Adam $\delta = 10^{-8}$, $\rho_1 = 0.9$ a $\rho_2 = 0.999$.
+Úkol byl stejný - natrénovat tentýž model dopředné neuronové sítě pro klasifikaci číslic datové sady MNIST
+za použití 5~000 iterací daného algoritmu.
+Učení sítě vždy proběhlo stokrát.
+Ze zmíněného obrázku vyplývá, že algoritmus AdaGrad je v tomto nastavení srovnatelný
+se stochastickým gradientním sestupem
+a že algoritmy RMSProp a Adam jsou minimálně pro toto specifické nastavení lepší.
+
+Dále se pro srovnání algoritmů \emph{stochastický gradientní sestup}, \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}
+lze opřít o výsledky vyobrazené na obrázku (\ref{cnn_advanced_figure}).
+Ten zachycuje výsledky totožného nastavení jako obrázek (\ref{mlp_advanced_figure}) jen s rozdílem použitého modelu.
+V tomto případě byl použit model konvoluční neuronové sítě.
+Jak lze nahlédnout, algoritmus AdaGrad byl pro tuto úlohu nevhodný.
+Algoritmus Adam dosáhl přijatelné úrovně neuronové sítě
+(tedy úspěšnost na testovací datové sadě vyšší než 95~\%) zhruba v 60~\% případů,
+algoritmus RMSProp zhruba v 90~\% případů
+a stochastický gradientní sestup v 95~\% případů.
+Ovšem kvalita přijatelně natrénovaných neuronových sítí byla v případě RMSProp vyšší
+než u stochastického gradientního sestupu.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{Images/Graphics/hubert.pdf}
+	\caption{Srovnání algoritmů učení \Romannum{1}}
+	\label{mlp_figure}
+	\emph{Simple} - stochastický gradientní sestup;
+	\emph{Momentum} - metoda hybnosti;
+	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{Images/Graphics/ivan.pdf}
+	\caption{Srovnání algoritmů učení \Romannum{2}}
+	\label{cnn_figure}
+	\emph{Simple} - stochastický gradientní sestup;
+	\emph{Momentum} - metoda hybnosti;
+	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{Images/Graphics/nevil.pdf}
+	\caption{Srovnání algoritmů učení \Romannum{3}}
+	\label{mlp_advanced_figure}
+	\emph{SGD} - stochastický gradientní sestup;
+	\emph{AdaGrad} - algoritmus AdaGrad;
+	\emph{RMSProp} - algoritmus RMSProp;
+	\emph{Adam} - algoritmus Adam
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{Images/Graphics/oto.pdf}
+	\caption{Srovnání algoritmů učení \Romannum{4}}
+	\label{cnn_advanced_figure}
+	\emph{SGD} - stochastický gradientní sestup;
+	\emph{AdaGrad} - algoritmus AdaGrad;
+	\emph{RMSProp} - algoritmus RMSProp;
+	\emph{Adam} - algoritmus Adam
+\end{figure}
 
 
 \chapter*{Závěr}

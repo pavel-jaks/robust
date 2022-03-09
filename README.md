@@ -51,3 +51,8 @@ Repozitář vypracování bakalářské práce
 
 * [ ] Dovymyslet citaci u MNISTu
 * [ ] Zakomponovat Liho
+
+## Konzultace 9. 3. 2022
+
+* [ ] Naimplementovat různé typy útoků
+* [x] Sekci Srovnání algoritmů učení dát do samostatné kapitoly
