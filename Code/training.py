@@ -15,7 +15,8 @@ class Coach:
         optimizer,
         batch_size=100,
         epochs=1000,
-        noisy=500
+        noisy=500,
+        too_noisy=False
         ):
         t = time.time()
         print(f'Training started at {t}')
@@ -26,7 +27,11 @@ class Coach:
             loss.backward()
             optimizer.step()
             if epoch % noisy == 0 or epoch == 0:
-                print(f'Epoch {epoch}: {loss.item()}: {Coach.measure_performance(model, training_data, False)}')
+                if too_noisy:
+                    perf = Coach.measure_performance(model, training_data, False)
+                else:
+                    perf = -1
+                print(f'Epoch {epoch}: {loss.item()}: {perf}')
         tt = time.time()
         print(f'Training finished at {tt}; lasted {tt - t} seconds.')
 
