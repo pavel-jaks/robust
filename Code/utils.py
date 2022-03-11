@@ -137,3 +137,10 @@ class MnistData(AbstractData):
         clipped_stage_one = clipped_stage_one.detach()
         clipped_stage_one.apply_(lambda x: maximum if x> maximum else (minimum if x < minimum else x))
         return clipped_stage_one
+
+    @staticmethod
+    def clip_for_image(examples: torch.Tensor, minimum=0, maximum=1):
+        clipped_stage_one = examples
+        clipped_stage_one = clipped_stage_one.detach()
+        clipped_stage_one.apply_(lambda x: maximum if x> maximum else (minimum if x < minimum else x))
+        return clipped_stage_one
