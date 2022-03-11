@@ -5,6 +5,8 @@ from enum import Enum
 
 from mnist import MNIST
 import torch
+import numpy as np
+from matplotlib import pyplot as plt
 
 
 class DataStorageType(Enum):
@@ -76,3 +78,62 @@ class MnistData(AbstractData):
 
     def get_data_storage_type(self) -> DataStorageType:
         return self.data_storage_type
+
+    @staticmethod
+    def get_prediction(model, image):
+        my_image = image.unsqueeze(0)
+        pred = model(my_image)
+        maxout = max(pred[0])
+        for j in range(10):
+            if pred[0, j] == maxout:
+                return j, maxout
+
+    @staticmethod
+    def get_adversarials(model, benign_images, labels, altered_images):
+        possible_adversarials = []
+        for i in range(len(altered_images)):
+            prediction, confidence = MnistData.get_prediction(model, altered_images[i])
+            original_prediction, original_confidence = MnistData.get_prediction(model, benign_images[i])
+            if prediction != labels[i] and original_prediction == labels[i]:
+                params = {"Label": labels[i], "Prediction": prediction, "Confidence": confidence,
+                        "Index": i, "OriginalPrediction": original_prediction, "OriginalConfidence": original_confidence}
+                possible_adversarials.append(params)
+        return possible_adversarials
+
+    @staticmethod
+    def display(image, scale=False):
+        first_image = image[0].reshape((28 * 28,)).detach()
+        first_image = np.array(first_image, dtype='float')
+        pixels = first_image.reshape((28, 28))
+        if scale:
+            plt.imshow(pixels, cmap='gray', vmin=0, vmax=1)
+        else:
+            plt.imshow(pixels, cmap="gray")
+        plt.show()
+
+    @staticmethod
+    def show_adversarial(adversarials, benign_images, altered_images, index):
+        adversarial = adversarials[index]
+        original_image = benign_images[adversarial["Index"]]
+        altered_image = altered_images[adversarial["Index"]]
+        mask = altered_image - original_image
+        # mask = mask * 255
+        # original_image = original_image * 255
+        # altered_image = altered_image * 255
+        MnistData.display(original_image)
+        print("+++++")
+        MnistData.display(mask)
+        print("=====")
+        MnistData.display(altered_image, scale=True)
+        print(f"Label: {adversarial['Label']}, Prediction: {adversarial['Prediction']}, Confidence: {adversarial['Confidence']}")
+        print(f"Original prediction: {adversarial['OriginalPrediction']}, Original confidence: {adversarial['OriginalConfidence']}")
+
+    @staticmethod
+    def clip(benign_examples: torch.Tensor, adversarial_examples: torch.Tensor, max_norm, minimum=0, maximum=1):
+        difference = adversarial_examples - benign_examples
+        difference = difference.detach()
+        difference.apply_(lambda x: x if (abs(x) < max_norm) else (-1 if x < 0 else 1 ) * max_norm)
+        clipped_stage_one = benign_examples + difference
+        clipped_stage_one = clipped_stage_one.detach()
+        clipped_stage_one.apply_(lambda x: maximum if x> maximum else (minimum if x < minimum else x))
+        return clipped_stage_one
