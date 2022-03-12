@@ -560,6 +560,40 @@ class MnistGanDiscriminator(nn.Module):
         return out
 
 
+class MnistGanGenTwo(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.main = nn.Sequential(
+            nn.ConvTranspose2d(1, 2, 3),
+            nn.BatchNorm2d(2),
+            nn.LeakyReLU(),
+            nn.MaxPool2d(2),
+            nn.ConvTranspose2d(2, 1, 14),
+            nn.Sigmoid()
+        )
+
+    def forward(self, t: torch.Tensor):
+        return self.main(t)
+
+
+class MnistGanDisTwo(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.main = nn.Sequential(
+            nn.Conv2d(1, 50, 3),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(50, 10, 9),
+            nn.ReLU(),
+            nn.Conv2d(10, 1, 5),
+            nn.Sigmoid()
+        )
+
+    def forward(self, t: torch.Tensor):
+        out = self.main(t)
+        return out.reshape(out.shape[0], 1)
+
+
 class ModelType(Enum):
     MnistCnnAlfred = MnistCnnAlfred
     MnistCnnBerta = MnistCnnBerta
@@ -579,6 +613,8 @@ class ModelType(Enum):
     MnistCnnPatt = MnistCnnPatt
     MnistGanGenerator = MnistGanGenerator
     MnistGanDiscriminator = MnistGanDiscriminator
+    MnistGanGenTwo = MnistGanGenTwo
+    MnistGanDisTwo = MnistGanDisTwo
 
 
 class ModelManager:
