@@ -493,14 +493,23 @@ class MnistGanGenerator(nn.Module):
     def __init__(self):
         super().__init__()
         self.main = nn.Sequential(
-            nn.ConvTranspose2d(1, 128, 9),
+            nn.ConvTranspose2d(1, 256, 9),
+            nn.BatchNorm2d(256),
             nn.ReLU(),
-            nn.ConvTranspose2d(128, 128, 3),
+            nn.ConvTranspose2d(256, 512, 3),
+            nn.BatchNorm2d(512),
             nn.ReLU(),
-            nn.Conv2d(128, 10, 9),
+            nn.ConvTranspose2d(512, 512, 9),
+            nn.BatchNorm2d(512),
             nn.ReLU(),
-            nn.Conv2d(10, 1, 3),
-            nn.Sigmoid()
+            nn.Conv2d(512, 256, 9),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.Conv2d(256, 128, 9),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Conv2d(128, 1, 3),
+            nn.Hardsigmoid()
         )
 
     def forward(self, t: torch.Tensor):
@@ -516,28 +525,30 @@ class MnistGanDiscriminator(nn.Module):
     """
     def __init__(self):
         super().__init__()
-        self.first_conv_layer = nn.Conv2d(1, 32, kernel_size=9)
-        self.first_activation = nn.ReLU()
-        self.second_conv_layer = nn.Conv2d(32, 32, 3)
-        self.second_activation = nn.ReLU()
+        self.first_conv_layer = nn.Conv2d(1, 128, kernel_size=3)
+        self.first_activation = nn.LeakyReLU()
+        self.second_conv_layer = nn.Conv2d(128, 64, 9)
+        self.second_activation = nn.LeakyReLU()
         self.third_pooling_layer = nn.MaxPool2d(2)
-        self.fourth_conv_layer = nn.Conv2d(32, 64, 3)
-        self.fourth_activation = nn.ReLU()
+        self.third_normalization = nn.BatchNorm2d(64)
+        self.fourth_conv_layer = nn.Conv2d(64, 64, 3)
+        self.fourth_activation = nn.LeakyReLU()
         self.fifth_conv_layer = nn.Conv2d(64, 64, 3)
-        self.fifth_activation = nn.ReLU()
+        self.fifth_activation = nn.LeakyReLU()
         self.sixth_pooling = nn.MaxPool2d(2)
-        self.seventh_linear = nn.Linear(256, 200)
-        self.seventh_activation = nn.ReLU()
-        self.eighth_linear = nn.Linear(200, 1)
+        self.sixth_normalization = nn.BatchNorm2d(64)
+        self.seventh_linear = nn.Linear(256, 128)
+        self.seventh_activation = nn.LeakyReLU()
+        self.eighth_linear = nn.Linear(128, 1)
         self.eighth_activation = nn.Sigmoid()
 
     def forward(self, t: torch.Tensor):
         out = self.first_activation(self.first_conv_layer(t))
         out = self.second_activation(self.second_conv_layer(out))
-        out = self.third_pooling_layer(out)
+        out = self.third_normalization(self.third_pooling_layer(out))
         out = self.fourth_activation(self.fourth_conv_layer(out))
         out = self.fifth_activation(self.fifth_conv_layer(out))
-        out = self.sixth_pooling(out)
+        out = self.sixth_normalization(self.sixth_pooling(out))
 
         dim = 1
         for i in range(1, len(out.shape)):
