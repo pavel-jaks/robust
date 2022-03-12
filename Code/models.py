@@ -492,54 +492,60 @@ class MnistGanGenerator(nn.Module):
     """
     def __init__(self):
         super().__init__()
-        self.fourth_linear = nn.Linear(10, 64)
-        self.fourth_activation = nn.ReLU()
-        self.seventh_linear = nn.Linear(64, 512)
-        self.seventh_activation = nn.ReLU()
-        self.eighth_linear = nn.Linear(512, 28 * 28)
-        self.eighth_activation = nn.Sigmoid()
+        self.main = nn.Sequential(
+            nn.ConvTranspose2d(1, 128, 9),
+            nn.ReLU(),
+            nn.ConvTranspose2d(128, 128, 3),
+            nn.ReLU(),
+            nn.Conv2d(128, 10, 9),
+            nn.ReLU(),
+            nn.Conv2d(10, 1, 3),
+            nn.Sigmoid()
+        )
 
     def forward(self, t: torch.Tensor):
-        dim = 1
-        for i in range(1, len(t.shape)):
-            dim *= t.shape[i]
-        out = t.reshape(len(t), dim)
-        out = self.fourth_activation(self.fourth_linear(out))
-        out = self.seventh_activation(self.seventh_linear(out))
-        out = self.eighth_activation(self.eighth_linear(out))
-        return out.reshape((len(t), 1, 28, 28))
+        return self.main(t)
+
+
+
 
 
 class MnistGanDiscriminator(nn.Module):
     """
-    base in Broader CNN
+    Broader broader CNN
     """
     def __init__(self):
         super().__init__()
         self.first_conv_layer = nn.Conv2d(1, 32, kernel_size=9)
         self.first_activation = nn.ReLU()
-        self.second_pooling = nn.MaxPool2d(4)
+        self.second_conv_layer = nn.Conv2d(32, 32, 3)
         self.second_activation = nn.ReLU()
-        self.third_linear = nn.Linear(32 * 5 * 5, 512)
-        self.third_activation = nn.ReLU()
-        self.fourth_linear = nn.Linear(512, 512)
+        self.third_pooling_layer = nn.MaxPool2d(2)
+        self.fourth_conv_layer = nn.Conv2d(32, 64, 3)
         self.fourth_activation = nn.ReLU()
-        self.fifth_linear = nn.Linear(512, 256)
+        self.fifth_conv_layer = nn.Conv2d(64, 64, 3)
         self.fifth_activation = nn.ReLU()
-        self.sixth_linear = nn.Linear(256, 1)
-        self.sixth_activation = nn.Tanh()
-    
+        self.sixth_pooling = nn.MaxPool2d(2)
+        self.seventh_linear = nn.Linear(256, 200)
+        self.seventh_activation = nn.ReLU()
+        self.eighth_linear = nn.Linear(200, 1)
+        self.eighth_activation = nn.Sigmoid()
+
     def forward(self, t: torch.Tensor):
         out = self.first_activation(self.first_conv_layer(t))
-        out = self.second_activation(self.second_pooling(out))
+        out = self.second_activation(self.second_conv_layer(out))
+        out = self.third_pooling_layer(out)
+        out = self.fourth_activation(self.fourth_conv_layer(out))
+        out = self.fifth_activation(self.fifth_conv_layer(out))
+        out = self.sixth_pooling(out)
+
         dim = 1
         for i in range(1, len(out.shape)):
             dim *= out.shape[i]
         out = out.reshape(len(t), dim)
-        out = self.third_activation(self.third_linear(out))
-        out = self.fourth_activation(self.fourth_linear(out))
-        out = self.fifth_activation(self.fifth_linear(out))
-        out = self.sixth_activation(1 * self.sixth_linear(out))
+        
+        out = self.seventh_activation(self.seventh_linear(out))
+        out = self.eighth_activation(self.eighth_linear(out))
         return out
 
 
