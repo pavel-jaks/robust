@@ -56,3 +56,8 @@ Repozitář vypracování bakalářské práce
 
 * [x] Naimplementovat různé typy útoků
 * [x] Sekci Srovnání algoritmů učení dát do samostatné kapitoly
+
+## TODO 18. 3. 2022
+
+* [ ] Nejdříve vrstvy, potom neurony
+* [ ] Jednotlivé komentáře k první kapitole
