@@ -302,98 +302,52 @@ by commas
 
 Pojem neuronové sítě představuje výpočetní jednotku, která svou univerzálností nachází uplatnění v~mnoha disciplínách.
 
+% \pagestyle{headings}
+
 % Neuronové sítě
 \chapter{Neuronové sítě}
 
-% \pagestyle{headings}
+Neuronová síť je svým charakterem velmi přizpůsobivý výpočetní stroj vhodný pro řešení mnoha problémů.
+Mezi nejčestější problémy, jejichž řešením může být vhodná neuronová síť, patří \emph{regrese},
+čili předpovídání jedné skalární hodnoty na základě vstupu,
+či \emph{klasifikace}, která má za cíl předpovědět třídu v němž se daný vstup nachází.
+Obecně tak neuronové síti odpovídá libovolně komplikované zobrazení
+$F: \mathbb{R}^{n_1, ..., n_k} \rightarrow \mathbb{R}^{m_1, ..., m_l}$.
+Pro případ regrese potom $l = 1$, $m = 1$ a výstup $F$ hraje roli predikované hodnoty,
+pro případ klasifikace je též $l = 1$,
+ale $m$ je rovno počtu tříd a výstup $F$ je predikovanou pravděpodobnostní distribucí,
+která určuje s jakou pravděpodobností patří daný vstup příslušné třídě.
 
-% Úvodní pojednání o neuronových sítích
-% Umělý neuron
-Princip fungování neuronové sítě spočívá v poskládání celku z dílčích výpočetních jednotek - umělých neuronů.
-Takovýto neuron je standardně funkcí více proměnných, jehož výstup je proměnná jediná.
-Typickým modelem umělého neuronu je funkce $f: \mathbb{R}^n \rightarrow \mathbb{R}$ definovaná předpisem
-\begin{equation} \label{neuron}
-	f(a_1, ..., a_n) = \sigma (\sum_{i=1}^n w_i a_i + b) ,
+Samotná síť sestává z mnoha dílčích navzájem propojených částí,
+o nichž pojednávají následující pasáže této kapitoly.
+
+\section{Vrstva neuronů}
+
+Prvním základním konceptem, který stojí za pojmem neuronové sítě, je rozdělení výpočtu do vrstev.
+Takové vrstvy potom charakterizuje zobrazení
+$\phi : \mathbb{R}^{p_1, ..., p_r} \rightarrow \mathbb{R}^{q_1, ..., q_s}$,
+jehož předpis již lze snadno vyjádřit.
+Obrazy vstupů při zobrazení $\phi$ se potom nazývají \emph{aktivace}.
+
+\subsection{Hustá vrstva}
+
+Prvním příkladem vrstev neuronů je tzv. \emph{hustá vrstva}
+(angl. \emph{dense layer} nebo \emph{fully-connected layer}).
+Pro zobrazení $\phi$ platí, že zobrazuje vektory na vektory, tedy $r = s = 1$,
+a má předpis
+\begin{equation} \label{dense}
+	\phi (u) = W u + b,
 \end{equation}
-kde \emph{n} je počet vstupujících proměnných, \emph{$w_i$} jsou tzv. váhy (w z anglického slova weight),
-\emph{b} je práh (b~z~anglického slova bias), \emph{$\sigma$} označuje tzv. aktivační funkci.
+kde $W \in \mathbb{R}^{q_1, p_1}$ je \emph{matice vah} (z angl. \emph{weight})
+a $b \in \mathbb{R}^{q_1}$ je \emph{vektor prahů} (z angl. \emph{bias}).
 
-Roli vstupujících proměnných mohou hrát např. hodnoty RGB pixelů barevných obrázků, je-li aplikací klasifikace obrázků,
-nebo výstupy jiných neuronů.
-Pod pojmem váha se skrývá míra ovlivnění výstupu neuronu daným vstupem.
-Je-li váha u nějakého vstupu vysoká, pak je výstup citlivější na daný vstup.
-Práh pro změnu určuje posunutí citlivosti neuronu na všechny vstupy jako celku.
+Motivací za pojmenováním této vrstvy jako husté nebo též plně propojené je fakt,
+že každá složka vstupujícího vektoru ovlivňuje každou z výsledných aktivací,
+pokud tedy příslušný prvek matice vah není nulový.
 
-Poslední, avšak velmi důležitou charakteristikou tohoto modelu neuronu je aktivační funkce.
-Za aktivační funkci lze vzít libovolnou funkci $\sigma : \mathbb{R} \rightarrow \mathbb{R}$,
-existuje však základní sada:
-\begin{itemize}
-	\item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$,
-	\item ReLU: $\sigma(z) = max(0, z)$,
-	\item LeakyReLU: $\sigma(z) = max(0, z) + \alpha * min(z, 0)$, kde $\alpha \in \mathbb{R}^+$,
-	\item Tanh: $\sigma(z) = tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$.
-\end{itemize}
-Tyto funkce lze doplnit o jejich mírné modifikace.
-Moderní doporučenou praxí je užívat ReLU jako aktivační funkci a (\ref{neuron}) jako model neuronu dle \cite{Goodfellow}.
+\subsection{Konvoluční vrstva}
 
-
-\section{Hluboká dopředná neuronová síť}
-Je-li pojem umělého neuronu objasněn, lze se přesunout k jeho užití v neuronových sítích.
-Základní myšlenkou těchto sítí je vhodné poskládání umělých neuronů do vrstev, které dohromady tvoří síť neuronů.
-Taková vrstva je potom trojího druhu - vstupní, výstupní a skrytá.
-\emph{Vstupní vrstva} je množina umělých neuronů, které mají za vstup výstupy problému, jehož je neuronová síť řešením.
-Za vstup si lze představit matici černobílých pixelů, které představují obrázek číslice, kterou je cíl klasifikovat.
-\emph{Výstupní} vrstva sestává z neuronů, které mají za vstup výstupy neuronů předchozí vrstvy.
-Výstupem této vrstvy pak bude řešení daného problému - například klasifikace číslice.
-Posledním druhem vrstvy je \emph{vrstva skrytá}.
-Takováto vrstva má za vstupy výstupy vrstvy předcházející a její výstupy slouží jako vstupy pro~vrstvu nadcházející.
-Má-li neuronová síť tuto architekturu, hovoří se o \emph{dopředné neuronové síti}.
-Má-li navíc alespoň jednu skrytou vrstvu, lze mluvit o \emph{hluboké dopředné neuronové síti}.
-
-Se znalostí pojmu vrstvy neuronů lze přistoupit k poznámce o tzv. \emph{softmax funkci}.
-Jedná se o vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$, kde
-\begin{equation*}
-	s(a_1, ..., a_m)_i = \frac{e^{a_i}}{\sum_{j=1}^m e^{a_j}},
-\end{equation*}
-kde $i \in \hat{m}$.
-Její užití je nasnadě: Výstup této funkce lze totiž interpretovat jako diskrétní pravděpodobnostní distribuci,
-a proto ji lze užít jako aktivační funkci výstupní vrstvy, je-li cílem dané neuronové sítě klasifikace vstupu do kategorií.
-
-Další poznámka se bude věnovat zjednodušení zápisu akce vrstvy na vstup.
-Podle modelu neuronu v~(\ref{neuron}) se akce jednodnoho neuronu na vstup sestává z násobení,
-následného sčítání, přičtení prahu a aplikací aktivační funkce.
-Tato procedura nastává pro každý neuron ve vrstvě.
-Tak lze sestavit z jednotlivých vah $w_i^{(j)}$ (\emph{i}-tá váha \emph{j}-tého neuronu ve vrstvě) matici $\mathbb{A}$,
-jejímiž prvky jsou právě ony váhy $(\mathbb{A})_{j,i} = w_i^{(j)}$,
-z~prahů pak vektor $b$, jehož $j$-tá složka je rovna prahu $j$-tého neuronu.
-Dále zaveďme vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$ - ať už jako výše zmíněnou softmax funkci,
-nebo jako po složkách aplikovanou libovolnou aktivační funkci $\sigma$
-ve smyslu $s(a_1, ... a_m)_i = \sigma(a_i)$ pro $i \in \hat{m}$. 
-Pak lze psát, že aplikace vrstvy neuronů je zobrazení $\phi : \mathbb{R}^n \rightarrow \mathbb{R}^m$
-působící na vektor $a$ následovně:
-\begin{equation} \label{layer}
-	\phi(a) = s(\mathbb{A}a + b).
-\end{equation}
-Tedy stěžejní operací se stává maticové násobení, respektive násobení vektoru maticí zleva.
-
-Při tomto si lze povšimnout, že takováto neuronová síť má řadu parametrů, o kterých není jasné jak je správně nastavit.
-Některé parametry (například váhy a prahy) se nastavují během učení neuronové sítě, čemuž je věnována samostatná kapitola.
-Potom tu jsou parametry, jejichž charakter je poněkud odlišný.
-Jedná se o ty parametry, které zůstávají během života neuronové sítě netknuté.
-Jako příklad lze uvést počet neuronů ve skryté vrstvě, který se promítne v rozměrech matice vah či dimenzionalitě výstupu vrstvy.
-Takovýmto prametrům je přisuzován název hyper-parametry.
-
-\section{Konvoluční sítě}
-
-% Úvod do CNNs
-\emph{Konvoluční sítě} nebo též \emph{konvoluční neuronové sítě} přinášejí svou architekturou
-nové možnosti zpracování dat se specifickou strukturou, do které patří například časové řady,
-obrázky nebo videa.
-Středobodem konvolučních sítí je, jak již název napovídá, operace \emph{konvoluce}.
-Ta nahrazuje maticové násobení, kterým lze reprezentovat operace ve výše popsaném modelu hluboké dopředné sítě.
-
-% \subsection{Konvoluce}
-
+Pro představení dalšího typu vrstvy uvěďme základní přehled o operaci konvoluce.
 Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma číselnými funkcemi $g$ a $h$ se stejným definičním oborem,
 jejíž výstupem je nová číselná funkce standardně označovaná jako $g*h$.
 Uveďme zde definici konvoluce pro reálné funkce definované na $\mathbb{R}^d$,
@@ -401,9 +355,10 @@ tedy $g,h: \mathbb{R}^d \rightarrow \mathbb{R}$:
 \begin{equation*}
 	(g * h)(t) = \int_{\mathbb{R}^{d}} g(\tau) h(t - \tau) d\tau.
 \end{equation*}
-Důležitým předpokladem pro možnost konvoluce je samozřejmě konvergence integrálu na pravé straně.
+Důležitým předpokladem pro možnost konvoluce je samozřejmě existence integrálu na pravé straně.
 
-Ačkoliv je konvoluce komutativní operací, v kontextu strojového učení se mezi oběma funkcemi vstupujícími do konvoluce rozlišuje.
+Ačkoliv je konvoluce komutativní operací,
+nejen v kontextu strojového učení se mezi oběma funkcemi vstupujícími do konvoluce rozlišuje.
 Funkce vstupující jako první se nazývá vstup a druhá funkce se nazývá jádrem.
 Dále se v kontextu konvolučních sítí standardně objevují diskrétní funkce,
 které nabývají nenulových hodnot pouze v konečně mnoha bodech.
@@ -423,20 +378,207 @@ Za~vynechání překlopení jádra lze dojít ke \emph{křížové korelaci}:
 Mnoho knihoven zabývajících se neuronovými sítěmi dle \cite{Goodfellow} implementují křížovou korelaci namísto konvoluce,
 ačkoliv tuto svou implementaci nazývají konvolucí.
 
-% \subsection{Pooling}
-Další nedílnou součástí konvolučních sítí je tzv. \emph{pooling}.
-Spolu s konvolucí tvoří mocný nástroj, který ve formě konvolučních a pooling vrstev hlubokých neuronových sítí
-přináší například invarianci sítě vůči malému posunutí vstupu (dle \cite{Goodfellow}).
+Nečastější užití konvoluce v neuronových sítích je při zpracování obrázků,
+které lze reprezentovat pomocí $C \times W \times H$ tenzorů,
+kde $C$ značí počet kanálů obrázku (nejčastěji tři pro červenou, zelenou a modrou),
+$W$ je šířka, $H$ je výška obrázku.
+Uvěďme předpis pro zobrazení $\phi$, které odpovídá konvoluční vrstvě:
+\begin{equation} \label{convolution_layer}
+	\forall j \in \{1, 2, ..., C_{out}\} \qquad \phi(u)_j = b_j + \sum_{i=1}^{C_{in}} u_i * K_{j, i}
+\end{equation}
+kde $\phi : \mathbb{R}^{C_{in}, W_{in}, H_{in}} \rightarrow \mathbb{R}^{C_{out}, W_{out}, H_{out}}$
+($C_{in}$ je počet vstupních kanálů, $C_{out}$ počet výstupních kanálů,
+$W_{in}$, $H_{in}$ jsou vstupní šířka a výška, $W_{out}$, $H_{out}$ jsou výstupní šířka a výška),
+$b \in \mathbb{R}^{C_{out}, W_{out}, H_{out}}$ je práh,
+$K~\in~\mathbb{R}^{C_{out}, C_{in}, k_1, k_2}$
+je tenzor konvolučních jader ($k_1$ a $k_2$ jsou rozměry konvolučního jádra).
 
-Pooling je funkce, která nahrazuje hodnoty v bodech nějakou souhrnou statistikou určitého okolí daného bodu.
-Např. \emph{max pooling} aplikovaný na matici se podívá na obdélníkové okolí předem definovaných rozměrů daného bodu
-a jako svůj výstup vybere maximální hodnotu nalezenou v onom okolí.
-Jiné oblíbené pooling funkce zahrnují funkce reportující průměr či $L^2$ normu daného obdelníkového okolí.
+Za povšimnutí stojí, že standardně $W_{out} \neq W_{in}$ a $H_{out} \neq H_{in}$,
+konkrétně při takto prosté implementaci konvoluční vrstvy platí:
+\begin{align}
+	W_{out} &= W_{in} - k_1 + 1, \\
+	H_{out} &= H_{in} - k_2 + 1.
+\end{align}
 
-Standardní konvoluční vrstva neuronové sítě pak sestává ze tří fází.
-První fáze provádí paralelně několik konvolucí, které produkují sadu aktivcí.
-Druhá fáze, někdy označovaná jako \emph{detekční fáze}, aplikuje na výstupy první fáze aktivační funkci.
-Třetí fáze potom provádí \emph{pooling}.
+\subsection{Pooling vrstva}
+
+Pojem \emph{pooling vrstvy} (bez překladu) se skrývá funkce,
+která reportuje souhrné statistiky vstupu.
+Například nejčastěji používanou pooling vrstvou je tzv. \emph{max pooling}
+s parametry $k_1$, $k_2$ (angl \emph{kernel-size})
+která při aplikaci na obrázek o rozměrech $C \times W \times H$ (počet kanálů, šířka, výška)
+v každém kanálu reportuje maximální hodnotu v blocích o rozměrech $k_1 \times k_2$.
+Potom zobrazení $\phi$ je zobrazení $\phi:\mathbb{R}^{C, W, H}~\rightarrow~\mathbb{R}^{C, W_{out}, H_{out}}$,
+kde platí:
+\begin{align}
+	W_{out} &= \left\lceil \frac{W}{k_1} \right\rceil, \\
+	H_{out} &= \left\lceil \frac{H}{k_2} \right\rceil,
+\end{align}
+a má předpis $\forall i \in \{1, ..., C\}, \forall j \in \{1, ..., W_{out}\}, \forall k \in \{1, ..., H_{out}\}$:
+\begin{equation}
+	\phi(u) = \operatorname{max}\{u_{i, \mu, \nu} | (j-1) \cdot k_1 < \mu \leq j \cdot k_1, (k-1) \cdot k_2 < \mu \leq k \cdot k_2 \}.
+\end{equation}
+
+\subsection{Aktivační vrstva}
+
+\emph{Aktivační vrstva} označuje vrstvu, která slouží k omezení aktivací jiné vrstvy,
+aby byly v rozumných mezích. Např. jedná-li se o poslední vrstvu klasifikační neuronové sítě,
+pak aktivační vrstva zajišťuje, aby výsledné aktivace byly pravděpodobnostní distribucí.
+
+Mezi často používané aktivační vrstvy patří funkce, jež vzniknou aplikací skalární funkce 
+jedné proměnné $\sigma : \mathbb{R} \rightarrow \mathbb{R}$ na každý prvek vstupu zvlášť.
+Pro takové skalární funkce pak máme pojem aktivační funkce.
+Nejčastější aktivační funkce jsou následující:
+\begin{itemize}
+	\item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$,
+	\item ReLU: $\sigma(z) = \operatorname{max}(0, z)$,
+	\item LeakyReLU: $\sigma(z) = \operatorname{max}(0, z) + \alpha * \operatorname{min}(z, 0)$, kde $\alpha > 0$,
+	\item Tanh: $\sigma(z) = tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$.
+\end{itemize}
+
+Další oblíbenou aktivační vrstvou je \emph{softmax vrstva}.
+Ta má pro odpovídající funkci $\phi$, která v tomto případě zobrazuje vektor na vektor stejných rozměrů
+(tedy $\phi : \mathbb{R}^{p_1} \rightarrow \mathbb{R}^{p_1}$) předpis:
+\begin{equation} \label{softmax}
+	\forall i \in \{1, 2, ..., p_1\} \quad \phi (u)_i = \frac{e^{a_i}}{\sum_{j=1}^{p_1} e^{a_j}}.
+\end{equation}
+Užití této aktivační vrstvy je na snadě. Jelikož prvky výsledné aktivace leží v intervalu $[0, 1]$
+a sečtou se na $1$, lze výstup takovéto aktivační vrstvy interpretovat jako pravděpodobnostní distribuci.
+
+\section{Hluboká dopředná neuronová síť}
+
+\section{Konvoluční neuronová síť}
+
+% Úvodní pojednání o neuronových sítích
+% Umělý neuron
+% Princip fungování neuronové sítě spočívá v poskládání celku z dílčích výpočetních jednotek - umělých neuronů.
+% Takovýto neuron je standardně funkcí více proměnných, jehož výstup je proměnná jediná.
+% Typickým modelem umělého neuronu je funkce $f: \mathbb{R}^n \rightarrow \mathbb{R}$ definovaná předpisem
+% \begin{equation} \label{neuron}
+% 	f(a_1, ..., a_n) = \sigma (\sum_{i=1}^n w_i a_i + b) ,
+% \end{equation}
+% kde \emph{n} je počet vstupujících proměnných, \emph{$w_i$} jsou tzv. váhy (w z anglického slova weight),
+% \emph{b} je práh (b~z~anglického slova bias), \emph{$\sigma$} označuje tzv. aktivační funkci.
+
+% Roli vstupujících proměnných mohou hrát např. hodnoty RGB pixelů barevných obrázků, je-li aplikací klasifikace obrázků,
+% nebo výstupy jiných neuronů.
+% Pod pojmem váha se skrývá míra ovlivnění výstupu neuronu daným vstupem.
+% Je-li váha u nějakého vstupu vysoká, pak je výstup citlivější na daný vstup.
+% Práh pro změnu určuje posunutí citlivosti neuronu na všechny vstupy jako celku.
+
+% Poslední, avšak velmi důležitou charakteristikou tohoto modelu neuronu je aktivační funkce.
+% Za aktivační funkci lze vzít libovolnou funkci $\sigma : \mathbb{R} \rightarrow \mathbb{R}$,
+% existuje však základní sada:
+% \begin{itemize}
+% 	\item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$,
+% 	\item ReLU: $\sigma(z) = max(0, z)$,
+% 	\item LeakyReLU: $\sigma(z) = max(0, z) + \alpha * min(z, 0)$, kde $\alpha \in \mathbb{R}^+$,
+% 	\item Tanh: $\sigma(z) = tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$.
+% \end{itemize}
+% Tyto funkce lze doplnit o jejich mírné modifikace.
+% Moderní doporučenou praxí je užívat ReLU jako aktivační funkci a (\ref{neuron}) jako model neuronu dle \cite{Goodfellow}.
+
+
+% \section{Hluboká dopředná neuronová síť}
+% Je-li pojem umělého neuronu objasněn, lze se přesunout k jeho užití v neuronových sítích.
+% Základní myšlenkou těchto sítí je vhodné poskládání umělých neuronů do vrstev, které dohromady tvoří síť neuronů.
+% Taková vrstva je potom trojího druhu - vstupní, výstupní a skrytá.
+% \emph{Vstupní vrstva} je množina umělých neuronů, které mají za vstup výstupy problému, jehož je neuronová síť řešením.
+% Za vstup si lze představit matici černobílých pixelů, které představují obrázek číslice, kterou je cíl klasifikovat.
+% \emph{Výstupní} vrstva sestává z neuronů, které mají za vstup výstupy neuronů předchozí vrstvy.
+% Výstupem této vrstvy pak bude řešení daného problému - například klasifikace číslice.
+% Posledním druhem vrstvy je \emph{vrstva skrytá}.
+% Takováto vrstva má za vstupy výstupy vrstvy předcházející a její výstupy slouží jako vstupy pro~vrstvu nadcházející.
+% Má-li neuronová síť tuto architekturu, hovoří se o \emph{dopředné neuronové síti}.
+% Má-li navíc alespoň jednu skrytou vrstvu, lze mluvit o \emph{hluboké dopředné neuronové síti}.
+
+% Se znalostí pojmu vrstvy neuronů lze přistoupit k poznámce o tzv. \emph{softmax funkci}.
+% Jedná se o vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$, kde
+% \begin{equation*}
+% 	s(a_1, ..., a_m)_i = \frac{e^{a_i}}{\sum_{j=1}^m e^{a_j}},
+% \end{equation*}
+% kde $i \in \hat{m}$.
+% Její užití je nasnadě: Výstup této funkce lze totiž interpretovat jako diskrétní pravděpodobnostní distribuci,
+% a proto ji lze užít jako aktivační funkci výstupní vrstvy, je-li cílem dané neuronové sítě klasifikace vstupu do kategorií.
+
+% Další poznámka se bude věnovat zjednodušení zápisu akce vrstvy na vstup.
+% Podle modelu neuronu v~(\ref{neuron}) se akce jednodnoho neuronu na vstup sestává z násobení,
+% následného sčítání, přičtení prahu a aplikací aktivační funkce.
+% Tato procedura nastává pro každý neuron ve vrstvě.
+% Tak lze sestavit z jednotlivých vah $w_i^{(j)}$ (\emph{i}-tá váha \emph{j}-tého neuronu ve vrstvě) matici $\mathbb{A}$,
+% jejímiž prvky jsou právě ony váhy $(\mathbb{A})_{j,i} = w_i^{(j)}$,
+% z~prahů pak vektor $b$, jehož $j$-tá složka je rovna prahu $j$-tého neuronu.
+% Dále zaveďme vektorovou funkci $s: \mathbb{R}^m \rightarrow \mathbb{R}^m$ - ať už jako výše zmíněnou softmax funkci,
+% nebo jako po složkách aplikovanou libovolnou aktivační funkci $\sigma$
+% ve smyslu $s(a_1, ... a_m)_i = \sigma(a_i)$ pro $i \in \hat{m}$. 
+% Pak lze psát, že aplikace vrstvy neuronů je zobrazení $\phi : \mathbb{R}^n \rightarrow \mathbb{R}^m$
+% působící na vektor $a$ následovně:
+% \begin{equation} \label{layer}
+% 	\phi(a) = s(\mathbb{A}a + b).
+% \end{equation}
+% Tedy stěžejní operací se stává maticové násobení, respektive násobení vektoru maticí zleva.
+
+% Při tomto si lze povšimnout, že takováto neuronová síť má řadu parametrů, o kterých není jasné jak je správně nastavit.
+% Některé parametry (například váhy a prahy) se nastavují během učení neuronové sítě, čemuž je věnována samostatná kapitola.
+% Potom tu jsou parametry, jejichž charakter je poněkud odlišný.
+% Jedná se o ty parametry, které zůstávají během života neuronové sítě netknuté.
+% Jako příklad lze uvést počet neuronů ve skryté vrstvě, který se promítne v rozměrech matice vah či dimenzionalitě výstupu vrstvy.
+% Takovýmto prametrům je přisuzován název hyper-parametry.
+
+% \section{Konvoluční sítě}
+
+% % Úvod do CNNs
+% \emph{Konvoluční sítě} nebo též \emph{konvoluční neuronové sítě} přinášejí svou architekturou
+% nové možnosti zpracování dat se specifickou strukturou, do které patří například časové řady,
+% obrázky nebo videa.
+% Středobodem konvolučních sítí je, jak již název napovídá, operace \emph{konvoluce}.
+% Ta nahrazuje maticové násobení, kterým lze reprezentovat operace ve výše popsaném modelu hluboké dopředné sítě.
+
+% % \subsection{Konvoluce}
+
+% Operace \emph{konvoluce} je ve vší obecnosti operace mezi dvěma číselnými funkcemi $g$ a $h$ se stejným definičním oborem,
+% jejíž výstupem je nová číselná funkce standardně označovaná jako $g*h$.
+% Uveďme zde definici konvoluce pro reálné funkce definované na $\mathbb{R}^d$,
+% tedy $g,h: \mathbb{R}^d \rightarrow \mathbb{R}$:
+% \begin{equation*}
+% 	(g * h)(t) = \int_{\mathbb{R}^{d}} g(\tau) h(t - \tau) d\tau.
+% \end{equation*}
+% Důležitým předpokladem pro možnost konvoluce je samozřejmě konvergence integrálu na pravé straně.
+
+% Ačkoliv je konvoluce komutativní operací, v kontextu strojového učení se mezi oběma funkcemi vstupujícími do konvoluce rozlišuje.
+% Funkce vstupující jako první se nazývá vstup a druhá funkce se nazývá jádrem.
+% Dále se v kontextu konvolučních sítí standardně objevují diskrétní funkce,
+% které nabývají nenulových hodnot pouze v konečně mnoha bodech.
+% Potom integrál přes $\mathbb{R}^d$ přechází v konečnou sumu:
+% \begin{equation}
+% 	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(j_1, ..., j_d) h(i_1 - j_1, ..., i_d - j_d).
+% \end{equation}
+% Díky komutativitě konvoluce lze též psát:
+% \begin{equation}
+% 	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 - j_1, ..., i_d - j_d) h(j_1, ..., j_d).
+% \end{equation}
+% Při aplikaci komutativity došlo k tzv. \emph{překlopení jádra} (termín pochází z anglického kernel flipping).
+% Za~vynechání překlopení jádra lze dojít ke \emph{křížové korelaci}:
+% \begin{equation}
+% 	(g * h)(i_1, ..., i_d) = \sum_{j_1} ... \sum_{j_d} g(i_1 + j_1, ..., i_d + j_d) h(j_1, ..., j_d).
+% \end{equation}
+% Mnoho knihoven zabývajících se neuronovými sítěmi dle \cite{Goodfellow} implementují křížovou korelaci namísto konvoluce,
+% ačkoliv tuto svou implementaci nazývají konvolucí.
+
+% % \subsection{Pooling}
+% Další nedílnou součástí konvolučních sítí je tzv. \emph{pooling}.
+% Spolu s konvolucí tvoří mocný nástroj, který ve formě konvolučních a pooling vrstev hlubokých neuronových sítí
+% přináší například invarianci sítě vůči malému posunutí vstupu (dle \cite{Goodfellow}).
+
+% Pooling je funkce, která nahrazuje hodnoty v bodech nějakou souhrnou statistikou určitého okolí daného bodu.
+% Např. \emph{max pooling} aplikovaný na matici se podívá na obdélníkové okolí předem definovaných rozměrů daného bodu
+% a jako svůj výstup vybere maximální hodnotu nalezenou v onom okolí.
+% Jiné oblíbené pooling funkce zahrnují funkce reportující průměr či $L^2$ normu daného obdelníkového okolí.
+
+% Standardní konvoluční vrstva neuronové sítě pak sestává ze tří fází.
+% První fáze provádí paralelně několik konvolucí, které produkují sadu aktivcí.
+% Druhá fáze, někdy označovaná jako \emph{detekční fáze}, aplikuje na výstupy první fáze aktivační funkci.
+% Třetí fáze potom provádí \emph{pooling}.
 
 % Učení neuronové sítě
 \chapter{Učení neuronové sítě}
