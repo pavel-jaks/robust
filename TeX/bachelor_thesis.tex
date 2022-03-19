@@ -890,13 +890,14 @@ mají úměrně tomu rychlý úbytek v řádu učení, zatímco parametry, kter�
 malé hodnoty parciálních derivací učelové funkce, mají úměrně tomu pomalý úbytek v řádu učení.
 Celkový efekt tedy je, že se síť pohybuje rychleji ve směrech menšího spádu.
 Jedna iterace potom vypadá následovně:
-% \begin{align}
-% 	g &\leftarrow \nabla_\theta J(\theta), \\
-% 	r &\leftarrow r + g \odot g, \\
-% 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
-% \end{align}
-% kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
-% $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
+\begin{align}
+	g &\leftarrow \nabla_\theta J(\theta), \\
+	r &\leftarrow r + g \odot g, \\
+	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
+\end{align}
+kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
+$\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
+
 Poznamenejme, že dle \cite{Adam} algoritmus AdaGrad funguje dobře s řídkými gradienty.
 Nevýhoda tohoto algoritmu ovšem je jeho paměť - ve svých proměnných střádá velmi vzdálené hodnoty gradientu,
 což dle \cite{Goodfellow} mnohdy vede k předčasnému poklesu řádu učení.
@@ -911,8 +912,6 @@ a to způsobem, kde jedna iterace vypadá následovně \cite{RMSProp}:
 	r &\leftarrow \rho \cdot r + (1 - \rho) \cdot g \odot g, \\
 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
 \end{align}
-kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
-$\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
 Objevil se tu však nový hyper-parametr $\rho \in [0, 1)$ nazývaný \emph{decay rate} (bez překladu).
 
 RMSProp se ukazuje jako jeden z nejúspěšnějších algoritmů,
@@ -929,19 +928,16 @@ Ve skutečnosti však je hybnost zakomponována již v~následujícím,
 a to sice v odhadu prvního obecného momentu gradientu.
 Druhým aspektem, ve kterém se algoritmus liší od prostého RMSProp s hybností,
 jsou korekce prováděné na odhadech prvního a druhého obecného momentu gradientu.
-% Jedna iterace algoritmu vypadá \cite{Adam}:
-% \begin{align}
-% 	g &\leftarrow \nabla_\theta J(\theta), \\
-% 	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
-% 	r &\leftarrow \rho_2 \cdot r + (1 - \rho_2) \cdot g \odot g, \\
-% 	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t}, \\
-% 	\hat{r} &\leftarrow \frac{r}{1 - \rho_2^t}, \\
-% 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{\hat{r}}} \odot \hat{s},
-% \end{align}
-% kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
-% $\odot$ značí Hadamardův součin, výraz zlomku a~odmocniny na šestém řádku je myšlen po složkách,
-% $t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou hyper-parametry nazvané \emph{decay rate}.
-
+Jedna iterace algoritmu vypadá \cite{Adam}:
+\begin{align}
+	g &\leftarrow \nabla_\theta J(\theta), \\
+	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
+	r &\leftarrow \rho_2 \cdot r + (1 - \rho_2) \cdot g \odot g, \\
+	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t}, \\
+	\hat{r} &\leftarrow \frac{r}{1 - \rho_2^t}, \\
+	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{\hat{r}}} \odot \hat{s},
+\end{align}
+kde $t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou hyper-parametry nazvané \emph{decay rate}.
 
 \section{Stochastické algoritmy učení}
 
@@ -993,7 +989,7 @@ která přiřadí každému vektoru index odpovídající třídy s předpisem:
 \end{equation}
 Zjištění lze potom formálně zapsat následovně:
 \begin{equation}
-	(\exists x, y)(\exists \Delta x, \|\Delta x\| < \kappa)
+	(\exists x, y)(\exists \Delta x, \|\Delta x\| \leq \kappa)
 	(C(F_\theta(x)) = C(y) \land C(F_\theta(x + \Delta x)) \neq C(y)),
 \end{equation}
 kde $\kappa$ je malé číslo a $\|\cdot\|$ je $L_p$ norma.
@@ -1002,7 +998,7 @@ Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vz
 Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako
 \begin{equation}
 	\widetilde{\mathbb{X}}_x = \{\tilde{x} \in \mathbb{R}^n	| 
-	C(F_\theta(\tilde{x})) \neq C(y) \land \|\tilde{x} - x\| < \kappa \}.
+	C(F_\theta(\tilde{x})) \neq C(y) \land \|\tilde{x} - x\| \leq \kappa \}.
 \end{equation}
 
 Takto obecná definice adversariálních vzorků ovšem neposkytuje návod na jejich nalezení.
@@ -1043,7 +1039,7 @@ a~má předpis:
 \end{equation}
 při zachování značení z minulých kapitol textu,
 označení $\operatorname{sign}$ pro znaménkovou funkci a $\kappa$ pro velikost složek perturbace $\Delta x$,
-tedy $\kappa$ je poloměr kulového oklolí $x$ v $L^\infty$ normě.
+tedy $\kappa$ je poloměr kulového okolí $x$ v $L^\infty$ normě.
 
 \subsection{Iterativní FGSM}
 
@@ -1053,11 +1049,11 @@ Jedná se o metodu \emph{I-FGSM} (z angl. \emph{iterative fast gradient sign met
 s předpisem:
 \begin{align} 
 	\tilde{x}_0 &= x \\
-	\tilde{x}_{n+1} &= Clip_x^\kappa \{\tilde{x}_n + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))\}, \label{i_fgsm}
+	\tilde{x}_{n+1} &= \operatorname{Clip}_x^\kappa \{\tilde{x}_n + \gamma \cdot \operatorname{sign}(\nabla_x L(F_{\theta}(x), y))\}, \label{i_fgsm}
 \end{align}
-kde funkce $Clip$ omezuje výsledný součet, aby byl v $\kappa$-okolí původního vzorku $x$
+kde funkce $\operatorname{Clip}$ omezuje výsledný součet, aby byl v $\kappa$-okolí původního vzorku $x$
 a zároveň platným vstupem pro neuronovou síť $F_\theta$ -
-například jsou-li vzorky obrázky, funkce $Clip$ zajišťuje i to, aby hodnoty pixelů nebyly záporné či vyšší než 255.
+například jsou-li vzorky obrázky, funkce $\operatorname{Clip}$ zajišťuje i to, aby hodnoty pixelů nebyly záporné či vyšší než 255.
 Počet iterací je ovšem dalším hyper-parametrem, který je nutno nastavit.
 Jedná se o necílenou metodu.
 

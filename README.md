@@ -59,5 +59,5 @@ Repozitář vypracování bakalářské práce
 
 ## TODO 18. 3. 2022
 
-* [ ] Nejdříve vrstvy, potom neurony
-* [ ] Jednotlivé komentáře k první kapitole
+* [x] Nejdříve vrstvy, potom neurony
+* [x] Jednotlivé komentáře
