@@ -14,6 +14,8 @@
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{romannum}
+\usepackage{caption}
+\usepackage{subcaption}
 \AtBeginDocument{\pagenumbering{arabic}}
 
 \makeatletter
@@ -650,7 +652,7 @@ ve svých predikcích na~vzorcích trénovací sady.
 Standardní účelová funkce je sestavena jako průměr dílčích ztrát,
 které neuronová síť dosahuje na vzorcích trénovací sady:
 \begin{equation} \label{averageloss}
-	J(\theta) = \frac{1}{N} \sum_{i=1}^N L(F_{\theta}(x^{(i)}), y^{(i)}),
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N L\left(F_{\theta}(x^{(i)}), y^{(i)}\right),
 \end{equation}
 kde $L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
@@ -808,7 +810,7 @@ proto je implementováno jejich opakované počítání na úkor času běhu alg
 
 
 
-\section{Algoritmy učení}
+\section{Základní algoritmy učení}
 
 \subsection{Gradientní sestup}
 
@@ -843,7 +845,18 @@ Užití hybnosti vede tedy k představení dalšího hyper-parametru, a to param
 který určuje míru ovlivnění dalšího kroku předchozími odhady gradientu.
 Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čísla $0.5$, $0.9$ a $0.99$.
 
-\subsection{Metoda Něstěrovy hybnosti}
+Motivací k zavedení metody hybnosti je urychlení konvergence algoritmu,
+obzvlášť pro případy, kdy je gradient účelové funkce buď malý (má složky o malých velikostech v absolutní hodnotě),
+nebo příliš nestálý.
+V prvním případě přidává proměnná rychlosti výslednému kroku iterace na velikosti,
+tedy teorericky urychluje konvergenci,
+a v druhém případě přidává konzistenci výsledným krokům iterací.
+
+Je tu však riziko, že při nešťastném nastavení hyper-parametrů $\epsilon$ a $\alpha$
+v průběhu učení nedojde k velkým změnám proměnné rychlosti. Může se tedy stát,
+nemíří-li prvně spočtený gradient správným směrem, že bude učení odsouzeno k neúspěchu.
+
+\subsection{Metoda Něstěrovovy hybnosti}
 
 Jinou modifikací gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
 Ta má následující předpis iterace \cite{Nesterov}:
@@ -852,13 +865,24 @@ Ta má následující předpis iterace \cite{Nesterov}:
 	\theta &\leftarrow \theta + v.
 \end{align}
 
+Zásadním rozdílem oproti metodě hybnosti je, kde se vyhodnocuje $\nabla_\theta J$.
+V tomto algoritmu se totiž gradient nevyhodnocuje $\theta$,
+nýbrž v bodě $\theta + \alpha \cdot v$ - tedy po aplikaci proměnné rychlosti na parametry.
+Za následek tento přístup má, že oproti klasické metodě hybnosti je gradient přesnější.
+
+Nevýhodou této metody je ovšem vyšší výpočetní náročnost.
+
+
+\section{Algoritmy s přizpůsobivým řádem učení}
+
 Existují další algoritmy, které pracují s proměnným řádem učení.
 Jedná se o \emph{algoritmy s přizpůsobivým řádem učení}: \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.
 Tyto algoritmy přizpůsobují řád učení jednotlivým parametrům zvlášť.
 
 \subsection{AdaGrad}
 
-Algoritmus \emph{AdaGrad} dle \cite{AdaGrad} přizpůsobuje řád učení každému parametru
+Algoritmus \emph{AdaGrad} (z angl. \emph{adaptive gradient})
+dle \cite{AdaGrad} přizpůsobuje řád učení každému parametru
 jednotlivě, a to jeho škálováním nepřímo úměrně druhé odmocnině součtu všech hodnot gradientu,
 jež danému parametru v~průběhu učení příslušel.
 To vede k tomu, že parametry, kterým přísluší velké hodnoty parciálních derivací účelové funkce,
@@ -866,20 +890,20 @@ mají úměrně tomu rychlý úbytek v řádu učení, zatímco parametry, kter�
 malé hodnoty parciálních derivací učelové funkce, mají úměrně tomu pomalý úbytek v řádu učení.
 Celkový efekt tedy je, že se síť pohybuje rychleji ve směrech menšího spádu.
 Jedna iterace potom vypadá následovně:
-\begin{align}
-	g &\leftarrow \nabla_\theta J(\theta), \\
-	r &\leftarrow r + g \odot g, \\
-	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
-\end{align}
-kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
-$\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
+% \begin{align}
+% 	g &\leftarrow \nabla_\theta J(\theta), \\
+% 	r &\leftarrow r + g \odot g, \\
+% 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{r}} \odot g,
+% \end{align}
+% kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
+% $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
 Poznamenejme, že dle \cite{Adam} algoritmus AdaGrad funguje dobře s řídkými gradienty.
+Nevýhoda tohoto algoritmu ovšem je jeho paměť - ve svých proměnných střádá velmi vzdálené hodnoty gradientu,
+což dle \cite{Goodfellow} mnohdy vede k předčasnému poklesu řádu učení.
 
 \subsection{RMSProp}
 
-Nevýhoda tohoto algoritmu ovšem je jeho paměť - v proměnné $r$ si pamatuje velmi vzdálené hodnoty gradientu,
-což dle \cite{Goodfellow} mnohdy vede k předčasnému poklesu řádu učení.
-Proto je namístě uvést další algoritmus - \emph{RMSProp}.
+Uveďmě další algoritmus - \emph{RMSProp} (zkratka angl. \emph{root mean squared propagation}).
 Tento algoritmus nahrazuje součet přes všechny hodnoty gradientu exponenciálně tlumeným váženým průměrem,
 a to způsobem, kde jedna iterace vypadá následovně \cite{RMSProp}:
 \begin{align}
@@ -889,7 +913,12 @@ a to způsobem, kde jedna iterace vypadá následovně \cite{RMSProp}:
 \end{align}
 kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
-Objevil se tu však nový hyper-parametr $\rho \in [0, 1)$ - \emph{decay rate} (bez překladu).
+Objevil se tu však nový hyper-parametr $\rho \in [0, 1)$ nazývaný \emph{decay rate} (bez překladu).
+
+RMSProp se ukazuje jako jeden z nejúspěšnějších algoritmů,
+proto je dnes v praxi jedním z nejpoužívanějších \cite{Goodfellow}.
+Důvodem je jeho vhodnost pro nekonvexní optimalizaci, která je v kontextu neuronových sítí naprosto zásadní.
+Oproti algoritmu AdaGrad, který se ukázal jako vhodný pro konvexní optimalizaci, se jedná o bezespornou výhodu.
 
 \subsection{Adam}
 
@@ -899,19 +928,19 @@ V prvním přiblížení se jedná o kombinaci algoritmu RMSProp a metody hybnos
 Ve skutečnosti však je hybnost zakomponována již v~následujícím,
 a to sice v odhadu prvního obecného momentu gradientu.
 Druhým aspektem, ve kterém se algoritmus liší od prostého RMSProp s hybností,
-jsou korekce pomocí prahu prováděné na odhadech prvního a druhého obecného momentu gradientu.
-Jedna iterace algoritmu vypadá \cite{Adam}:
-\begin{align}
-	g &\leftarrow \nabla_\theta J(\theta), \\
-	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
-	r &\leftarrow \rho_2 \cdot r + (1 - \rho_2) \cdot g \odot g, \\
-	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t}, \\
-	\hat{r} &\leftarrow \frac{r}{1 - \rho_2^t}, \\
-	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{\hat{r}}} \odot \hat{s},
-\end{align}
-kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
-$\odot$ značí Hadamardův součin, výraz zlomku a~odmocniny na šestém řádku je myšlen po složkách,
-$t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou hyper-parametry nazvané \emph{decay rate}.
+jsou korekce prováděné na odhadech prvního a druhého obecného momentu gradientu.
+% Jedna iterace algoritmu vypadá \cite{Adam}:
+% \begin{align}
+% 	g &\leftarrow \nabla_\theta J(\theta), \\
+% 	s &\leftarrow \rho_1 \cdot s + (1 - \rho_1) \cdot g, \\
+% 	r &\leftarrow \rho_2 \cdot r + (1 - \rho_2) \cdot g \odot g, \\
+% 	\hat{s} &\leftarrow \frac{s}{1 - \rho_1^t}, \\
+% 	\hat{r} &\leftarrow \frac{r}{1 - \rho_2^t}, \\
+% 	\theta &\leftarrow \theta - \frac{\epsilon}{\delta + \sqrt{\hat{r}}} \odot \hat{s},
+% \end{align}
+% kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
+% $\odot$ značí Hadamardův součin, výraz zlomku a~odmocniny na šestém řádku je myšlen po složkách,
+% $t$ je pořadí iterace a $\rho_1, \rho_2 \in [0, 1)$ jsou hyper-parametry nazvané \emph{decay rate}.
 
 
 \section{Stochastické algoritmy učení}
@@ -920,15 +949,28 @@ Výše zmíněné metody, jak je patrné z jejich předpisů, počítají gradie
 Tento krok je ovšem velmi časově náročný, protože standardní trénovací sady mívají velmi mnoho vzorků.
 Při~připomenutí (\ref{averageloss}) se výpočet sestává z $N$ výpočtů dílčích gradientů:
 \begin{equation}
-	\nabla_\theta J(\theta) = \frac{1}{N} \sum_{i=1}^N \nabla_\theta L(F_{\theta}(x^{(i)}), y^{(i)}).
+	\nabla_\theta J(\theta) =
+	\frac{1}{N} \sum_{i=1}^N \nabla_\theta L\left(F_{\theta}(x^{(i)}), y^{(i)}\right).
 \end{equation}
+Po aplikaci řetězového pravidla:
+\begin{equation}
+	\nabla_\theta J(\theta) =
+	\frac{1}{N} \sum_{i=1}^N \nabla_\xi L\left(F_{\theta}(x^{(i)}), y^{(i)}\right) D_\theta F_\theta(x^{(i)}),
+\end{equation}
+kde došlo k označení $L = L(\xi, \eta)$.
 
 Proto je doporučenou praxí dle \cite{Goodfellow} aproximovat gradient účelové funkce $\nabla_\theta J(\theta)$
 pomocí výpočtu na~tzv. \emph{mini-dávce} (z angl. \emph{mini-batch}).
 Jedná se v každém kroku gradientního sestupu nebo jeho modifikací o to,
 že se z trénovací sady rovnoměrně vybere $M \ll N$ vzorků gradient se odhadne pomocí výpočtu na~těchto $M$ vzorcích:
 \begin{equation}
-	\nabla_\theta J(\theta) \approx \frac{1}{M} \sum_{j=1}^M \nabla_\theta L(F_{\theta}(x^{(i_j)}), y^{(i_j)}).
+	\nabla_\theta J(\theta) \approx
+	\frac{1}{M} \sum_{j=1}^M \nabla_\theta L\left(F_{\theta}(x^{(i_j)}), y^{(i_j)}\right).
+\end{equation}
+Při užití řetězového pravidla:
+\begin{equation}
+	\nabla_\theta J(\theta) \approx
+	\frac{1}{M} \sum_{j=1}^M \nabla_\xi L\left(F_{\theta}(x^{(i_j)}), y^{(i_j)}\right) D_\theta F_\theta(x^{(i_j)}).
 \end{equation}
 
 Číslo $M$ lze vybírat dle \cite{Goodfellow} v řádu jednotek až stovek.
@@ -943,10 +985,16 @@ ty však pro svou stochastickou variantu nemají speciální název.
 Szegedy a spol. \cite{szegedy2014intriguing} objevili zvláštní chování klasifikační neuronové sítě,
 které spočívá v nesprávné klasifikaci mírně pozměněných vzorků trénovací sady neuronové sítě,
 kde ono mírné pozměnění nemění správnost příslušné značky.
-Zjištění lze formálně zapsat následovně:
+Zaveďme funkci $C: \mathbb{R}^{m_1} \rightarrow \{1, 2, ..., m_1\}$,
+tedy funkci na prostoru značek, resp. výstupů klasifikační neuronové sítě,
+která přiřadí každému vektoru index odpovídající třídy s předpisem:
 \begin{equation}
-	(\exists x, y \in \mathbb{T})(\exists \Delta x \in \mathbb{R}^n, \|\Delta x\| < \kappa)
-	(F_\theta(x) = y \land F_\theta(x + \Delta x) \neq y),
+	C(y) = \operatorname{argmax}_{i \in \{1, 2, ..., m_1\}} y_i.
+\end{equation}
+Zjištění lze potom formálně zapsat následovně:
+\begin{equation}
+	(\exists x, y)(\exists \Delta x, \|\Delta x\| < \kappa)
+	(C(F_\theta(x)) = C(y) \land C(F_\theta(x + \Delta x)) \neq C(y)),
 \end{equation}
 kde $\kappa$ je malé číslo a $\|\cdot\|$ je $L_p$ norma.
 Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vzorky}.
@@ -954,7 +1002,7 @@ Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vz
 Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako
 \begin{equation}
 	\widetilde{\mathbb{X}}_x = \{\tilde{x} \in \mathbb{R}^n	| 
-	F_\theta(\tilde{x}) \neq y \land \|\tilde{x} - x\| < \kappa \}.
+	C(F_\theta(\tilde{x})) \neq C(y) \land \|\tilde{x} - x\| < \kappa \}.
 \end{equation}
 
 Takto obecná definice adversariálních vzorků ovšem neposkytuje návod na jejich nalezení.
@@ -978,9 +1026,10 @@ díky jevu \emph{přenositelnosti} (angl. \emph{transferability}) jsou tyto vzor
 
 Dále se metody generování adversariálních vzorků dělí na \emph{cílené} (angl. \emph{targeted})
 a \emph{necílené} (angl. \emph{untargeted}).
-Cílené útoky generují vzorky $\tilde{x} = x + \Delta x$ tak, aby $F_\theta(\tilde{x}) = \tilde{y}$
-pro pevně zvolenou značku $\tilde{y}$ různou od původní značky $y = F_\theta(x)$.
-Necílené útoky předem nevybírají značku za cíl, nýbrž požadavkem je jen, aby $F_\theta(\tilde{x}) \neq F_\theta(x)$.
+Cílené útoky generují vzorky $\tilde{x} = x + \Delta x$ tak, aby $C(F_\theta(\tilde{x})) = C(\tilde{y})$
+pro pevně zvolenou značku $\tilde{y}$ různou od původní značky $C(y) = C(F_\theta(x))$.
+Necílené útoky předem nevybírají značku za cíl, nýbrž požadavkem je jen,
+aby $C(F_\theta(\tilde{x})) \neq C(F_\theta(x))$.
 Necílené útoky nebývají tolik účinné jako cílené \cite{L_BFGS}.
 
 \subsection{FGSM}
@@ -990,15 +1039,16 @@ První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emp
 Jedná se o necílenou metodu, která využívá mnoho-dimenzionální lineární vztahy neuronové sítě \cite{CSI_algo}
 a~má předpis:
 \begin{equation} \label{fgsm}
-	\tilde{x} = x + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))
+	\tilde{x} = x + \kappa \cdot \operatorname{sign}(\nabla_x L(F_{\theta}(x), y))
 \end{equation}
 při zachování značení z minulých kapitol textu,
-označení $sign$ pro znaménkovou funkci a $\gamma$ pro velikost složek perturbace $\Delta x$.
+označení $\operatorname{sign}$ pro znaménkovou funkci a $\kappa$ pro velikost složek perturbace $\Delta x$,
+tedy $\kappa$ je poloměr kulového oklolí $x$ v $L^\infty$ normě.
 
 \subsection{Iterativní FGSM}
 
-Druhá metoda jde o krok dál, vzorec (\ref{fgsm}) aplikuje iterativně několikrát a generuje posloupnost $(x_n)_{n=0}^K$,
-kde $K$ je počet iterací metody.
+Druhá metoda jde o krok dál, vzorec (\ref{fgsm}) aplikuje iterativně několikrát
+a generuje posloupnost $(\tilde{x}_n)_{n=0}^K$, kde $K$ je počet iterací metody.
 Jedná se o metodu \emph{I-FGSM} (z angl. \emph{iterative fast gradient sign method}) představenou v \cite{I_FGSM}
 s předpisem:
 \begin{align} 
@@ -1006,22 +1056,10 @@ s předpisem:
 	\tilde{x}_{n+1} &= Clip_x^\kappa \{\tilde{x}_n + \gamma \cdot sign(\nabla_x L(F_{\theta}(x), y))\}, \label{i_fgsm}
 \end{align}
 kde funkce $Clip$ omezuje výsledný součet, aby byl v $\kappa$-okolí původního vzorku $x$
-a zároveň v definičním oboru neuronové sítě $F_\theta$ -
-například jsou-li vzorky obrázky, funkce $Clip$ zajišťuje, aby hodnoty pixelů nebyly záporné či vyšší než 255.
+a zároveň platným vstupem pro neuronovou síť $F_\theta$ -
+například jsou-li vzorky obrázky, funkce $Clip$ zajišťuje i to, aby hodnoty pixelů nebyly záporné či vyšší než 255.
 Počet iterací je ovšem dalším hyper-parametrem, který je nutno nastavit.
-Jedná se tedy o necílenou metodu.
-
-\subsection{Cílená optimalizační úloha}
-
-Třetí metoda (cílená) nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
-\cite{szegedy2014intriguing}, \cite{L_BFGS}:
-\begin{equation} \label{optim_adv}
-	\tilde{x} = \arg \min_{\hat{x} \in Dom_{F_\theta}} \lambda \cdot \|\hat{x} - x\|
-	+ L(F_{\theta}(\hat{x}), \tilde{y}),
-\end{equation}
-kde $\lambda > 0$, $Dom_{F_\theta}$ je definičním oborem $F_\theta$, $\tilde{y}$ značí cílenou nesprávnou značku.
-Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
-(angl. \emph{box-constrained L-BFGS}).
+Jedná se o necílenou metodu.
 
 \subsection{PGD}
 
@@ -1030,14 +1068,40 @@ Tato metoda je silnější variantou I-FGSM \cite{CSI_algo}
 a spočívá v náhodné inicializaci vzorku $\tilde{x}_0$ uvnitř $\kappa$-okolí původního vzorku
 a následných iteracích jako v I-FGSM \cite{PGD}.
 
+\subsection{Cílená optimalizační úloha}
+
+Čtvrtá metoda (cílená) nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
+\cite{szegedy2014intriguing}, \cite{L_BFGS}:
+\begin{equation} \label{optim_adv}
+	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \lambda \cdot \|\hat{x} - x\|
+	+ L(F_{\theta}(\hat{x}), \tilde{y}) \right),
+\end{equation}
+kde $\tilde{y}$ značí cílenou nesprávnou značku,
+$\lambda > 0$ je zvoleno pomocí \emph{line-search} algoritmu jako maximální hodnota,
+pro kterou platí, že $C(F_\theta(\tilde{x})) = C(\tilde{y})$.
+Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
+(angl. \emph{box-constrained L-BFGS}).
+
+Na význam parametru $\lambda$ lze nahlédnout následovně:
+Bude-li $\lambda$ příliš malé, při řešení \eqref{optim_adv} nedojde k tomu,
+aby se $\tilde{x}$ podobalo původnímu vzorku $x$, a tedy nebude v $\kappa$-okolí $x$.
+Bude-li $\lambda$ příliš velké,
+bude při řešení \eqref{optim_adv} kladen příliš velký důraz na první člen účelové funkce,
+takže řešením optimalizačního problému v \eqref{optim_adv} bude původní vzorek $x$.
+Je tedy třeba vhodné $\lambda$ najít.
+
 \subsection{CW}
-Následující metoda (necílená) má opět optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
+Následující metoda (necílená) má optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
 a~má předpis \cite{L_BFGS}, \cite{CSI_algo}:
 \begin{equation} \label{cw}
-	\tilde{x} = \arg \min_{\hat{x} \in Dom_{F_\theta}} \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y),
+	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y) \right),
 \end{equation}
 kde $c > 0$.
-
+K nastavení parametru $c$ lze přistoupit obdobně jako u předchozí metody
+a jeho hodnotu hledat pomocí \emph{line-search} algoritmu.
+Zde ovšem je zapotřebí hledat jeho minimální hodnotu,
+pro kterou bude platit, že $C(F_\theta(\tilde{x})) \neq C(y)$.
+ 
 % Robustní učení
 \chapter{Robustní učení neuronové sítě}
 
@@ -1067,11 +1131,12 @@ Tento přístup je využit v tomto textu.
 Nyní je namístě vyslovit poznámku o inicializaci parametrů neuronové sítě před samotným učením.
 Dle \cite{Goodfellow} je standardním postupem pro inicializaci vybírat hodnoty parametrů náhodně,
 a to z rovnoměrného rozdělení na rozumném intervalu.
-Konkrétní experimenty v tomto textu pracují s následujícím rozdělením vah a prahů:
+Konkrétní experimenty v tomto textu pracují s následujícím rozdělením vah, prahů a prvků konvolučních jader:
 \begin{equation}
-	(\mathbb{A})_{i, j}, b_i \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
+	w_{i, j}, b_i, k_{i, j} \sim U\left(- \frac{1}{\sqrt{n}}, + \frac{1}{\sqrt{n}}\right),
 \end{equation}
-kde $n$ je v případě vah počet sloupečků matice vah, v případě prahů velikost vektoru prahů.
+kde $n$ je v případě parametrů husté vrstvy počet sloupečků matice vah,
+v případě konvolučních vrstev je $n$ rovno součinu počtu vstupních kanálů s součinem rozměrů konvolučních jader.
 Závěrem této poznámky tedy je, že inicializace parametrů neuronové sítě je náhodný proces.
 To má za důsledek fakt, že na proces učení neuronové sítě lze nahlížet očima statistika.
 Tento text konkrétně nahlíží na úspěšnost neuronové sítě na testovací sadě jako na náhodnou veličinu.
@@ -1175,44 +1240,40 @@ než u stochastického gradientního sestupu.
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=1]{Images/Graphics/hubert.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{1}}
-	\label{mlp_figure}
-	\emph{Simple} - stochastický gradientní sestup;
-	\emph{Momentum} - metoda hybnosti;
-	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
-\end{figure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Images/Graphics/hubert.pdf}
+		\caption{Srovnání algoritmů učení \Romannum{1}}
+		\label{mlp_figure}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Images/Graphics/ivan.pdf}
+		\caption{Srovnání algoritmů učení \Romannum{2}}
+		\label{cnn_figure}
+	\end{subfigure}
 
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/ivan.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{2}}
-	\label{cnn_figure}
-	\emph{Simple} - stochastický gradientní sestup;
-	\emph{Momentum} - metoda hybnosti;
-	\emph{Nesterov} - metoda Něstěrovovy hybnosti.
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/nevil.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{3}}
-	\label{mlp_advanced_figure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Images/Graphics/nevil.pdf}
+		\caption{Srovnání algoritmů učení \Romannum{3}}
+		\label{mlp_advanced_figure}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Images/Graphics/oto.pdf}
+		\caption{Srovnání algoritmů učení \Romannum{4}}
+		\label{cnn_advanced_figure}
+	\end{subfigure}
+	\caption{Srovnání algoritmů učení}
 	\emph{SGD} - stochastický gradientní sestup;
+	\emph{Momentum} - metoda hybnosti;
+	\emph{Nesterov} - metoda Něstěrovovy hybnosti;
 	\emph{AdaGrad} - algoritmus AdaGrad;
 	\emph{RMSProp} - algoritmus RMSProp;
-	\emph{Adam} - algoritmus Adam
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1]{Images/Graphics/oto.pdf}
-	\caption{Srovnání algoritmů učení \Romannum{4}}
-	\label{cnn_advanced_figure}
-	\emph{SGD} - stochastický gradientní sestup;
-	\emph{AdaGrad} - algoritmus AdaGrad;
-	\emph{RMSProp} - algoritmus RMSProp;
-	\emph{Adam} - algoritmus Adam
+	\emph{Adam} - algoritmus Adam.
 \end{figure}
 
 
