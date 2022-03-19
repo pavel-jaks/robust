@@ -416,7 +416,7 @@ kde platí:
 \end{align}
 a má předpis $\forall i \in \{1, ..., C\}, \forall j \in \{1, ..., W_{out}\}, \forall k \in \{1, ..., H_{out}\}$:
 \begin{equation}
-	\phi(u) = \operatorname{max}\{u_{i, \mu, \nu} | (j-1) \cdot k_1 < \mu \leq j \cdot k_1, (k-1) \cdot k_2 < \mu \leq k \cdot k_2 \}.
+	\phi(u) = \operatorname{max}\{u_{i, \mu, \nu} | (j-1) k_1 < \mu \leq j k_1, (k-1) k_2 < \nu \leq k k_2 \}.
 \end{equation}
 
 \subsection{Aktivační vrstva}
@@ -440,14 +440,53 @@ Další oblíbenou aktivační vrstvou je \emph{softmax vrstva}.
 Ta má pro odpovídající funkci $\phi$, která v tomto případě zobrazuje vektor na vektor stejných rozměrů
 (tedy $\phi : \mathbb{R}^{p_1} \rightarrow \mathbb{R}^{p_1}$) předpis:
 \begin{equation} \label{softmax}
-	\forall i \in \{1, 2, ..., p_1\} \quad \phi (u)_i = \frac{e^{a_i}}{\sum_{j=1}^{p_1} e^{a_j}}.
+	\forall i \in \{1, 2, ..., p_1\} \quad \phi (u)_i = \frac{e^{u_i}}{\sum_{j=1}^{p_1} e^{u_j}}.
 \end{equation}
 Užití této aktivační vrstvy je na snadě. Jelikož prvky výsledné aktivace leží v intervalu $[0, 1]$
 a sečtou se na $1$, lze výstup takovéto aktivační vrstvy interpretovat jako pravděpodobnostní distribuci.
 
 \section{Hluboká dopředná neuronová síť}
 
+Nejjednodušším modelem neuronové sítě je \emph{hluboká dopředná neuronová síť},
+která je složením hustých a aktivačních vrstev.
+Konkrétně je odpovídající zobrazení $F$ složením sudého počtu vrstev,
+kde na liché pozici je vrstva hustá a na sudé pozici je vrstva aktivační.
+Tedy $F : \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{m_1}$.
+
+Motivace za pojmenováním takovéhoto zobrazení jako hluboké dopředné neuronové sítě je následující:
+Pojmem \emph{neuronová síť} se rozumí složení každé jednotlivé dvojvrstvy
+$\varphi = \phi_{activation} \circ \phi_{dense}$
+(hustá vrstva $\phi_{dense}$ spojená s následující aktivační vrstvou $\phi_{activation}$)
+z mnoha tzv. \emph{umělých neuronů}
+- dílčích výpočetních jednotek, které mají přepis 
+\begin{equation} \label{neuron}
+	\varphi (u)_i = \sigma \left(b_i + \sum_{j=1}^n w_{i,j} u_j\right),
+\end{equation}
+kde $b_i$ je $i$-tá složka vektoru prahů husté vrstvy,
+$w_{i,j}$ je složka v $i$-tém řádku a $j$-tém sloupci matice vah husté vrstvy
+a $\sigma$ je aktivační funkce příslušející aktivační vrstvě.
+Takto definovaný umělý neuron vzdáleně připomíná neuron v biologickém smyslu,
+neboť má mnoho vstupů a jeden výstup.
+Tímto způsobem zavedené umělé neurony jsou potom pospojovány v neuronovou síť.
+
+Za pojmem \emph{dopředná} v názvu hluboká dopředná neuronová síť stojí fakt,
+že informace plyne od vstupu první vrstvy až po aktivace poslední vrstvy v jediném směru,
+který je určen architekturou sítě.
+
+Termín \emph{hluboká} je potom zaveden pro sítě, které mají více než jednu dvojvrstvu.
+
 \section{Konvoluční neuronová síť}
+
+Pojmem \emph{konvoluční neuronová síť} je myšleno složení vrstev neuronů,
+z nichž alespoň jedna je konvoluční.
+Standardně je konvoluční vrstva používána společně s aktivační vrstvou a pooling vrstvou,
+a tedy tvoří konvoluční trojvrstvu $\varphi = \phi_{pooling} \circ \phi_{activation} \circ \phi_{convolution}$,
+kde $\phi_{convolution}$ je konvoluční vrstva,
+$\phi_{activation}$ je aktivační vrstva a $\phi_{pooling}$ je pooling vrstva.
+Takovýchto trojvrstev může být v konvoluční síti několik za sebou
+a následovaat může několik vrstev hustých spolu s aktivačními.
+Takto zavedená konvoluční trojvrstva má velmi vítanou vlastnost,
+totiž že výsledná síť je do určité míry invariantní vůči translacím vstupu \cite{Goodfellow}.
 
 % Úvodní pojednání o neuronových sítích
 % Umělý neuron
@@ -583,14 +622,19 @@ a sečtou se na $1$, lze výstup takovéto aktivační vrstvy interpretovat jako
 % Učení neuronové sítě
 \chapter{Učení neuronové sítě}
 
-Standardní přístup k \emph{učení neuronové sítě}, což je termín,
-kterým se označuje vhodné nalezení parametrů neuronové sítě,
-je paradigma učení s učitelem.
+Předchozí kapitola představila neuronové sítě jakožto složení vrstev neuronů.
+Jednotlivé vrstvy jsou ovšem parametrizovány parametry, o nichž není jasné, jak je nastavit.
+Například hustá vrstva má za parametry matici vah $W$ a vektor prahů $b$.
+Označme tedy písmenem $\theta$ vektor všech parametrů neuronové sítě
+a poznamenejme závislost zobrazení neuronové sítě na parametrech $\theta$ dolním indexem v $F_\theta$.
+Hledání vhodných parametrů $\theta$ je potom označováno pojmem \emph{učení neuronové sítě}.
+
+Standardní přístup k učení je paradigma učení s učitelem.
 Tento pohled na učení neuronové sítě předpokládá existenci
 tzv. \emph{trénovací sady dat} $\mathbb{T}$ (angl. \emph{training dataset}),
-což je uspořádaná dvojice obsahující množinu \emph{vzorků} $\mathbb{X} = \{x^{(i)} | i \in \hat{N} \}$
-a k nim příslušné \emph{značky} $\mathbb{Y} = \{y^{(i)} | i \in \hat{N} \}$,
-kde pojem vzorek představuje vstup neuronové sítě jakožto zobrazení
+což je uspořádaná dvojice obsahující množinu \emph{vzorků} $\mathbb{X} = \left\{x^{(i)} | i \in \{1, ..., N\} \right\}$
+a k nim příslušné \emph{značky} $\mathbb{Y} = \left\{y^{(i)} | i \in \{1, ..., N\} \right\}$,
+kde pojem vzorek představuje vstup neuronové sítě
 a pojem značka představuje správný výstup neuronové sítě;
 $N$ je potom velikost trénovací sady $\mathbb{T}$.
 Trénovací sada pak hraje roli učitele.
@@ -603,58 +647,67 @@ Jedná se o reálnou funkci, která měří, jak moc se trénovaná neuronová s
 ve svých predikcích na~vzorcích trénovací sady.
 Úloha učení je potom převedena na úlohu optimalizace tohoto vhodně zvoleného kritéria.
 
-Standardní účelová funkce je sestavena jako součet nebo průměr dílčích ztrát,
+Standardní účelová funkce je sestavena jako průměr dílčích ztrát,
 které neuronová síť dosahuje na vzorcích trénovací sady:
-\begin{equation}
-	J(\theta) = \sum_{i=1}^N L(F_{\theta}(x^{(i)}), y^{(i)}),
-\end{equation}
-případně:
 \begin{equation} \label{averageloss}
 	J(\theta) = \frac{1}{N} \sum_{i=1}^N L(F_{\theta}(x^{(i)}), y^{(i)}),
 \end{equation}
-kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: Dom_{F_\theta} \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$
-parametrizovaná parametry $\theta$,
-$L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce. 
-V tomto textu se držme tvaru v~(\ref{averageloss}).
+kde $L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
+\subsection{Střední kvadratická chyba}
 
-% \subsection{Střední kvadratická chyba}
-
-Jedna z klasických účelových funkcí je funkce střední kvadratické chyby.
+Jedna z klasických účelových funkcí je funkce \emph{střední kvadratické chyby}.
 Je dána přepisem:
-\begin{equation}
-	J(\theta) = \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m(F_\theta(x^{(i)})_j - y^{(i)}_j)^2
-\end{equation}
-nebo
-\begin{equation}
+\begin{equation} \label{mean_square_error}
 	J(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2,
 \end{equation}
-kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: Dom_{F_\theta} \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$ parametrizovaná parametry $\theta$
-a $\|\cdot\|_2$ je $L^2$ norma.
+kde $\|\cdot\|_2$ je $L^2$ norma.
 
-% \subsection{Ztráta křížové entropie}
+Výhodou této účelové funkce je fakt, že ji lze aplikovat na tenzory libovoných rozměrů.
+Nahlédneme-li na výraz v \eqref{mean_square_error}, $J(\theta)$ nabývá vždy nezáporné hodnoty
+a globální minimum $0$ právě tehdy, když $\forall i \in \{1, ..., N\} \; F_\theta(x^{(i)}) = y^{(i)}$.
 
-Další účelová funkce, která nachází uplatnění v klasifikačních problémech, se vypočte pomocí křížové entropie:
-\begin{equation} \label{crossentropy}
-	J(\theta) = - \frac{1}{N} \sum_{i=1}^N H(y^{(i)}, F_\theta(x^{(i)})),
-\end{equation}
-kde $H$ označuje právě onu křížovou entropii mezi pravděpodobnostními distribucemi.
-Připomeňme, že klasifikační neuronová síť produkuje diskrétní pravděpodobnostní distribuce,
-a proto lze na výstup takovéto neuronové sítě a její značky (také pravděpodobnostní distribuce)
-aplikovat křížovou entropii.
-Onen výraz v (\ref{crossentropy}) lze spočíst následovně:
+Další vlastností této účelové funkce je rozdíl v citlivosti na malé hodnoty výrazu $\|F_\theta(x^{(i)}) - y^{(i)}\|_2$
+oproti jeho velkým hodnotám. Tj. pro $\|F_\theta(x^{(i)}) - y^{(i)}\|_2 < 1$ je výraz po umocnění na druhou ještě menší,
+kdežto pro $\|F_\theta(x^{(i)}) - y^{(i)}\|_2 > 1$ je výraz po umocnění ještě větší,
+což při aplikaci později popsaných algoritmů minimalizace ztráty, které využívají gradient účelové funkce,
+vede k větší toleranci malých odchylek, než kdyby byla použita $L^1$ norma.
+
+
+\subsection{Ztráta křížové entropie}
+
+Pro klasifikační problémy se ovšem standardně používá \emph{ztráta křížové entropie}.
+Připomeňme, že u klasifikačního problému je výstup neuronové sítě pravděpodobnostní distribuce
+a značky jsou též pravděpodobnostní distribuce.
+Křížová entropie potom měří vzdálenost distribučních funkcí
+a má svůj původ v \emph{Kullbackově-Leiblerově divergenci} $D_{KL}$.
+Máme-li dvě pravděpodobnostní distribuce $f$ a $g$,
+pak křížová entropie $H(f, g)$ je rovna
 \begin{equation}
-	J(\theta) = - \frac{1}{N} \sum_{i=1}^N \sum_{j=1}^m y^{(i)}_j \cdot \ln (F_\theta(x^{(i)})_j),
+	H(f, g) = H(f) + D_{KL}(f, g),
 \end{equation}
-přičemž $x^{(i)}$ je $i$-tý vektor trénovací sady,
-$y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta: Dom_{F_\theta} \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$
-parametrizovaná parametry $\theta$.
+kde $H(f)$ je entropie $f$.
+Pro diskrétní pravděpodobnostní distribuce máme:
+\begin{align}
+	H(f, g) &= - \sum_i f_i \operatorname{ln}(f_i) + \sum_i f_i \operatorname{ln} \left(\frac{f_i}{g_i}\right), \\
+	H(f, g) &= - \sum_i f_i \operatorname{ln}(g_i).
+\end{align}
+
+
+Proto lze psát:
+\begin{equation} \label{crossentropy}
+	J(\theta) = \frac{1}{N} \sum_{i=1}^N H(y^{(i)}, F_\theta(x^{(i)})).
+\end{equation}
+Onen výraz $H(y^{(i)}, F_\theta(x^{(i)}))$ v (\ref{crossentropy}) lze tedy spočíst následovně:
+\begin{equation}
+	H(y^{(i)}, F_\theta(x^{(i)})) = - \sum_{j=1}^m y^{(i)}_j \cdot \ln (F_\theta(x^{(i)})_j).
+\end{equation}
+
+Zmiňme důležitost přechodu od Kullbackovy-Leiblerovy divergence ke křížové entropii.
+Standardně je značka $y$ v tzv. \emph{one-hot encoding} formě,
+tedy je nulová až na jednu komponentu, která je rovna $1$.
+Potom by dle definice $D_{KL}(y, F_\theta(x))$ byla ona divergence nedefinovaná,
+neboť bychom měli sčítat výrazy $0 \cdot \operatorname{ln}(0)$.
 
 
 % Aby bylo možné zadefinovat učeovou funkci pomocí \emph{záporného logaritmu věrohodnosti} (ZLV),
@@ -698,62 +751,69 @@ který lze spočíst pomocí \emph{algoritmu zpětného šíření chyby} (angl.
 Tento algoritmus však lze použít nejen v takto úzce specializovaném prostředí strojového učení,
 nýbrž i pro výpočet Jacobiho matice libovolné funkce (dle \cite{Goodfellow}).
 
-Pro celkový popis algoritmu zaveďme pojem \emph{výpočetního grafu}.
-Nechť vrcholy grafu představují proměnné, a to libovolných rozměrů,
-hrany grafu nechť jsou barevné a orientované, kde barva značí jednu z prováděných operací
-a orientace značí, jaká proměnná vznikla ze které pomocí dané operace.
+% Pro celkový popis algoritmu zaveďme pojem \emph{výpočetního grafu}.
+% Nechť vrcholy grafu představují proměnné, a to libovolných rozměrů,
+% hrany grafu nechť jsou barevné a orientované, kde barva značí jednu z prováděných operací
+% a orientace značí, jaká proměnná vznikla ze které pomocí dané operace.
 
-Pojem výpočetního grafu lze ilustrovat následujícím příkladem:
-Nechť proměnná $u$ je číslo a proměnné $v$ a $w$ vektory stejných rozměrů a platí,
-že proměnnou $u$ lze získat jako $u = v \cdot w$.
-Potom tomuto příkladu náleží výpočetní graf o třech vrcholech, a to vrcholech proměnných $v$, $w$ a $u$,
-a dvou hranách - první z $v$ do $u$ o barvě odpovídající tomu býti prvním argumentem skalárního součinu
-a druhá z $w$ do $u$ o~barvě odpovídající tomu býti druhým argumentem skalárního součinu.
+% Pojem výpočetního grafu lze ilustrovat následujícím příkladem:
+% Nechť proměnná $u$ je číslo a proměnné $v$ a $w$ vektory stejných rozměrů a platí,
+% že proměnnou $u$ lze získat jako $u = v \cdot w$.
+% Potom tomuto příkladu náleží výpočetní graf o třech vrcholech, a to vrcholech proměnných $v$, $w$ a $u$,
+% a dvou hranách - první z $v$ do $u$ o barvě odpovídající tomu býti prvním argumentem skalárního součinu
+% a druhá z $w$ do $u$ o~barvě odpovídající tomu býti druhým argumentem skalárního součinu.
 
-Dále je zapotřebí uvést \emph{řetězové pravidlo} pro výpočet derivace složené funkce, o které se algoritmus opírá.
+Algoritmus stojí na opakované aplikaci \emph{řetězového pravidla} pro výpočet derivace složené funkce.
+Proto zde řetězové pravidlo uveďme.
 Nechť $g: \mathbb{R}^n \rightarrow \mathbb{R}^m$ a $h: \mathbb{R}^m \rightarrow \mathbb{R}^p$, $a \in \mathbb{R}^n$,
 potom:
 \begin{equation}
-D(h \circ g)(a) = Dh(g(a)) \cdot Dg(a),
+D(h \circ g)(a) = Dh(g(a)) Dg(a),
 \end{equation}
 kde $D$ značí totální diferenciál.
 Zúžíme-li se na $p = 1$, dostáváme:
 \begin{equation} \label{jacobigradientmul}
-	\nabla (h \circ g)(a) = \nabla h (g(a)) \cdot D g(a),
+	\nabla (h \circ g)(a) = \nabla h (g(a)) D g(a),
 \end{equation}
 podíváme-li se na $i$-tou komponentu gradientu $h \circ g$:
 \begin{equation} \label{chainrule}
 	\partial_i (h \circ g)(a) = \sum_{j=1}^m \partial_j h(g(a)) \cdot \partial_i g_j(a),
 \end{equation}
 kde $g_j$ značí $j$-tou komponentu vektorové funkce $g$.
-
 Tedy jak lze vidět v (\ref{jacobigradientmul}),
 pro algoritmus bude stěžejní násobení vektoru gradientu s maticí totálního diferenciálu.
-Vrcholy výpočetního grafu jsou ovšem libovolných rozměrů.
-Potom lze dané proměnné urovnat do vektorů
-a~spočíst gradient opět násobením vektoru gradientu s maticí totálního diferenciálu
-a~následně převést vypočtený gradient zpět do příslušného tvaru.
 
-Nyní lze nahlédnout na výpočet funkce jejíž gradient je žádoucí spočíst,
-například účelové funkce neuronové sítě, pomocí výpočetního grafu.
-Potom algoritmus zpětného šíření chyby postupuje po výpočetním grafu od výsledné proměnné k listovým vrcholům
-a aplikuje řetězové pravidlo.
+% Vrcholy výpočetního grafu jsou ovšem libovolných rozměrů.
+% Potom lze dané proměnné urovnat do vektorů
+% a~spočíst gradient opět násobením vektoru gradientu s maticí totálního diferenciálu
+% a~následně převést vypočtený gradient zpět do příslušného tvaru.
 
-V praxi je ovšem snadné natrefit na velmi složité výpočetní grafy, které vedou k vyhodnocování mnoha podvýrazů.
+% Nyní lze nahlédnout na výpočet funkce jejíž gradient je žádoucí spočíst,
+% například účelové funkce neuronové sítě, pomocí výpočetního grafu.
+% Potom algoritmus zpětného šíření chyby postupuje po výpočetním grafu od výsledné proměnné k listovým vrcholům
+% a aplikuje řetězové pravidlo.
+
+Pro neuronové sítě algoritmus zpětného šíření chyby postupuje zpět celou neuronovou sítí
+a počítá dle řetězového pravidla parciální derivace účelové funkce dle parametrů neuronové sítě.
+V praxi je ovšem snadné natrefit na velmi složité neuronové sítě,
+které vedou k vyhodnocování mnoha podvýrazů v jednotlivých krocích algoritmu.
 Navíc mnoho takovýchto podvýrazů může být stejných.
-Při implementaci je tedy namístě otázka, zda již vyhodnocené výrazy uložit do paměti
+Proto je při implementaci namístě otázka, zda již vyhodnocené výrazy uložit do paměti,
 či je pokaždé vyhodnotit znovu.
-Je-li žádoucí co nejkratší doba běhu, pak je odpovědí vyhodnocené výrazy ukládat.
-Opačný přístup lze uplatnit při~nedostatku paměti stroje.
+% Záleží potom na parametrech počítače.
+Je-li žádoucí co nejkratší doba běhu, pak je odpovědí vyhodnocené výrazy ukládat,
+neboť jejich získání z paměti počítače je mnohem rychlejší než opakované počítání.
+Ovšem při nedostatečné kapacitě paměti počítače není mnohdy možné ukládat všechny mezivýpočty,
+proto je implementováno jejich opakované počítání na úkor času běhu algoritmu.
 
 
 
 \section{Algoritmy učení}
 
-% \subsection{Gradientní sestup}
+\subsection{Gradientní sestup}
 
 Základním algoritmem pro učení neuronové sítě je \emph{gradientní sestup} (angl. \emph{gradient descent}).
-Opírá se o fakt, že gradient reálné funkce určuje směr největšího spádu dané funkce v daném bodě.
+Opírá se o fakt, že gradient reálné funkce určuje směr největšího růstu dané funkce v daném bodě.
 Proto, máme-li účelovou funkci $J(\theta)$, kde $\theta$ jsou parametry neuronové sítě,
 má smysl tyto parametry aktualizovat proti směru gradientu funkce $J$ následujícím způsobem:
 \begin{equation}
@@ -761,14 +821,14 @@ má smysl tyto parametry aktualizovat proti směru gradientu funkce $J$ následu
 \end{equation}
 kde $\epsilon$ je tzv. \emph{řád učení} (angl. \emph{learning rate})
 - kladné číslo, které určuje velikost jednoho kroku;
-jedná se o další hyper-parametr neuronové sítě.
+jedná se o tzv. \emph{hyper-parametr} neuronové sítě.
 Takovouto aktualizaci parametrů neuronové sítě lze provést několikrát, a to například tolikrát,
 dokud účelová funkce nedosáhne přijatelné hodnoty.
 Ideální by bylo, kdybychom gradientním sestupem dosáhli globálního minima účelové funkce,
 to ovšem není v žádném případě zaručeno, že se stane, gradientní sestup totiž dokáže nalézt pouze lokální minimum
 - ale to je pro reálné aplikace mnohdy dostačující.
 
-% \subsection{Hybnost}
+\subsection{Metoda hybnosti}
 
 Modifikací gradientního sestupu je tzv. \emph{metoda hybnosti} \cite{momentum}.
 Ta uvádí na scénu novou proměnnou - \emph{rychlost} $v$ (z angl. \emph{velocity}),
@@ -783,7 +843,7 @@ Užití hybnosti vede tedy k představení dalšího hyper-parametru, a to param
 který určuje míru ovlivnění dalšího kroku předchozími odhady gradientu.
 Dle \cite{Goodfellow} jsou za hodnoty tohoto parametru nejčastěji volena čísla $0.5$, $0.9$ a $0.99$.
 
-% \subsection{Něstěrov}
+\subsection{Metoda Něstěrovy hybnosti}
 
 Jinou modifikací gradientního sestupu, která je obdobou hybnosti, je \emph{metoda Něstěrovovy hybnosti}.
 Ta má následující předpis iterace \cite{Nesterov}:
@@ -796,7 +856,7 @@ Existují další algoritmy, které pracují s proměnným řádem učení.
 Jedná se o \emph{algoritmy s přizpůsobivým řádem učení}: \emph{AdaGrad}, \emph{RMSProp} a \emph{Adam}.
 Tyto algoritmy přizpůsobují řád učení jednotlivým parametrům zvlášť.
 
-% \subsection{AdaGrad}
+\subsection{AdaGrad}
 
 Algoritmus \emph{AdaGrad} dle \cite{AdaGrad} přizpůsobuje řád učení každému parametru
 jednotlivě, a to jeho škálováním nepřímo úměrně druhé odmocnině součtu všech hodnot gradientu,
@@ -805,7 +865,7 @@ To vede k tomu, že parametry, kterým přísluší velké hodnoty parciálních
 mají úměrně tomu rychlý úbytek v řádu učení, zatímco parametry, kterým přísluší
 malé hodnoty parciálních derivací učelové funkce, mají úměrně tomu pomalý úbytek v řádu učení.
 Celkový efekt tedy je, že se síť pohybuje rychleji ve směrech menšího spádu.
-Jedna iterace by potom mohla vypadat následovně:
+Jedna iterace potom vypadá následovně:
 \begin{align}
 	g &\leftarrow \nabla_\theta J(\theta), \\
 	r &\leftarrow r + g \odot g, \\
@@ -815,7 +875,7 @@ kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
 Poznamenejme, že dle \cite{Adam} algoritmus AdaGrad funguje dobře s řídkými gradienty.
 
-% \subsection{RMSProp}
+\subsection{RMSProp}
 
 Nevýhoda tohoto algoritmu ovšem je jeho paměť - v proměnné $r$ si pamatuje velmi vzdálené hodnoty gradientu,
 což dle \cite{Goodfellow} mnohdy vede k předčasnému poklesu řádu učení.
@@ -831,7 +891,7 @@ kde $\delta$ je malé číslo (např. $10^{-7}$) pro numerickou stabilitu,
 $\odot$ značí Hadamardův součin a výraz zlomku a~odmocniny na třetím řádku je myšlen po složkách.
 Objevil se tu však nový hyper-parametr $\rho \in [0, 1)$ - \emph{decay rate} (bez překladu).
 
-% \subsection{Adam}
+\subsection{Adam}
 
 Posledním představeným algoritmem je algoritmus \emph{Adam}, který nese název z anglického \emph{adaptive moments},
 což přeloženo do češtiny zní jako přizpůsobivé momenty.
@@ -860,32 +920,21 @@ Výše zmíněné metody, jak je patrné z jejich předpisů, počítají gradie
 Tento krok je ovšem velmi časově náročný, protože standardní trénovací sady mívají velmi mnoho vzorků.
 Při~připomenutí (\ref{averageloss}) se výpočet sestává z $N$ výpočtů dílčích gradientů:
 \begin{equation}
-	\nabla_\theta J(\theta) = \frac{1}{N} \sum_{i=1}^N \nabla_\theta L(F_{\theta}(x^{(i)}), y^{(i)}),
+	\nabla_\theta J(\theta) = \frac{1}{N} \sum_{i=1}^N \nabla_\theta L(F_{\theta}(x^{(i)}), y^{(i)}).
 \end{equation}
-kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$N$ je velikost trénovací sady,
-$F_\theta$ neuronová síť jakožto funkce $F_\theta:~Dom_{F_\theta}~\subset~\mathbb{R}^n \rightarrow \mathbb{R}^m$
-parametrizovaná parametry $\theta$,
-$L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
 Proto je doporučenou praxí dle \cite{Goodfellow} aproximovat gradient účelové funkce $\nabla_\theta J(\theta)$
 pomocí výpočtu na~tzv. \emph{mini-dávce} (z angl. \emph{mini-batch}).
 Jedná se v každém kroku gradientního sestupu nebo jeho modifikací o to,
 že se z trénovací sady rovnoměrně vybere $M \ll N$ vzorků gradient se odhadne pomocí výpočtu na~těchto $M$ vzorcích:
 \begin{equation}
-	\nabla_\theta J(\theta) \approx \sum_{j=1}^M \nabla_\theta L(F_{\theta}(x^{(i_j)}), y^{(i_j)}),
+	\nabla_\theta J(\theta) \approx \frac{1}{M} \sum_{j=1}^M \nabla_\theta L(F_{\theta}(x^{(i_j)}), y^{(i_j)}).
 \end{equation}
-kde $x^{(i)}$ je $i$-tý vektor trénovací sady, $y^{(i)}$ je $i$-tý vektor trénovacích značek,
-$M$ je velikost mini-dávky,
-$i_j~\sim~U\{1, N\}$ jsou indexy vzorků vybraných do mini-dávky,
-$F_\theta$ je neuronová síť jakožto funkce $F_\theta:~Dom_{F_\theta}~\subset~\mathbb{R}^n~\rightarrow~\mathbb{R}^m$
-parametrizovaná parametry $\theta$,
-$L$ značí konkrétní ztrátu pro daný vzorek a $J$ je celková účelová funkce.
 
 Číslo $M$ lze vybírat dle \cite{Goodfellow} v řádu jednotek až stovek.
-Při aplikaci této apriximace během standardního gradientního sestupu se algoritmu
+Při aplikaci této aproximace během standardního gradientního sestupu se algoritmu
 říká \emph{stochastický gradientní sestup} (angl. \emph{stochastic gradient descent}),
-ovšem tento úkrok stranou lze provést i v případě ostatních představených algoritmech,
+ovšem tento úkrok stranou lze provést i v případě ostatních představených algoritmů,
 ty však pro svou stochastickou variantu nemají speciální název.
 
 % Adversariální vzorky
@@ -934,7 +983,7 @@ pro pevně zvolenou značku $\tilde{y}$ různou od původní značky $y = F_\the
 Necílené útoky předem nevybírají značku za cíl, nýbrž požadavkem je jen, aby $F_\theta(\tilde{x}) \neq F_\theta(x)$.
 Necílené útoky nebývají tolik účinné jako cílené \cite{L_BFGS}.
 
-% \subsection{FGSM}
+\subsection{FGSM}
 
 První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emph{FGSM}
 (z angl. \emph{fast gradient sign method}).
@@ -946,7 +995,7 @@ a~má předpis:
 při zachování značení z minulých kapitol textu,
 označení $sign$ pro znaménkovou funkci a $\gamma$ pro velikost složek perturbace $\Delta x$.
 
-% \subsection{Iterativní FGSM}
+\subsection{Iterativní FGSM}
 
 Druhá metoda jde o krok dál, vzorec (\ref{fgsm}) aplikuje iterativně několikrát a generuje posloupnost $(x_n)_{n=0}^K$,
 kde $K$ je počet iterací metody.
@@ -962,7 +1011,7 @@ například jsou-li vzorky obrázky, funkce $Clip$ zajišťuje, aby hodnoty pixe
 Počet iterací je ovšem dalším hyper-parametrem, který je nutno nastavit.
 Jedná se tedy o necílenou metodu.
 
-% \subsection{Optimalizační úloha pro adversariální vzorek}
+\subsection{Cílená optimalizační úloha}
 
 Třetí metoda (cílená) nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
 \cite{szegedy2014intriguing}, \cite{L_BFGS}:
@@ -974,14 +1023,14 @@ kde $\lambda > 0$, $Dom_{F_\theta}$ je definičním oborem $F_\theta$, $\tilde{y
 Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
 (angl. \emph{box-constrained L-BFGS}).
 
-% \subsection{PGD}
+\subsection{PGD}
 
 Další metoda (necílená) nese název \emph{PGD} (zkratka angl. \emph{projected gradient descent}).
 Tato metoda je silnější variantou I-FGSM \cite{CSI_algo}
 a spočívá v náhodné inicializaci vzorku $\tilde{x}_0$ uvnitř $\kappa$-okolí původního vzorku
 a následných iteracích jako v I-FGSM \cite{PGD}.
 
-% \subsection{C\&W}
+\subsection{CW}
 Následující metoda (necílená) má opět optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
 a~má předpis \cite{L_BFGS}, \cite{CSI_algo}:
 \begin{equation} \label{cw}
