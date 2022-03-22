@@ -315,9 +315,9 @@ Mezi nejčestější problémy, jejichž řešením může být vhodná neuronov
 či \emph{klasifikace}, která má za cíl předpovědět třídu v němž se daný vstup nachází.
 Obecně tak neuronové síti odpovídá libovolně komplikované zobrazení
 $F: \mathbb{R}^{n_1, ..., n_k} \rightarrow \mathbb{R}^{m_1, ..., m_l}$.
-Pro případ regrese potom $l = 1$, $m = 1$ a výstup $F$ hraje roli predikované hodnoty,
+Pro případ regrese potom $l = 1$, $m_1 = 1$ a výstup $F$ hraje roli predikované hodnoty,
 pro případ klasifikace je též $l = 1$,
-ale $m$ je rovno počtu tříd a výstup $F$ je predikovanou pravděpodobnostní distribucí,
+ale $m_1$ je rovno počtu tříd a výstup $F$ je predikovanou pravděpodobnostní distribucí,
 která určuje s jakou pravděpodobností patří daný vstup příslušné třídě.
 
 Samotná síť sestává z mnoha dílčích navzájem propojených částí,
@@ -408,17 +408,17 @@ Pojem \emph{pooling vrstvy} (bez překladu) se skrývá funkce,
 která reportuje souhrné statistiky vstupu.
 Například nejčastěji používanou pooling vrstvou je tzv. \emph{max pooling}
 s parametry $k_1$, $k_2$ (angl \emph{kernel-size})
-která při aplikaci na obrázek o rozměrech $C \times W \times H$ (počet kanálů, šířka, výška)
+která při aplikaci na obrázek o rozměrech $C \times W_{in} \times H_{in}$ (počet kanálů, šířka, výška)
 v každém kanálu reportuje maximální hodnotu v blocích o rozměrech $k_1 \times k_2$.
-Potom zobrazení $\phi$ je zobrazení $\phi:\mathbb{R}^{C, W, H}~\rightarrow~\mathbb{R}^{C, W_{out}, H_{out}}$,
+Potom zobrazení $\phi$ je zobrazení $\phi:\mathbb{R}^{C, W_{in}, H_{in}}~\rightarrow~\mathbb{R}^{C, W_{out}, H_{out}}$,
 kde platí:
 \begin{align}
-	W_{out} &= \left\lceil \frac{W}{k_1} \right\rceil, \\
-	H_{out} &= \left\lceil \frac{H}{k_2} \right\rceil,
+	W_{out} &= \left\lceil \frac{W_{in}}{k_1} \right\rceil, \\
+	H_{out} &= \left\lceil \frac{H_{in}}{k_2} \right\rceil,
 \end{align}
 a má předpis $\forall i \in \{1, ..., C\}, \forall j \in \{1, ..., W_{out}\}, \forall k \in \{1, ..., H_{out}\}$:
 \begin{equation}
-	\phi(u) = \operatorname{max}\{u_{i, \mu, \nu} | (j-1) k_1 < \mu \leq j k_1, (k-1) k_2 < \nu \leq k k_2 \}.
+	\phi(u)_{i, j, k} = \operatorname{max}\{u_{i, \mu, \nu} | (j-1) k_1 < \mu \leq j k_1, (k-1) k_2 < \nu \leq k k_2 \}.
 \end{equation}
 
 \subsection{Aktivační vrstva}
