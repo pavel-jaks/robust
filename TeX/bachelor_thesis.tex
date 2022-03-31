@@ -314,7 +314,7 @@ Mezi nejčestější problémy, jejichž řešením může být vhodná neuronov
 čili předpovídání jedné skalární hodnoty na základě vstupu,
 či \emph{klasifikace}, která má za cíl předpovědět třídu v němž se daný vstup nachází.
 Obecně tak neuronové síti odpovídá libovolně komplikované zobrazení
-$F: \mathbb{R}^{n_1, ..., n_k} \rightarrow \mathbb{R}^{m_1, ..., m_l}$.
+$F: \mathbb{R}^{n_1 \times ... \times n_k} \rightarrow \mathbb{R}^{m_1 \times ... \times m_l}$.
 Pro případ regrese potom $l = 1$, $m_1 = 1$ a výstup $F$ hraje roli predikované hodnoty,
 pro případ klasifikace je též $l = 1$,
 ale $m_1$ je rovno počtu tříd a výstup $F$ je predikovanou pravděpodobnostní distribucí,
@@ -327,7 +327,7 @@ o nichž pojednávají následující pasáže této kapitoly.
 
 Prvním základním konceptem, který stojí za pojmem neuronové sítě, je rozdělení výpočtu do vrstev.
 Takové vrstvy potom charakterizuje zobrazení
-$\phi : \mathbb{R}^{p_1, ..., p_r} \rightarrow \mathbb{R}^{q_1, ..., q_s}$,
+$\phi : \mathbb{R}^{p_1 \times ... \times p_r} \rightarrow \mathbb{R}^{q_1 \times ... \times q_s}$,
 jehož předpis již lze snadno vyjádřit.
 Obrazy vstupů při zobrazení $\phi$ se potom nazývají \emph{aktivace}.
 
@@ -340,7 +340,7 @@ a má předpis
 \begin{equation} \label{dense}
 	\phi (u) = W u + b,
 \end{equation}
-kde $W \in \mathbb{R}^{q_1, p_1}$ je \emph{matice vah} (z angl. \emph{weight})
+kde $W \in \mathbb{R}^{q_1 \times p_1}$ je \emph{matice vah} (z angl. \emph{weight})
 a $b \in \mathbb{R}^{q_1}$ je \emph{vektor prahů} (z angl. \emph{bias}).
 
 Motivací za pojmenováním této vrstvy jako husté nebo též plně propojené je fakt,
@@ -388,11 +388,11 @@ Uvěďme předpis pro zobrazení $\phi$, které odpovídá konvoluční vrstvě:
 \begin{equation} \label{convolution_layer}
 	\forall j \in \{1, 2, ..., C_{out}\} \qquad \phi(u)_j = b_j + \sum_{i=1}^{C_{in}} u_i * K_{j, i}
 \end{equation}
-kde $\phi : \mathbb{R}^{C_{in}, W_{in}, H_{in}} \rightarrow \mathbb{R}^{C_{out}, W_{out}, H_{out}}$
+kde $\phi : \mathbb{R}^{C_{in} \times W_{in} \times H_{in}} \rightarrow \mathbb{R}^{C_{out} \times W_{out} \times H_{out}}$
 ($C_{in}$ je počet vstupních kanálů, $C_{out}$ počet výstupních kanálů,
 $W_{in}$, $H_{in}$ jsou vstupní šířka a výška, $W_{out}$, $H_{out}$ jsou výstupní šířka a výška),
-$b \in \mathbb{R}^{C_{out}, W_{out}, H_{out}}$ je práh,
-$K~\in~\mathbb{R}^{C_{out}, C_{in}, k_1, k_2}$
+$b \in \mathbb{R}^{C_{out} \times W_{out} \times H_{out}}$ je práh,
+$K~\in~\mathbb{R}^{C_{out} \times C_{in} \times k_1 \times k_2}$
 je tenzor konvolučních jader ($k_1$ a $k_2$ jsou rozměry konvolučního jádra).
 
 Za povšimnutí stojí, že standardně $W_{out} \neq W_{in}$ a $H_{out} \neq H_{in}$,
@@ -410,7 +410,7 @@ Například nejčastěji používanou pooling vrstvou je tzv. \emph{max pooling}
 s parametry $k_1$, $k_2$ (angl \emph{kernel-size})
 která při aplikaci na obrázek o rozměrech $C \times W_{in} \times H_{in}$ (počet kanálů, šířka, výška)
 v každém kanálu reportuje maximální hodnotu v blocích o rozměrech $k_1 \times k_2$.
-Potom zobrazení $\phi$ je zobrazení $\phi:\mathbb{R}^{C, W_{in}, H_{in}}~\rightarrow~\mathbb{R}^{C, W_{out}, H_{out}}$,
+Potom zobrazení $\phi$ je zobrazení $\phi:\mathbb{R}^{C \times W_{in} \times H_{in}}~\rightarrow~\mathbb{R}^{C \times W_{out} \times H_{out}}$,
 kde platí:
 \begin{align}
 	W_{out} &= \left\lceil \frac{W_{in}}{k_1} \right\rceil, \\
@@ -867,10 +867,11 @@ Ta má následující předpis iterace \cite{Nesterov}:
 
 Zásadním rozdílem oproti metodě hybnosti je, kde se vyhodnocuje $\nabla_\theta J$.
 V tomto algoritmu se totiž gradient nevyhodnocuje $\theta$,
-nýbrž v bodě $\theta + \alpha \cdot v$ - tedy po aplikaci proměnné rychlosti na parametry.
+nýbrž v bodě $\theta + \alpha \cdot v$, tedy po aplikaci proměnné rychlosti na parametry.
 Za následek tento přístup má, že oproti klasické metodě hybnosti je gradient přesnější.
 
-Nevýhodou této metody je ovšem vyšší výpočetní náročnost.
+Nevýhodou této metody je ovšem vyšší výpočetní náročnost,
+jelikož se účelová funkce a její derivace musejí vyhodnocovat v jiném bodě.
 
 
 \section{Algoritmy s přizpůsobivým řádem učení}
@@ -992,7 +993,7 @@ Zjištění lze potom formálně zapsat následovně:
 	(\exists x, y)(\exists \Delta x, \|\Delta x\| \leq \kappa)
 	(C(F_\theta(x)) = C(y) \land C(F_\theta(x + \Delta x)) \neq C(y)),
 \end{equation}
-kde $\kappa$ je malé číslo a $\|\cdot\|$ je $L_p$ norma.
+kde $\kappa$ je malé číslo a $\|\cdot\|$ je $L^p$ norma.
 Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vzorky}.
 
 Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako

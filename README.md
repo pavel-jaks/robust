@@ -64,7 +64,7 @@ Repozitář vypracování bakalářské práce
 
 ## Konzultace 30. 3. 2022
 
-* [ ] Čárka na krát v zápisu dimenzí
-* [ ] Pomlčka, co vypadá jako mínus
-* [ ] Proč je Něstěrov výpočetně náročnější
+* [x] Čárka na krát v zápisu dimenzí
+* [x] Pomlčka, co vypadá jako mínus
+* [x] Proč je Něstěrov výpočetně náročnější
 * [ ] Adversariální experimenty
