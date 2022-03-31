@@ -61,3 +61,10 @@ Repozitář vypracování bakalářské práce
 
 * [x] Nejdříve vrstvy, potom neurony
 * [x] Jednotlivé komentáře
+
+## Konzultace 30. 3. 2022
+
+* [ ] Čárka na krát v zápisu dimenzí
+* [ ] Pomlčka, co vypadá jako mínus
+* [ ] Proč je Něstěrov výpočetně náročnější
+* [ ] Adversariální experimenty
