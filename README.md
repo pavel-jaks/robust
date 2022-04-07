@@ -67,4 +67,17 @@ Repozitář vypracování bakalářské práce
 * [x] Čárka na krát v zápisu dimenzí
 * [x] Pomlčka, co vypadá jako mínus
 * [x] Proč je Něstěrov výpočetně náročnější
+
+## TODO 7. 4. 2022
+
+* [ ] Naimplementovat line-search pořádně
+* [ ] Naimplementovat L-BFGS jako L-BFGS
 * [ ] Adversariální experimenty
+  * [ ] Vygenerovat spoustu AE
+  * [ ] Generovat pro různá $\kappa$
+  * [ ] C&W - Generovat pro různá *c*
+    * [ ] Tabulka s úspěšností
+  * [ ] L-BFGS - Srovnání best and worst case
+    * [ ] Ideálně cross-label tabulka
+    * [ ] Tabulka výsledky pro $\lambda$
+  * [ ] Zkusit různé normy pro CW
