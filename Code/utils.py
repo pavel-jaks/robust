@@ -162,6 +162,7 @@ class MnistData(AbstractData):
         while len(indexes) < number:
             if MnistData.get_prediction(model, self.training_images[counter])[0] == self.training_labels[counter]:
                 indexes.append(counter)
+            counter += 1
         images = [self.training_images[index].tolist() for index in indexes]
         labels = [self.training_labels[index] for index in indexes]
         return torch.tensor(images), torch.tensor(labels)
