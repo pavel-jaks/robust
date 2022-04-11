@@ -75,9 +75,26 @@ Repozitář vypracování bakalářské práce
 * [ ] Adversariální experimenty
   * [ ] Vygenerovat spoustu AE
   * [ ] Generovat pro různá $\kappa$
-  * [ ] C&W - Generovat pro různá *c*
-    * [ ] Tabulka s úspěšností
+    * [ ] Vliv různosti $\kappa$ pro FGSM metody
   * [ ] L-BFGS - Srovnání best and worst case
     * [ ] Ideálně cross-label tabulka
     * [ ] Tabulka výsledky pro $\lambda$
   * [ ] Zkusit různé normy pro CW
+  * [ ] C&W - Generovat pro různá *c*
+    * [ ] Tabulka s úspěšností
+
+## Návrh provedení
+
+* Podívat se na line-search
+* Celkově
+  * Funkce pro generování
+  * Fixně pro jedno $\kappa$ a maximovou normu
+* FGSM Metody
+  * Různá $\kappa$
+  * maximová norma
+* L-BFGS
+  * Cross-label tabulka
+  * Rozdělení vzniklých parametrů $\lambda$
+  * Maximová norma
+* CW
+  * Úspěšnost metody v závislosti na $c$ a volbě normy

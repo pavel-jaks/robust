@@ -144,3 +144,24 @@ class MnistData(AbstractData):
         clipped_stage_one = clipped_stage_one.detach()
         clipped_stage_one.apply_(lambda x: maximum if x> maximum else (minimum if x < minimum else x))
         return clipped_stage_one
+
+    @staticmethod
+    def clip_with_custom_norm(benign_examples: torch.Tensor, adversarial_examples: torch.Tensor, norm_function, norm_size, minimum=0, maximum=1):
+        difference = adversarial_examples - benign_examples
+        difference = difference.detach()
+        norm = norm_function(difference)
+        if norm <= norm_size:
+            return adversarial_examples
+        else:
+            difference = (norm_size / norm) * difference
+            return benign_examples + difference
+
+    def draw_first(self, number: int, model):
+        counter = 0
+        indexes = []
+        while len(indexes) < number:
+            if MnistData.get_prediction(model, self.training_images[counter])[0] == self.training_labels[counter]:
+                indexes.append(counter)
+        images = [self.training_images[index].tolist() for index in indexes]
+        labels = [self.training_labels[index] for index in indexes]
+        return torch.tensor(images), torch.tensor(labels)
