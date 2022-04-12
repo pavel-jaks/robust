@@ -98,3 +98,12 @@ Repozitář vypracování bakalářské práce
   * Maximová norma
 * CW
   * Úspěšnost metody v závislosti na $c$ a volbě normy
+
+## Otázky
+
+1. V notebooku A_ALLGEN.ipynb mi to vychází docela blbě,
+  totiž u podstatné části vzorků je gradient $\nabla_x L(F_\theta (x), y) = 0$,
+  což je pro FGSM metody špatné. Co s tím?
+     1. Prostě říct, že ty gradienty jsou malé, a kašlat na to?
+2. Jak záleží na volbě normy?
+   1. V CW útoku při volbě $\|.\|_\infty$ to vypadá úplně jinak, než u CW útoku při volbě $\|.\|_1$.
