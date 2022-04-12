@@ -107,3 +107,4 @@ Repozitář vypracování bakalářské práce
      1. Prostě říct, že ty gradienty jsou malé, a kašlat na to?
 2. Jak záleží na volbě normy?
    1. V CW útoku při volbě $\|.\|_\infty$ to vypadá úplně jinak, než u CW útoku při volbě $\|.\|_1$.
+3. Kterou normou to mám clipovat?
