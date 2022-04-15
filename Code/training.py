@@ -1,8 +1,7 @@
-import imp
 import time
 
+import torch
 import torch.nn as nn
-import torch.optim as optim
 
 import utils
 
@@ -28,7 +27,13 @@ class Coach:
             optimizer.step()
             if epoch % noisy == 0 or epoch == 0:
                 if too_noisy:
-                    perf = Coach.measure_performance(model, training_data, False)
+                    perf = Coach.measure_performance(
+                        model,
+                        training_data.get_test_data(),
+                        training_data.get_test_labels(),
+                        training_data.get_data_storage_type(),
+                        False
+                    )
                 else:
                     perf = -1
                 print(f'Epoch {epoch}: {loss.item()}: {perf}')
@@ -36,23 +41,23 @@ class Coach:
         print(f'Training finished at {tt}; lasted {tt - t} seconds.')
 
     @staticmethod
-    def measure_performance(model: nn.Module, data: utils.AbstractData, noisy: bool = True):
-        preds = 0
+    def measure_performance(
+        model: nn.Module,
+        examples: torch.Tensor,
+        labels: torch.Tensor,
+        data_storage_type: utils.DataStorageType,
+        noisy: bool = True
+    ):
+        preds = len(examples)
         succeeded = 0
-        if data.get_data_storage_type() == utils.DataStorageType.ClassificationWithIndexes:
-            test_preds = model(data.get_test_data())    
-            for i in range(len(test_preds)):
-                prob_distr = test_preds[i]
-                label = data.get_test_labels()[i]
-                index = 0
-                m = max(prob_distr)
-                for j in range(len(prob_distr)):
-                    if m == prob_distr[j]:
-                        index = j
-                        break
-                if index == label:
+        if data_storage_type == utils.DataStorageType.ClassificationWithIndexes:
+            test_preds = model(examples)
+            indeces = torch.argmax(test_preds, dim=1)
+            for i in range(len(indeces)):
+                if indeces[i] == labels[i]:
                     succeeded += 1
-                preds += 1
+        else:
+            raise NotImplementedError(f'Data storage type {data_storage_type.name} not implemented.')
         if noisy:
-            print(f'{succeeded / preds * 100} % success on test data')
+            print(f'{succeeded / preds * 100} % success on given data')
         return succeeded / preds

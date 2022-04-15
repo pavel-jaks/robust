@@ -5,6 +5,7 @@ from enum import Enum
 
 from mnist import MNIST
 import torch
+import torch.nn as nn
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -37,6 +38,10 @@ class AbstractData(ABC):
 
     @abstractmethod
     def get_data_storage_type(self) -> DataStorageType:
+        pass
+
+    @abstractmethod
+    def choose_first_well_classified(self, number: int, model: nn.Module):
         pass
 
 
@@ -79,6 +84,17 @@ class MnistData(AbstractData):
     def get_data_storage_type(self) -> DataStorageType:
         return self.data_storage_type
 
+    def choose_first_well_classified(self, number: int, model: nn.Module):
+        counter = 0
+        indexes = []
+        while len(indexes) < number:
+            if MnistData.get_prediction(model, self.training_images[counter])[0] == self.training_labels[counter]:
+                indexes.append(counter)
+            counter += 1
+        images = [self.training_images[index].tolist() for index in indexes]
+        labels = [self.training_labels[index] for index in indexes]
+        return torch.tensor(images), torch.tensor(labels)
+
     @staticmethod
     def get_prediction(model, image):
         my_image = image.unsqueeze(0)
@@ -87,18 +103,6 @@ class MnistData(AbstractData):
         for j in range(10):
             if pred[0, j] == maxout:
                 return j, maxout
-
-    @staticmethod
-    def get_adversarials(model, benign_images, labels, altered_images):
-        possible_adversarials = []
-        for i in range(len(altered_images)):
-            prediction, confidence = MnistData.get_prediction(model, altered_images[i])
-            original_prediction, original_confidence = MnistData.get_prediction(model, benign_images[i])
-            if prediction != labels[i] and original_prediction == labels[i]:
-                params = {"Label": labels[i], "Prediction": prediction, "Confidence": confidence,
-                        "Index": i, "OriginalPrediction": original_prediction, "OriginalConfidence": original_confidence}
-                possible_adversarials.append(params)
-        return possible_adversarials
 
     @staticmethod
     def display(image, scale=False):
@@ -111,23 +115,8 @@ class MnistData(AbstractData):
             plt.imshow(pixels, cmap="gray")
         plt.show()
 
-    @staticmethod
-    def show_adversarial(adversarials, benign_images, altered_images, index):
-        adversarial = adversarials[index]
-        original_image = benign_images[adversarial["Index"]]
-        altered_image = altered_images[adversarial["Index"]]
-        mask = altered_image - original_image
-        # mask = mask * 255
-        # original_image = original_image * 255
-        # altered_image = altered_image * 255
-        MnistData.display(original_image)
-        print("+++++")
-        MnistData.display(mask)
-        print("=====")
-        MnistData.display(altered_image, scale=True)
-        print(f"Label: {adversarial['Label']}, Prediction: {adversarial['Prediction']}, Confidence: {adversarial['Confidence']}")
-        print(f"Original prediction: {adversarial['OriginalPrediction']}, Original confidence: {adversarial['OriginalConfidence']}")
 
+class Clipper:
     @staticmethod
     def clip(benign_examples: torch.Tensor, adversarial_examples: torch.Tensor, max_norm, minimum=0, maximum=1):
         difference = adversarial_examples - benign_examples
@@ -156,13 +145,16 @@ class MnistData(AbstractData):
             difference = (norm_size / norm) * difference
             return benign_examples + difference
 
-    def draw_first(self, number: int, model):
-        counter = 0
-        indexes = []
-        while len(indexes) < number:
-            if MnistData.get_prediction(model, self.training_images[counter])[0] == self.training_labels[counter]:
-                indexes.append(counter)
-            counter += 1
-        images = [self.training_images[index].tolist() for index in indexes]
-        labels = [self.training_labels[index] for index in indexes]
-        return torch.tensor(images), torch.tensor(labels)
+
+class Adversarial:
+    @staticmethod
+    def get_adversarials(model, benign_images, labels, altered_images):
+        possible_adversarials = []
+        for i in range(len(altered_images)):
+            prediction, confidence = MnistData.get_prediction(model, altered_images[i])
+            original_prediction, original_confidence = MnistData.get_prediction(model, benign_images[i])
+            if prediction != labels[i] and original_prediction == labels[i]:
+                params = {"Label": labels[i], "Prediction": prediction, "Confidence": confidence,
+                        "Index": i, "OriginalPrediction": original_prediction, "OriginalConfidence": original_confidence}
+                possible_adversarials.append(params)
+        return possible_adversarials
