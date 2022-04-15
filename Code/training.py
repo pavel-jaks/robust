@@ -56,37 +56,3 @@ class Coach:
         if noisy:
             print(f'{succeeded / preds * 100} % success on test data')
         return succeeded / preds
-
-    @staticmethod
-    def train_combined(model: nn.Module, training_data: utils.AbstractData, loss_function):
-        print('Training Phase 1')
-        Coach.train(
-            model,
-            training_data,
-            loss_function,
-            optim.SGD(model.parameters(), lr=1e-2),
-            30,
-            5001,
-            1000
-        )
-        print('Training Phase 2')
-        Coach.train(
-            model,
-            training_data,
-            loss_function,
-            optim.SGD(model.parameters(), lr=1e-3),
-            100,
-            1001,
-            100
-        )
-        print('Training Phase 3')
-        Coach.train(
-            model,
-            training_data,
-            loss_function,
-            optim.SGD(model.parameters(), lr=1e-5),
-            1000,
-            501,
-            50
-        )
-        print('All training Phases finished')
