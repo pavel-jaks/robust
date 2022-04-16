@@ -140,21 +140,7 @@ class Clipper:
         difference = difference.detach()
         norm = norm_function(difference)
         if norm <= norm_size:
-            return adversarial_examples
+            return Clipper.clip_for_image(adversarial_examples, minimum, maximum)
         else:
             difference = (norm_size / norm) * difference
-            return benign_examples + difference
-
-
-class Adversarial:
-    @staticmethod
-    def get_adversarials(model, benign_images, labels, altered_images):
-        possible_adversarials = []
-        for i in range(len(altered_images)):
-            prediction, confidence = MnistData.get_prediction(model, altered_images[i])
-            original_prediction, original_confidence = MnistData.get_prediction(model, benign_images[i])
-            if prediction != labels[i] and original_prediction == labels[i]:
-                params = {"Label": labels[i], "Prediction": prediction, "Confidence": confidence,
-                        "Index": i, "OriginalPrediction": original_prediction, "OriginalConfidence": original_confidence}
-                possible_adversarials.append(params)
-        return possible_adversarials
+            return Clipper.clip_for_image(benign_examples + difference, minimum, maximum)
