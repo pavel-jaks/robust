@@ -15,5 +15,7 @@
       * pro trénování neuronových sítí
   * utils.py
     * třídy pro práci s datasety
+  * adversarials.py
+    * obsahuje statickou třídu s metodou pro nalezaní adversarialních vzorků
 * .pdf, .txt, .json
   * výsledky experimentů
