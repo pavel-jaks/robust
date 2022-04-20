@@ -144,3 +144,13 @@ class Clipper:
         else:
             difference = (norm_size / norm) * difference
             return Clipper.clip_for_image(benign_examples + difference, minimum, maximum)
+    
+    @staticmethod
+    def clip_batch(benign_examples: torch.Tensor, adversarial_examples: torch.Tensor, norm_function, norm_size, minimum=0, maximum=1):
+        difference = adversarial_examples - benign_examples
+        difference = difference.detach()
+        norm = norm_function(difference)
+        norm = (norm_size / norm).detach().reshape(len(benign_examples), 1).apply_(lambda x: x if x <= 1 else 1)
+        product = norm.expand(len(benign_examples), 28 * 28) * difference.reshape(len(benign_examples), 28 * 28)
+        new_adv = benign_examples + product.reshape(len(benign_examples), 1, 28, 28)
+        return Clipper.clip_for_image(new_adv, minimum, maximum)
