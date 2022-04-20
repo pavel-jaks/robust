@@ -34,4 +34,14 @@ Ve zkratce:
 
 ## Clipování při hledání vzorku
 
-TODO:
+Prvně zmíním, že hledání adv. vzorku, tedy optimalizaci výše uvedené funkce, provádím sign gradient descentem s krokem $10^{-2}$ a $100$ iterací.
+
+Všiml jsem si zajímavé věci: Jelikož chci, aby podle mojí definice byl adv. vzorek adv. vzorkem, tedy i aby $\tilde{x}$ byl v $\kappa$-okolí $x$ (v $L^\infty$ normě), tak to někde musím clipnout.
+Když to clipuju v každé iteraci, tak mi pěkně funguje útok v $L^\infty$ normě a i v $L^1$ normě, ale útok v $L^2$ normě si ani neškrtne.
+Když to clipnu jednou - na konci optimalizace, tak mi zas nefunguje útok v $L^\infty$ normě, zbylé dva jsou v pohodě.
+Tady možná narážím na to, že pořádně nevím, co je *box-constrained optimalizace*.
+
+## Co je to to *c* v předpisu CW?
+
+To je konstanta.
+Lze jí štelovat a hledat minimální takovou, pro kterou neuronka misklasifikuje, nebo jí položit rovno $1$ - tahle hodnota se mi osvědčila.
