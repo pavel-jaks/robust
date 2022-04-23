@@ -1275,78 +1275,98 @@ než u stochastického gradientního sestupu.
 
 \chapter{Vygenerované adversariální vzorky}
 
-% \begin{figure}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_0.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_1.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_2.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_3.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_4.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_5.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_6.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_7.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/FGSM/ALTERED/fgsm_altered_8.png}
-% 	\centering
-% 	\caption{FGSM}
-% \end{figure}
-
-% \begin{figure}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_0.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_1.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_2.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_3.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_4.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_5.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_6.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_7.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/I-FGSM/ALTERED/ifgsm_altered_8.png}
-% 	\centering
-% 	\caption{I-FGSM}
-% \end{figure}
-
-% \begin{figure}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_0.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_1.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_2.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_3.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_4.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_5.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_6.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_7.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/PGD/ALTERED/pgd_altered_8.png}
-% 	\centering
-% 	\caption{PGD}
-% \end{figure}
-
-% \begin{figure}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_0.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_1.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_2.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_3.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_4.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_5.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_6.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_7.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/L-BFGS/ALTERED/lbfgs_altered_8.png}
-% 	\centering
-% 	\caption{L-BFGS}
-% \end{figure}
-
-% \begin{figure}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_0.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_1.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_2.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_3.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_4.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_5.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_6.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_7.png}
-% 	\includegraphics[scale=0.2]{Images/Graphics/AEXAMPLES/CW/ALTERED/cw_altered_8.png}
-% 	\centering
-% 	\caption{CW}
-% \end{figure}
-
 \section{Srovnání metod}
 % Mega obrázek, kvalitativní srovnání, úspěšnost útoků, vše v L^\infty normě
+
+\begin{figure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_4.png}
+		\centering
+		\caption{Benigní vzorky}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_4.png}
+		\centering
+		\caption{FGSM}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_4.png}
+		\centering
+		\caption{I-FGSM}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_4.png}
+		\centering
+		\caption{PGD}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_4.png}
+		\centering
+		\caption{Cílená optimalizační metoda}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_4.png}
+		\centering
+		\caption{CW}
+	\end{subfigure}
+	\centering
+	\caption{Adversariální vzorky generované různými metodami}
+	\label{allgen}
+\end{figure}
 
 \section{Metody založené na FGSM}
 
