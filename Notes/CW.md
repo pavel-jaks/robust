@@ -45,3 +45,49 @@ Tady možná narážím na to, že pořádně nevím, co je *box-constrained opt
 
 To je konstanta.
 Lze jí štelovat a hledat minimální takovou, pro kterou neuronka misklasifikuje, nebo jí položit rovno $1$ - tahle hodnota se mi osvědčila.
+
+## Výsledky experimentů
+
+### c_lambda = 1
+
+Typ CW útoku | Úspěšnost
+---|---
+cw_linfty_always| 74 %
+cw_lone_always| 50 %
+cw_ltwo_always| 8 %
+cw_linfty_once| 0 %
+cw_lone_once| 33 %
+cw_ltwo_once| 87 %
+
+### c_lambda = 10
+
+Typ CW útoku | Úspěšnost
+---|---
+cw_linfty_always| 74 %
+cw_lone_always| 87 %
+cw_ltwo_always| 14 %
+cw_linfty_once| 0 %
+cw_lone_once| 89 %
+cw_ltwo_once| 94 %
+
+### c_lambda = 0.1
+
+Typ CW útoku | Úspěšnost
+---|---
+cw_linfty_always| 74 %
+cw_lone_always| 0 %
+cw_ltwo_always| 1 %
+cw_linfty_once| 0 %
+cw_lone_once| 0 %
+cw_ltwo_once| 8 %
+
+### c_lambda = 100
+
+Typ CW útoku | Úspěšnost
+---|---
+cw_linfty_always| 74 %
+cw_lone_always| 90 %
+cw_ltwo_always| 16 %
+cw_linfty_once| 0 %
+cw_lone_once| 93 %
+cw_ltwo_once| 94 %

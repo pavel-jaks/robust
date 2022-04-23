@@ -24,3 +24,9 @@ Značka | Index
 7 | 37
 8 | 17
 9 | 4
+
+## Celkový setup
+
+- $\kappa = 50 / 255$
+- $\|.\| = \|.\|_\infty$
+- Model - MnistCnnB
