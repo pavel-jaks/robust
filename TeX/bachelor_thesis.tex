@@ -1278,7 +1278,118 @@ než u stochastického gradientního sestupu.
 \section{Srovnání metod}
 % Mega obrázek, kvalitativní srovnání, úspěšnost útoků, vše v L^\infty normě
 
+Přistupme nyní ke srovnání účinnosti metod generování adversariálních vzorků,
+které byly představeny výše, totiž metod \emph{FGSM}, \emph{I-FGSM}, \emph{PGD}, \emph{cílená optimalizační úloha}
+a \emph{CW}.
 
+\subsection{Klasifikační úkol}
+
+Úkol, na kterém budeme metody srovnávat je tentýž jako v případě srovnání algoritmů učení.
+Jedná se tedy o problém klasifikace ručně psaných číslic datové sady MNIST \cite{MNIST}.
+Cílem metod bude tedy vytvořit perturbovaný obrázek číslice stejných rozměrů jako jsou obrázky oné datové sady s tím,
+že snahou bude vytvořit takovou perturbaci,
+pro kterou dojde po jejím přičtení k obrázku z datové sady k nesprávné klasifikaci.
+
+\subsection{Použitý model}
+
+Jelikož všechny tyto metody pracují na \emph{white-box} principu,
+je nutné k jejich provedení mít k dispozici natrénovanou klasifikační neuronovou síť.
+Za tuto je zvolen model konvoluční neuronové sítě složené po řadě z vrstev:
+\begin{enumerate}
+	\item Konvoluční vrstva s $1$ vstupním kanálem, $32$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item aktivační vrstva s funkcí ReLU,
+	\item konvoluční vrstva s $32$ vstupními kanály, $32$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item aktivační vrstva s funkcí ReLU,
+	\item max pooling vrstva s rozměry jádra $2 \times 2$,
+	\item konvoluční vrstva s $32$ vstupními kanály, $64$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item aktivační vrstva s funkcí ReLU,
+	\item konvoluční vrstva s $64$ vstupními kanály, $64$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item aktivační vrstva s funkcí ReLU,
+	\item max pooling vrstva s rozměry jádra $2 \times 2$,
+	\item hustá vrstva s $1024$ vstupy a $200$ výstupy,
+	\item aktivační vrstva s funkcí ReLU,
+	\item hustá vrstva s $200$ vstupy a $10$ výstupy,
+	\item aktivace vrstva s funkcí softmax.
+\end{enumerate}
+
+Tento model byl trénován pomocí algoritmu RMSProp s řádem učení $\epsilon = 10^{-3}$,
+decay rate $\rho = 0.99$ a stabilizační konstantou $\delta = 10^{-8}$.
+Použito bylo $3250$ iterací tohoto algoritmu
+a bylo dosaženo úspěšnosti $97.57 \%$ na testovací datové sadě.
+
+\subsection{Norma perturbace}
+
+Pro srovnání metod generování adversariálních vzorků byla zvolena
+\emph{maximová}, tedy \emph{$L^\infty$} norma.
+Za toleranci v této normě, resp. velikost perturbace byl zvolen ekvivalent
+$50$ pixelových bodů, to jest $\kappa = \frac{50}{255}$,
+jelikož hodnoty pixelů obrázku jsou lineárně přeškálovány do intervalu $[0, 1]$.
+
+Připomeňme, kde figuruje volba normy v předpisech jednotlivých metod generování adversariálních vzorků.
+Pro FGSM útok se volba $L^\infty$ normy odráží v tom,
+že se k benignímu obrázku přičítá $\kappa$ násobek znaménka gradientu,
+tedy z tohoto je nutně norma perturbace $\|\Delta x\|_\infty = \kappa$
+a je možné splnit definici adversariálního vzorku.
+Pro I-FGSM a PGD se volba normy odráží ve funkci \emph{Clip},
+která zajišťuje, že norma perturbace $\|\Delta x\|_\infty \leq \kappa$.
+Pro cílenou optimalizační úlohu a CW útok je volba normy důležitá jednak
+pro množinu kde minimum z příslušné funkce hledáme,
+a jednak pro samotnou funkci, jejíž minimum metoda hledá.
+
+\subsection{Implementační detaily}
+
+Metoda FGSM byla implementována podle předpisu uvedeném v předchozích kapitolách.
+
+Pro metody I-FGSM a PGD byl zvolen krok algoritmu $\gamma = 10^{-2}$
+a počet iterací $62$ podle návrhu v \cite{I_FGSM}.
+
+Cílená optimalizační byla implementována algoritmem sign gradient descent,
+s krokem $10^{-2}$ a $100$ iteracemi, kde parametr $c$ byl volen nejprve jako $c = 100$
+a při neúspěchu nahrazen dle pravidla
+\begin{equation}
+	c \rightarrow \frac{c}{10}.
+\end{equation}
+Pro $c \leq 10^{-2}$ pak metoda vrátila poslední nalezený, byť stále správně klasifikovaný, vzorek.
+Tato procedura byla aplikována pro všechny možné cílové značky
+a za výsledný adversariální vzorek položila ten nejbližší (ve smyslu $L^\infty$ normy)
+původnímu benignímu vzorku.
+
+Metoda CW byla implementována obdobně jako cílená optimalizační metoda
+pomocí sign gradient descentu s krokem $10^{-2}$ a $100$ iteracemi.
+Parametr $\lambda$ byl zvolen pevně jako $\lambda = 1$.
+
+Aby u cílené optimalizační metody a CW útoku byl výsledek v $\kappa$-okolí
+benigního vzorku, je na konci každé iterace aplikována funkce Clip.
+
+\subsection{Výsledky}
+
+Bylo provedeno generování adversariálních vzorků všemi těmito metodami
+a za benigní vzorky bylo použito $100$ vzorků trénovací datové sady MNIST.
+Za úspěšnost metody uvažme procentuální podíl špatně klasifikovaných adversariálních vzorků.
+Potom lze uvést dle tabulky \ref{allgen_success},
+že nejúspěšnější metodou v tomto nastavení je metoda PGD.
+Nejméně úspěšnou metodou v tomto nastavení je naopak FGSM.
+
+\begin{table}
+	\centering
+	\begin{tabular}{| c | c |}
+		\hline
+		Metoda & Úspěšnost \\
+		\hline
+		FGSM & 28 \% \\
+		I-FGSM & 77 \% \\
+		PGD & 80 \% \\
+		Cílená optimalizační metoda & 60 \% \\
+		CW & 74 \% \\
+		\hline
+	\end{tabular}
+	\caption{Úspěšnost metod generování adversariálních vzorků}
+	\label{allgen_success}
+\end{table}
+
+Na příklady adversariálních vzorků lze nahlédnout v obrázku \ref{allgen}.
+Jak je vidět, všechny metody při výše popsané volbě parametrů a implementačních detailů
+přidávají benigním vzorkům do pozadí jakési artefakty.
 
 \begin{figure}
 	\begin{subfigure}[b]{\textwidth}
@@ -1375,10 +1486,73 @@ než u stochastického gradientního sestupu.
 % \section{Analýza cílené optimalizační metody}
 % % Srovnání best case a worst case, resp. cross-label tabulka
 
-\section{Vliv volby normy na metodu CW}
+\section{Analýza CW útoku}
 % Variabilita v parametru c a volba normy
 % Při jakém c mi to fliplo? Odkázat na best case L-BFGS
 
+Při hlubším studiu CW útoku lze dojít k několika závěrům.
+Jeden se týká volby použité $L^{p}$ normy, další detailu implementace,
+totiž jestli dojde k aplikaci funkce Clip na konci procesu generování adversariálních vzorků
+či při každé iteraci algoritmu sign gradient descent.
+A v neposlední řadě lze zkoumat vliv parametru $\lambda$ na úspěšnost metody.
+
+\subsection{Vliv volby normy na parametr $\kappa$}
+
+Parametrem $\kappa$ myslíme poloměr kulového okolí benigního vzorku v příslušné $L^p$ normě,
+kde hledáme adversariální vzorek.
+V předcházející sekci bylo zvoleno pevně $\kappa = \frac{50}{255}$ pro $L^\infty$ normu.
+To umožňuje každé složce vzorku změnit svou hodnotu o $50$ pixelových bodů.
+
+Použijeme-li ovšem stejné $\kappa$ pro $L^1$ normu,
+dovolíme jen jedné složce vzorku změnit svou hodnotu o $50$ pixelových bodů
+nebo dvěma složkám o $25$ pixelových bodů atp.
+Z této úvahy je zřejmé, že se změnou normy musí nastat i změna $\kappa$.
+
+Označme proto ono pevně zvolené $\kappa$ pro $L^\infty$ normu jako $\kappa_\infty$
+a odvoďme, jak by mělo vypadat $\kappa_1$ pro $L^1$ normu a $\kappa_2$ pro $L^2$ normu,
+abychom dovolili v zásadě stejnou změnu hodnot složek vzorku.
+
+Pro vektor $u$ dimenze $k$ platí:
+\begin{align}
+	\|u\|_1 &= \sum_{i=1}^k \left|u_i\right| < \sum_{i=1}^k \operatorname{max}_{i = 1, ..., k} \left|u_i\right| = k \cdot \|u\|_\infty, \\
+	\|u\|_2^2 &= \sum_{i=1}^k \left|u_i\right|^2 < \sum_{i=1}^k \operatorname{max}_{i = 1, ..., k} \left|u_i\right|^2 = k \cdot \|u\|_\infty^2.
+\end{align}
+Odtud lze s přihlédnutím k faktu, že pro náš úkol užíváme vzorky o velikosti $28 \times 28$,
+volit: 
+\begin{align}
+	\kappa_1 &= 28 \cdot 28 \cdot \kappa_\infty, \\
+	\kappa_2 &= \sqrt{28 \cdot 28} \cdot \kappa_\infty = 28 \cdot \kappa_\infty.
+\end{align}
+
+\subsection{Výsledky}
+
+
+
+\begin{table}
+	\centering
+	\begin{tabular}{| c | c || c | c | c | c |}
+		\hline
+		Algoritmus & & $\lambda$ & & & \\
+		\hline
+		Norma & Clip & 0.1 & 1 & 10 & 100 \\
+		\hline
+		\hline
+		$L^\infty$ & Vždy & 74 \% & 74 \% & 74 \% & 74 \% \\
+		\hline
+		$L^1$ & Vždy & 0 \% & 50 \% & 87 \% & 90 \% \\
+		\hline
+		$L^2$ & Vždy & 1 \% & 8 \% & 14 \% & 16 \% \\
+		\hline
+		$L^\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
+		\hline
+		$L^1$ & Jednou & 0 \% & 33 \% & 89 \% & 93 \% \\
+		\hline
+		$L^2$ & Jednou & 8 \% & 87 \% & 94 \% & 94 \% \\
+		\hline
+	\end{tabular}
+	\caption{Úspěšnost CW útoku v závislosti na zvolených parametrech}
+	\label{cw_success}
+\end{table}
 
 \chapter*{Závěr}
 
