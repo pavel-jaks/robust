@@ -1341,13 +1341,13 @@ a jednak pro samotnou funkci, jejíž minimum metoda hledá.
 Metoda FGSM byla implementována podle předpisu uvedeném v předchozích kapitolách.
 
 Pro metody I-FGSM a PGD byl zvolen krok algoritmu $\gamma = 10^{-2}$
-a počet iterací $62$ podle návrhu v \cite{I_FGSM}.
+a počet iterací $62$ podle návrhu v~\cite{I_FGSM}.
 
 Cílená optimalizační byla implementována algoritmem sign gradient descent,
 s krokem $10^{-2}$ a $100$ iteracemi, kde parametr $c$ byl volen nejprve jako $c = 100$
 a při neúspěchu nahrazen dle pravidla
 \begin{equation}
-	c \rightarrow \frac{c}{10}.
+	c \leftarrow \frac{c}{10}.
 \end{equation}
 Pro $c \leq 10^{-2}$ pak metoda vrátila poslední nalezený, byť stále správně klasifikovaný, vzorek.
 Tato procedura byla aplikována pro všechny možné cílové značky
@@ -1492,8 +1492,8 @@ přidávají benigním vzorkům do pozadí jakési artefakty.
 
 Při hlubším studiu CW útoku lze dojít k několika závěrům.
 Jeden se týká volby použité $L^{p}$ normy, další detailu implementace,
-totiž jestli dojde k aplikaci funkce Clip na konci procesu generování adversariálních vzorků
-či při každé iteraci algoritmu sign gradient descent.
+totiž jestli dojde k aplikaci funkce Clip \emph{vždy} při každé iteraci algoritmu sign gradient descent,
+nebo \emph{jednou} na konci procesu generování adversariálních vzorků.
 A v neposlední řadě lze zkoumat vliv parametru $\lambda$ na úspěšnost metody.
 
 \subsection{Vliv volby normy na parametr $\kappa$}
@@ -1526,6 +1526,44 @@ volit:
 
 \subsection{Výsledky}
 
+Byly implementovány útoky s použitím $L^\infty$, $L^1$ a $L^2$ normy
+vždy ve dvou verzích, jedna, kdy je funkce Clip aplikována vždy,
+a druhá, kdy je funkce Clip aplikována jednou.
+Následně byl pomocí každé z těchto implementací proveden útok na $100$ vzorcích trénovací sady MNIST
+pro různé volby parametru $\lambda$.
+Konkrétně po řadě pro hodnoty $\lambda$ $0.1$, $1$, $10$ a $100$.
+Na úspěšnost jednotlivých útoků lze nahlédnout v tabulce \ref{cw_success}
+a na příklad vygenerovaných adversariálních vzorků v obrázku \ref{cw_images}.
+
+Tyto výsledky dávají podnět k vyslovení následujících pozorování.
+$L^\infty$ útok je uspěšný pouze pro verzi, kdy je funkce Clip aplikována vždy.
+Navíc tento útok vykazuje při této implementaci invarianci vůči volbě hodnoty parametru $\lambda$.
+% TODO: Vysvětlení
+Úspěšnost $L^1$ útoku je srovnatelná v nastavení, kdy je funkce Clip aplikována vždy,
+s nastavením, kdy je funkce Clip aplikována jednou.
+Oproti $L^\infty$ útoku ovšem vykazuje silnou závislost na volbě hodnoty parametru $\lambda$,
+kdy metoda je úspěšnější pro vyšší hodnoty $\lambda$.
+CW útok využívající normu $L^2$ je jako $L^\infty$ útok závislý na implementaci,
+zda je funkce Clip aplikována vždy, nebo jednou,
+avšak v případě $L^2$ normy je závislost opačná,
+totiž $L^2$ útok je úspěšný v nastavení \emph{jednou}
+a v nastavení \emph{vždy} nemá zdaleka takovou úspěšnost.
+Stejně jako $L^1$ útok je $L^2$ útok závislý na volbě hodnoty parametru $\lambda$,
+a to tak, že větší hodnota $\lambda$ poskytuje větší úspěšnost útoku.
+Celkově je $L^2$ CW útok při vhodném nastavení parametrů v této implementaci
+nejúspěšnější metoda generování adversariálních vzorků ze všech zkoumaných metod,
+jelikož dosahuje úspěšnosti $94 \%$.
+
+Další pozorování se týká samotné podoby jednotlivých útoků.
+Zatímco $L^\infty$ útok přidává podobně jako metody založené na FGSM útoku
+jakési artefakty do pozadí obrázku,
+$L^1$ útok se zaměřuje pouze na samotnou číslici, a to zatmavením některých pixelů číslice.
+U $L^2$ útoku si lze všimnout kombinace předchozího.
+$L^2$ útok jednak zatmavuje vybrané pixely číslice, jednak přidává artefakty do pozadí číslice.
+Jak je patrné z obrázku \ref{cw_ltwo},
+tyto artefakty se ovšem jako v případě $L^\infty$ útoku nezdají být náhodné.
+$L^2$ útok v tomto konkrétním případě dokreslil do obrázku číslice jedna vodorovnou čáru v místě,
+kde se obvykle nachází vodorovná čára číslice sedm.
 
 
 \begin{table}
@@ -1553,6 +1591,73 @@ volit:
 	\caption{Úspěšnost CW útoku v závislosti na zvolených parametrech}
 	\label{cw_success}
 \end{table}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/benign_2.png}
+		\caption{Benigní vzorek}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_0.1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_linfty_2.png}
+		\caption{$L^\infty$ útok; Clip vždy}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_0.1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_lone_2.png}
+		\caption{$L^1$ útok; Clip vždy}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_0.1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_ltwo_2.png}
+		\caption{$L^2$ útok; Clip vždy}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_0.1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_linfty_2.png}
+		\caption{$L^\infty$ útok; Clip jednou}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_0.1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_lone_2.png}
+		\caption{$L^1$ útok; Clip jednou}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_0.1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_ltwo_2.png}
+		\caption{$L^2$ útok; Clip jednou}
+	\end{subfigure}
+	\caption{CW útok pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
+	\label{cw_images}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/benign_3.png}
+	\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_ltwo_3.png}
+	\caption{$L^2$ CW útok}
+	\label{cw_ltwo}
+\end{figure}
 
 \chapter*{Závěr}
 
