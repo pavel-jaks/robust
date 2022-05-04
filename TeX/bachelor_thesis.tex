@@ -1029,7 +1029,7 @@ Necílené útoky předem nevybírají značku za cíl, nýbrž požadavkem je j
 aby $C(F_\theta(\tilde{x})) \neq C(F_\theta(x))$.
 Necílené útoky nebývají tolik účinné jako cílené \cite{L_BFGS}.
 
-\subsection{FGSM}
+\subsection{Fast gradient sign method}
 
 První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emph{FGSM}
 (z angl. \emph{fast gradient sign method}).
@@ -1058,7 +1058,7 @@ například jsou-li vzorky obrázky, funkce $\operatorname{Clip}$ zajišťuje i 
 Počet iterací je ovšem dalším hyper-parametrem, který je nutno nastavit.
 Jedná se o necílenou metodu.
 
-\subsection{PGD}
+\subsection{Projected gradient descent}
 
 Další metoda (necílená) nese název \emph{PGD} (zkratka angl. \emph{projected gradient descent}).
 Tato metoda je silnější variantou I-FGSM \cite{CSI_algo}
@@ -1070,37 +1070,51 @@ a následných iteracích jako v I-FGSM \cite{PGD}.
 Čtvrtá metoda (cílená) nahlíží na generování adversariálních vzorků jako na optimalizační úlohu
 \cite{szegedy2014intriguing}, \cite{L_BFGS}:
 \begin{equation} \label{optim_adv}
-	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \lambda \cdot \|\hat{x} - x\|
-	+ L(F_{\theta}(\hat{x}), \tilde{y}) \right),
+	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \|\hat{x} - x\|
+	+ \lambda \cdot L(F_{\theta}(\hat{x}), \tilde{y}) \right),
 \end{equation}
 kde $\tilde{y}$ značí cílenou nesprávnou značku,
-$\lambda > 0$ je zvoleno pomocí \emph{line-search} algoritmu jako maximální hodnota,
+$\lambda > 0$ je zvoleno pomocí \emph{line-search} algoritmu jako minimální hodnota,
 pro kterou platí, že $C(F_\theta(\tilde{x})) = C(\tilde{y})$.
 Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
 (angl. \emph{box-constrained L-BFGS}).
 
 Na význam parametru $\lambda$ lze nahlédnout následovně:
-Bude-li $\lambda$ příliš malé, při řešení \eqref{optim_adv} nedojde k tomu,
+Bude-li $\lambda$ příliš velké, při řešení \eqref{optim_adv} nedojde k tomu,
 aby se $\tilde{x}$ podobalo původnímu vzorku $x$, a tedy nebude v $\kappa$-okolí $x$.
-Bude-li $\lambda$ příliš velké,
+Bude-li $\lambda$ příliš malé,
 bude při řešení \eqref{optim_adv} kladen příliš velký důraz na první člen účelové funkce,
 takže řešením optimalizačního problému v \eqref{optim_adv} bude původní vzorek $x$.
 Je tedy třeba vhodné $\lambda$ najít.
 
-\subsection{CW}
+\subsection{Carlini-Wagner}
 Následující metoda (necílená) má optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
 a~má předpis \cite{L_BFGS}, \cite{CSI_algo}:
 \begin{equation} \label{cw}
-	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \|\hat{x} - x\| - c \cdot L(F_{\theta}(\hat{x}), y) \right),
+	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \|\hat{x} - x\| - \lambda \cdot L(F_{\theta}(\hat{x}), y) \right),
 \end{equation}
-kde $c > 0$.
-K nastavení parametru $c$ lze přistoupit obdobně jako u předchozí metody
-a jeho hodnotu hledat pomocí \emph{line-search} algoritmu.
-Zde ovšem je zapotřebí hledat jeho minimální hodnotu,
+kde $\lambda > 0$.
+K nastavení parametru $\lambda$ lze přistoupit obdobně jako u předchozí metody
+a jeho hodnotu hledat pomocí \emph{line-search} algoritmu,
+nebo hodnotu $\lambda$ nastavit pevně jako \emph{hyper-parametr} pro celou proceduru generování adversariálních vzorků.
+Při volbě hledání vhodné hodnoty parametru $\lambda$ metodou line-search je zapotřebí hledat opět jeho minimální hodnotu,
 pro kterou bude platit, že $C(F_\theta(\tilde{x})) \neq C(y)$.
+
+Lze si povšimnout jisté podoby CW útoku s cílenou optimalizační úlohou.
+Obě metody řeší optimalizační úlohu, kde první člen účelové funkce je vzdálenost argumentu minima od původního vzorku
+ve~smyslu $L^p$ normy a druhý člen je vážená účelová funkce, kde onu váhu reprezentuje hodnota $\lambda$,
+kterou ladíme.
+Zásadní rozdíl ovšem je ve znaménku, které stojí před členem obsahujícím účelovou funkci,
+a~ve~značce, která je druhým argumentem účelové funkce.
+Zatímco v případě cílené optimalizační úlohy se snažíme minimalizovat v jistém smyslu
+vzdálenost klasifikace adversariálního vzorku od cílené nesprávné značky,
+v případě CW útoku maximaluzujeme vzdálenost klasifikace adversariálního vzorku od správné značky,
+proto je v případě CW útoku druhý člen se znaménkem mínus.
  
 % Robustní učení
 \chapter{Robustní učení neuronové sítě}
+
+
 
 % Srovnání algoritmů učení
 \chapter{Srovnání algoritmů učení}
@@ -1658,6 +1672,8 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 	\caption{$L^2$ CW útok}
 	\label{cw_ltwo}
 \end{figure}
+
+\chapter{Robustně učené sítě}
 
 \chapter*{Závěr}
 
