@@ -1077,7 +1077,8 @@ kde $\tilde{y}$ značí cílenou nesprávnou značku,
 $\lambda > 0$ je zvoleno pomocí \emph{line-search} algoritmu jako minimální hodnota,
 pro kterou platí, že $C(F_\theta(\tilde{x})) = C(\tilde{y})$.
 Tento optimalizační problém lze řešit algoritmem \emph{L-BFGS} \cite{NumericalOptim}, resp. jeho variantou s vazbami
-(angl. \emph{box-constrained L-BFGS}).
+(angl. \emph{box-constrained L-BFGS})
+nebo pomocí algoritmu \emph{sign gradient descent}, což je algoritmus odvozený od standardního gradientního sestupu.
 
 Na význam parametru $\lambda$ lze nahlédnout následovně:
 Bude-li $\lambda$ příliš velké, při řešení \eqref{optim_adv} nedojde k tomu,
