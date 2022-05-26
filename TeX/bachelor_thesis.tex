@@ -1115,6 +1115,25 @@ proto je v případě CW útoku druhý člen se znaménkem mínus.
 % Robustní učení
 \chapter{Robustní učení neuronové sítě}
 
+Pro vývojáře neuronových sítí, ale i dalších modelů strojového učení
+je standardně jev adversariálních vzorků nežádoucí,
+proto vznikají pokusy o předejití existence těchto adversariálních vzorků.
+Souhrně se tyto snahy nazývají jako \emph{robustní strojové učení}.
+Tento název je motivován faktem, že výsledkem těchto metod je model strojového učení,
+který je robustní vůči adversariálním útokům.
+
+Jako se učení neuronové sítě převádí na optimalizační problém,
+tak i robustní učení neuronové sítě lze vyjádřit jako optimalizační problém.
+Ovšem v případě robustního učení je problém optimalizace dvojitý:
+\begin{equation}
+	\theta = \operatorname{argmin}_{\hat{\theta}} 
+	\frac{1}{N} \sum_{i=1}^N \operatorname{max}_{\tilde{x} \in B(x^{(i)}, \kappa)}
+	L\left(F_{\hat{\theta}}(\tilde{x}), y^{(i)}\right),
+\end{equation}
+kde $\theta$ jsou hledané parametry neuronové sítě
+a $B(x^{(i)}, \kappa)$ je koule se středem v bodě $x^{(i)}$ a poloměrem $\kappa$ ve vhodně zvolené normě.
+
+Interpretace tohoto přístupu je následující.
 
 
 % Srovnání algoritmů učení
