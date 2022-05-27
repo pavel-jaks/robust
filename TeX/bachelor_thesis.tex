@@ -1122,10 +1122,14 @@ Souhrně se tyto snahy nazývají jako \emph{robustní strojové učení}.
 Tento název je motivován faktem, že výsledkem těchto metod je model strojového učení,
 který je robustní vůči adversariálním útokům.
 
+\section{Optimalizační pohled}
+
+\subsection{Formulace robustního učení jako optimalizačního problému}
+
 Jako se učení neuronové sítě převádí na optimalizační problém,
 tak i robustní učení neuronové sítě lze vyjádřit jako optimalizační problém.
 Ovšem v případě robustního učení je problém optimalizace dvojitý:
-\begin{equation}
+\begin{equation} \label{robust_optim}
 	\theta = \operatorname{argmin}_{\hat{\theta}} 
 	\frac{1}{N} \sum_{i=1}^N \operatorname{max}_{\tilde{x} \in B(x^{(i)}, \kappa)}
 	L\left(F_{\hat{\theta}}(\tilde{x}), y^{(i)}\right),
@@ -1134,6 +1138,30 @@ kde $\theta$ jsou hledané parametry neuronové sítě
 a $B(x^{(i)}, \kappa)$ je koule se středem v bodě $x^{(i)}$ a poloměrem $\kappa$ ve vhodně zvolené normě.
 
 Interpretace tohoto přístupu je následující.
+Ztrátová funkce $L$ svým charakterem určuje ne nutně metrickou vzdálenost mezi predikcemi neuronové sítě a správnými značkami.
+Tohoto faktu využívají techniky generování adversariálních vzorků tím, že se tuto vzdálenost snaží zvětšit
+na malém okolí správně klasifikovaného vzorku.
+Robustní učení popsané v (\ref{robust_optim}) má za cíl najít takové parametry neuronové sítě,
+které zaručují, že i na okolí vzorku trénovací sady nabývá ztrátová funkce nízkých hodnot,
+tedy predikce neuronové sítě jsou blízko značce původního vzorku na celém tomto okolí.
+Je ovšem nutné vyslovit předpoklad, který dává této metodě smysl,
+totiž, že se předpokládá, že na celém okolí původního vzorku platí,
+že značka libovolného bodu z tohoto okolí je tatáž jako původního vzorku.
+
+\subsection{Řešení optimalizačního problému robustního učení}
+
+Takto formulovaný optimalizační problém lze řešit též algoritmem gradientního sestupu i dalšími algoritmy od něho odvozenými,
+ovšem s tím rozdílem, že roli účelové funkce hraje:
+\begin{equation}
+	\hat{J}(\theta) = \frac{1}{N} \sum_{i=1}^N \operatorname{max}_{\tilde{x} \in B(x^{(i)}, \kappa)}
+	L\left(F_{\theta}(\tilde{x}), y^{(i)}\right).
+\end{equation} 
+To přináší nutnost v každém kroku algoritmu minimalizace řešit maximalizační problém,
+tedy najít pro každé $i \in \{1, ..., N\}$ takový vzorek $\hat{x}^{(i)} = \operatorname{argmax}_{\tilde{x} \in B(x^{(i)}, \kappa)}
+L\left(F_{\theta}(\tilde{x}), y^{(i)}\right)$,
+ve kterém dojde k vyčíslení gradientu účelové funkce $\nabla_\theta \hat{J}$.
+Tento maximalizační problém lze řešit jako hledání adversariálních vzorků,
+tedy například metodami I-FGSM či PGD představenými v předcházející kapitole.
 
 
 % Srovnání algoritmů učení
