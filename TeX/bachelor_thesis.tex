@@ -1723,6 +1723,64 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 
 \chapter{Robustně učené sítě}
 
+V rámci numerických experimentů, které byly provedeny v souvislosti s touto prací,
+bylo implementováno i robustní učení neuronové sítě podle optimalizačního přístupu uvedeného v jedné z předchozích kapitol.
+Následně pak byla touto implementací učena konvoluční neuronová síť stejné architektury,
+jež byla použita v předchozí kapitole s výsledky experimentů souvisejícími s generováním adversariálních vzorků.
+
+Ohledně detailů implementace lze napsat, že za $\kappa$ v (\ref{robust_optim}) bylo voleno $\kappa = \frac{50}{255}$
+a za normu určující kouli o poloměru $\kappa$ okolo vzorků byla zvolena $L^{\infty}$ norma.
+Dále zmiňme, že vnitřní maximalizační problém byl řešen algoritmem \emph{projected gradient descent} (PGD)
+s krokem $\gamma = 10^{-2}$ a $62$ iteracemi.
+Vnější minimalizace byla potom řešena algoritmem \emph{RMSProp} s řádem učení $\epsilon = 10^{-4}$.
+Jeden krok algoritmu RMSProp byl pak prováděn pomocí mini-dávky o velikosti $30$ vzorků.
+Těchto kroků pak bylo provedeno $5000$.
+
+S tímto nastavením bylo dosaženo úspěšnosti $97.16 \%$ na testovací datové sadě,
+tedy srovnatelné úspěšnosti s nerobustně učenou sítí.
+Narozdíl od nerobustního učení této architektury sítě, které se stejnými parametry trvalo zhruba $2.5$ minuty,
+ovšem robustní učení trvalo více než $3$ hodiny.
+
+\section{Adversariální útoky na robustně učenou síť}
+
+Na takto robustně naučenou neuronovou síť byly provedeny adversariální útoky za stejného nastavení,
+které prezentuje tabulka \ref{allgen_success}.
+Žádný z útoků nebyl pro žádný vzorek úspěšný.
+
+\subsection{CW útok na robustně učenou síť}
+
+Předchozí kapitola představila, že úspěšnost CW útoku závisí také na volbě normy, ve které se útok provádí.
+Proto uveďme tabulku obdobnou tabulce \ref{cw_success} s úspěšností daného nastavení CW útoku na robustně učenou síť.
+
+\begin{table}
+	\centering
+	\begin{tabular}{| c | c || c | c | c | c |}
+		\hline
+		Algoritmus & & $\lambda$ & & & \\
+		\hline
+		Norma & Clip & 0.1 & 1 & 10 & 100 \\
+		\hline
+		\hline
+		$L^\infty$ & Vždy & 0 \% & 0 \% & 0 \% & 0 \% \\
+		\hline
+		$L^1$ & Vždy & 0 \% & 0 \% & 87 \% & 100 \% \\
+		\hline
+		$L^2$ & Vždy & 0 \% & 38 \% & 56 \% & 63 \% \\
+		\hline
+		$L^\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
+		\hline
+		$L^1$ & Jednou & 0 \% & 0 \% & 87 \% & 100 \% \\
+		\hline
+		$L^2$ & Jednou & 0 \% & 85 \% & 79 \% & 77 \% \\
+		\hline
+	\end{tabular}
+	\caption{Úspěšnost CW útoku na robustně učenou síť v závislosti na zvolených parametrech}
+	\label{cw_success_robust}
+\end{table}
+
+Tedy, jak je vidět z tabulky \ref{cw_success_robust}, robustní učení neuchránilo síť od CW útoku provedeného v $L^1$ nebo $L^2$ normě.
+Útok v $L^1$ normě při volbě hodnoty parametru $\lambda = 100$ je dokonce úspěšnější, je-li prováděn na robustně učené síti.
+
 \chapter*{Závěr}
 
 \pagestyle{plain}
