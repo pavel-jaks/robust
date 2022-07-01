@@ -310,7 +310,7 @@ Pojem neuronové sítě představuje výpočetní jednotku, která svou univerz�
 \chapter{Neuronové sítě}
 
 Neuronová síť je svým charakterem velmi přizpůsobivý výpočetní stroj vhodný pro řešení mnoha problémů.
-Mezi nejčestější problémy, jejichž řešením může být vhodná neuronová síť, patří \emph{regrese},
+Mezi nejčastější problémy, jejichž řešením může být vhodná neuronová síť, patří \emph{regrese},
 čili předpovídání jedné skalární hodnoty na základě vstupu,
 či \emph{klasifikace}, která má za cíl předpovědět třídu v němž se daný vstup nachází.
 Obecně tak neuronové síti odpovídá libovolně komplikované zobrazení
@@ -380,13 +380,13 @@ Za~vynechání překlopení jádra lze dojít ke \emph{křížové korelaci}:
 Mnoho knihoven zabývajících se neuronovými sítěmi dle \cite{Goodfellow} implementují křížovou korelaci namísto konvoluce,
 ačkoliv tuto svou implementaci nazývají konvolucí.
 
-Nečastější užití konvoluce v neuronových sítích je při zpracování obrázků,
+Nejčastější užití konvoluce v neuronových sítích je při zpracování obrázků,
 které lze reprezentovat pomocí $C \times W \times H$ tenzorů,
 kde $C$ značí počet kanálů obrázku (nejčastěji tři pro červenou, zelenou a modrou),
 $W$ je šířka, $H$ je výška obrázku.
 Uvěďme předpis pro zobrazení $\phi$, které odpovídá konvoluční vrstvě:
 \begin{equation} \label{convolution_layer}
-	\forall j \in \{1, 2, ..., C_{out}\} \qquad \phi(u)_j = b_j + \sum_{i=1}^{C_{in}} u_i * K_{j, i}
+	\forall j \in \{1, 2, ..., C_{out}\} \qquad \phi(u)_j = b_j + \sum_{i=1}^{C_{in}} K_{j, i} * u_i
 \end{equation}
 kde $\phi : \mathbb{R}^{C_{in} \times W_{in} \times H_{in}} \rightarrow \mathbb{R}^{C_{out} \times W_{out} \times H_{out}}$
 ($C_{in}$ je počet vstupních kanálů, $C_{out}$ počet výstupních kanálů,
@@ -407,7 +407,7 @@ konkrétně při takto prosté implementaci konvoluční vrstvy platí:
 Pojem \emph{pooling vrstvy} (bez překladu) se skrývá funkce,
 která reportuje souhrné statistiky vstupu.
 Například nejčastěji používanou pooling vrstvou je tzv. \emph{max pooling}
-s parametry $k_1$, $k_2$ (angl \emph{kernel-size})
+s parametry $k_1$, $k_2$ (angl. \emph{kernel-size}),
 která při aplikaci na obrázek o rozměrech $C \times W_{in} \times H_{in}$ (počet kanálů, šířka, výška)
 v každém kanálu reportuje maximální hodnotu v blocích o rozměrech $k_1 \times k_2$.
 Potom zobrazení $\phi$ je zobrazení $\phi:\mathbb{R}^{C \times W_{in} \times H_{in}}~\rightarrow~\mathbb{R}^{C \times W_{out} \times H_{out}}$,
@@ -444,7 +444,7 @@ Ta má pro odpovídající funkci $\phi$, která v tomto případě zobrazuje ve
 \begin{equation} \label{softmax}
 	\forall i \in \{1, 2, ..., p_1\} \quad \phi (u)_i = \frac{e^{u_i}}{\sum_{j=1}^{p_1} e^{u_j}}.
 \end{equation}
-Užití této aktivační vrstvy je na snadě. Jelikož prvky výsledné aktivace leží v intervalu $[0, 1]$
+Užití této aktivační vrstvy je nasnadě. Jelikož prvky výsledné aktivace leží v intervalu $[0, 1]$
 a sečtou se na $1$, lze výstup takovéto aktivační vrstvy interpretovat jako pravděpodobnostní distribuci.
 
 \section{Hluboká dopředná neuronová síť}
@@ -486,7 +486,7 @@ a tedy tvoří konvoluční trojvrstvu $\varphi = \phi_{pooling} \circ \phi_{act
 kde $\phi_{convolution}$ je konvoluční vrstva,
 $\phi_{activation}$ je aktivační vrstva a $\phi_{pooling}$ je pooling vrstva.
 Takovýchto trojvrstev může být v konvoluční síti několik za sebou
-a následovaat může několik vrstev hustých spolu s aktivačními.
+a následovat může několik vrstev hustých spolu s aktivačními.
 Takto zavedená konvoluční trojvrstva má velmi vítanou vlastnost,
 totiž že výsledná síť je do určité míry invariantní vůči translacím vstupu \cite{Goodfellow}.
 
@@ -663,17 +663,18 @@ Je dána přepisem:
 \begin{equation} \label{mean_square_error}
 	J(\theta) = \frac{1}{N} \sum_{i=1}^N \|F_\theta(x^{(i)}) - y^{(i)}\|_2^2,
 \end{equation}
-kde $\|\cdot\|_2$ je $L^2$ norma.
+kde $\|\cdot\|_2$ je $l_2$ norma.
 
 Výhodou této účelové funkce je fakt, že ji lze aplikovat na tenzory libovoných rozměrů.
 Nahlédneme-li na výraz v \eqref{mean_square_error}, $J(\theta)$ nabývá vždy nezáporné hodnoty
-a globální minimum $0$ právě tehdy, když $\forall i \in \{1, ..., N\} \; F_\theta(x^{(i)}) = y^{(i)}$.
+a globální minimum $0$ právě tehdy, když pro každý vzorek trénovací datové sady je předpověď neuronové sítě správná.
 
-Další vlastností této účelové funkce je rozdíl v citlivosti na malé hodnoty výrazu $\|F_\theta(x^{(i)}) - y^{(i)}\|_2$
-oproti jeho velkým hodnotám. Tj. pro $\|F_\theta(x^{(i)}) - y^{(i)}\|_2 < 1$ je výraz po umocnění na druhou ještě menší,
-kdežto pro $\|F_\theta(x^{(i)}) - y^{(i)}\|_2 > 1$ je výraz po umocnění ještě větší,
+Další vlastností této účelové funkce je rozdíl v citlivosti na malé hodnoty výrazu $|F_\theta(x^{(i)})_j - y^{(i)}_j|^2$,
+ze kterých výsledná $l_2$ norma sestává,
+oproti jeho velkým hodnotám. Tj. pro $|F_\theta(x^{(i)})_j - y^{(i)}_j| < 1$ je výraz po umocnění na druhou ještě menší,
+kdežto pro $|F_\theta(x^{(i)})_j - y^{(i)}_j| > 1$ je výraz po umocnění ještě větší,
 což při aplikaci později popsaných algoritmů minimalizace ztráty, které využívají gradient účelové funkce,
-vede k větší toleranci malých odchylek, než kdyby byla použita $L^1$ norma.
+vede k větší toleranci malých odchylek, než kdyby byla použita $l_1$ norma.
 
 
 \subsection{Ztráta křížové entropie}
@@ -690,10 +691,10 @@ pak křížová entropie $H(f, g)$ je rovna
 \end{equation}
 kde $H(f)$ je entropie $f$.
 Pro diskrétní pravděpodobnostní distribuce máme:
-\begin{align}
-	H(f, g) &= - \sum_i f_i \operatorname{ln}(f_i) + \sum_i f_i \operatorname{ln} \left(\frac{f_i}{g_i}\right), \\
-	H(f, g) &= - \sum_i f_i \operatorname{ln}(g_i).
-\end{align}
+\begin{equation}
+	H(f, g) = - \sum_i f_i \operatorname{ln}(f_i) + \sum_i f_i \operatorname{ln} \left(\frac{f_i}{g_i}\right)
+	= - \sum_i f_i \operatorname{ln}(g_i).
+\end{equation}
 
 
 Proto lze psát:
@@ -705,11 +706,11 @@ Onen výraz $H(y^{(i)}, F_\theta(x^{(i)}))$ v (\ref{crossentropy}) lze tedy spo�
 	H(y^{(i)}, F_\theta(x^{(i)})) = - \sum_{j=1}^m y^{(i)}_j \cdot \ln (F_\theta(x^{(i)})_j).
 \end{equation}
 
-Zmiňme důležitost přechodu od Kullbackovy-Leiblerovy divergence ke křížové entropii.
-Standardně je značka $y$ v tzv. \emph{one-hot encoding} formě,
-tedy je nulová až na jednu komponentu, která je rovna $1$.
-Potom by dle definice $D_{KL}(y, F_\theta(x))$ byla ona divergence nedefinovaná,
-neboť bychom měli sčítat výrazy $0 \cdot \operatorname{ln}(0)$.
+% Zmiňme důležitost přechodu od Kullbackovy-Leiblerovy divergence ke křížové entropii.
+% Standardně je značka $y$ v tzv. \emph{one-hot encoding} formě,
+% tedy je nulová až na jednu komponentu, která je rovna $1$.
+% Potom by dle definice $D_{KL}(y, F_\theta(x))$ byla ona divergence nedefinovaná,
+% neboť bychom měli sčítat výrazy $0 \cdot \operatorname{ln}(0)$.
 
 
 % Aby bylo možné zadefinovat učeovou funkci pomocí \emph{záporného logaritmu věrohodnosti} (ZLV),
@@ -905,7 +906,7 @@ což dle \cite{Goodfellow} mnohdy vede k předčasnému poklesu řádu učení.
 
 \subsection{RMSProp}
 
-Uveďmě další algoritmus - \emph{RMSProp} (zkratka angl. \emph{root mean squared propagation}).
+Uveďme další algoritmus - \emph{RMSProp} (zkratka angl. \emph{root mean squared propagation}).
 Tento algoritmus nahrazuje součet přes všechny hodnoty gradientu exponenciálně tlumeným váženým průměrem,
 a to způsobem, kde jedna iterace vypadá následovně \cite{RMSProp}:
 \begin{align}
@@ -962,11 +963,6 @@ Jedná se v každém kroku gradientního sestupu nebo jeho modifikací o to,
 že se z trénovací sady rovnoměrně vybere $M \ll N$ vzorků gradient se odhadne pomocí výpočtu na~těchto $M$ vzorcích:
 \begin{equation}
 	\nabla_\theta J(\theta) \approx
-	\frac{1}{M} \sum_{j=1}^M \nabla_\theta L\left(F_{\theta}(x^{(i_j)}), y^{(i_j)}\right).
-\end{equation}
-Při užití řetězového pravidla:
-\begin{equation}
-	\nabla_\theta J(\theta) \approx
 	\frac{1}{M} \sum_{j=1}^M \nabla_\xi L\left(F_{\theta}(x^{(i_j)}), y^{(i_j)}\right) D_\theta F_\theta(x^{(i_j)}).
 \end{equation}
 
@@ -982,28 +978,40 @@ ty však pro svou stochastickou variantu nemají speciální název.
 Szegedy a spol. \cite{szegedy2014intriguing} objevili zvláštní chování klasifikační neuronové sítě,
 které spočívá v nesprávné klasifikaci mírně pozměněných vzorků trénovací sady neuronové sítě,
 kde ono mírné pozměnění nemění správnost příslušné značky.
+
 Zaveďme funkci $C: \mathbb{R}^{m_1} \rightarrow \{1, 2, ..., m_1\}$,
 tedy funkci na prostoru značek, resp. výstupů klasifikační neuronové sítě,
-která přiřadí každému vektoru index odpovídající třídy s předpisem:
+která přiřadí každému vektoru index odpovídající třídy, což lze formálně zapsat následovně:
 \begin{equation}
 	C(y) = \operatorname{argmax}_{i \in \{1, 2, ..., m_1\}} y_i.
 \end{equation}
-Zjištění lze potom formálně zapsat následovně:
-\begin{equation}
-	(\exists x, y)(\exists \Delta x, \|\Delta x\| \leq \kappa)
-	(C(F_\theta(x)) = C(y) \land C(F_\theta(x + \Delta x)) \neq C(y)),
-\end{equation}
-kde $\kappa$ je malé číslo a $\|\cdot\|$ je $L^p$ norma.
-Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vzorky}.
 
-Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako
+% Zjištění lze potom formálně zapsat následovně:
+% \begin{equation}
+% 	(\exists x, y)(\exists \Delta x, \|\Delta x\| \leq \kappa)
+% 	(C(F_\theta(x)) = C(y) \land C(F_\theta(x + \Delta x)) \neq C(y)),
+% \end{equation}
+% kde $\kappa$ je malé číslo a $\|\cdot\|$ je $l_p$ norma.
+% Takovým vzorkům $\tilde{x} = x + \Delta x$ se říká \emph{adversariální vzorky}.
+
+Potom máme-li vzorek $x$ a k němu příslušnou značku $y$ říkáme, že $\tilde{x} = x + \Delta x$ je adversariální vzorek,
+pokud je splněno následující:
 \begin{equation}
-	\widetilde{\mathbb{X}}_x = \{\tilde{x} \in \mathbb{R}^n	| 
-	C(F_\theta(\tilde{x})) \neq C(y) \land \|\tilde{x} - x\| \leq \kappa \}.
+	\|\Delta x\| < \kappa \land C(F_\theta(\tilde{x})) \neq C(y),
 \end{equation}
+kde $\|.\|$ je $l_p$ norma a $\kappa$ je malé číslo.
+Povšimněme si, že je-li původní vzorek špatně klasifikován, tedy $C(F_\theta(x)) \neq C(y)$,
+pak sám původní vzorek je adversariální.
+
+% Pro konkrétní vzorek $x$ a příslušnou značku $y$ definujeme množinu adversariálních vzorků jako
+% \begin{equation}
+% 	\widetilde{\mathbb{X}}_x = \{\tilde{x} \in \mathbb{R}^n	| 
+% 	C(F_\theta(\tilde{x})) \neq C(y) \land \|\tilde{x} - x\| \leq \kappa \}.
+% \end{equation}
 
 Takto obecná definice adversariálních vzorků ovšem neposkytuje návod na jejich nalezení.
-Proto uveďme metody generování těchto adversariálních vzorků.
+Proto uveďme metody generování těchto adversariálních vzorků,
+které slouží k ověření jejich existence.
 Předtím ovšem pojmenujme neuronovou síť, která je terčem adversariálního útoku, jako \emph{oběť} (angl. \emph{victim}),
 dále pojmenujme strůjce takovéhoto adversariálního útoku jako \emph{útočníka} (angl. \emph{adversary}).
 
@@ -1024,23 +1032,22 @@ díky jevu \emph{přenositelnosti} (angl. \emph{transferability}) jsou tyto vzor
 Dále se metody generování adversariálních vzorků dělí na \emph{cílené} (angl. \emph{targeted})
 a \emph{necílené} (angl. \emph{untargeted}).
 Cílené útoky generují vzorky $\tilde{x} = x + \Delta x$ tak, aby $C(F_\theta(\tilde{x})) = C(\tilde{y})$
-pro pevně zvolenou značku $\tilde{y}$ různou od původní značky $C(y) = C(F_\theta(x))$.
+pro pevně zvolenou značku $\tilde{y}$ různou od původní značky $C(y)$.
 Necílené útoky předem nevybírají značku za cíl, nýbrž požadavkem je jen,
-aby $C(F_\theta(\tilde{x})) \neq C(F_\theta(x))$.
+aby $C(F_\theta(\tilde{x})) \neq C(y)$.
 Necílené útoky nebývají tolik účinné jako cílené \cite{L_BFGS}.
 
 \subsection{Fast gradient sign method}
 
 První metoda představená v \cite{GoodfellowEtAl} je známá pod zkratkou \emph{FGSM}
 (z angl. \emph{fast gradient sign method}).
-Jedná se o necílenou metodu, která využívá mnoho-dimenzionální lineární vztahy neuronové sítě \cite{CSI_algo}
-a~má předpis:
+Jedná se o necílenou metodu s~předpisem \cite{CSI_algo}:
 \begin{equation} \label{fgsm}
 	\tilde{x} = x + \kappa \cdot \operatorname{sign}(\nabla_x L(F_{\theta}(x), y))
 \end{equation}
 při zachování značení z minulých kapitol textu,
 označení $\operatorname{sign}$ pro znaménkovou funkci a $\kappa$ pro velikost složek perturbace $\Delta x$,
-tedy $\kappa$ je poloměr kulového okolí $x$ v $L^\infty$ normě.
+tedy $\kappa$ je poloměr kulového okolí $x$ v $l_\infty$ normě.
 
 \subsection{Iterativní FGSM}
 
@@ -1089,7 +1096,7 @@ takže řešením optimalizačního problému v \eqref{optim_adv} bude původní
 Je tedy třeba vhodné $\lambda$ najít.
 
 \subsection{Carlini-Wagner}
-Následující metoda (necílená) má optimalizační charakter. Jmenuje se \emph{CW} (\emph{Carlini-Wagner})
+Následující metoda (necílená) nese název \emph{CW} (\emph{Carlini-Wagner})
 a~má předpis \cite{L_BFGS}, \cite{CSI_algo}:
 \begin{equation} \label{cw}
 	\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \|\hat{x} - x\| - \lambda \cdot L(F_{\theta}(\hat{x}), y) \right),
@@ -1103,7 +1110,7 @@ pro kterou bude platit, že $C(F_\theta(\tilde{x})) \neq C(y)$.
 
 Lze si povšimnout jisté podoby CW útoku s cílenou optimalizační úlohou.
 Obě metody řeší optimalizační úlohu, kde první člen účelové funkce je vzdálenost argumentu minima od původního vzorku
-ve~smyslu $L^p$ normy a druhý člen je vážená účelová funkce, kde onu váhu reprezentuje hodnota $\lambda$,
+ve~smyslu $l_p$ normy a druhý člen je vážená účelová funkce, kde onu váhu reprezentuje hodnota $\lambda$,
 kterou ladíme.
 Zásadní rozdíl ovšem je ve znaménku, které stojí před členem obsahujícím účelovou funkci,
 a~ve~značce, která je druhým argumentem účelové funkce.
@@ -1162,6 +1169,13 @@ L\left(F_{\theta}(\tilde{x}), y^{(i)}\right)$,
 ve kterém dojde k vyčíslení gradientu účelové funkce $\nabla_\theta \hat{J}$.
 Tento maximalizační problém lze řešit jako hledání adversariálních vzorků,
 tedy například metodami I-FGSM či PGD představenými v předcházející kapitole.
+Následně se v takto nalezených bodech $\hat{x}^{(i)}$ vyčíslí gradient účelové funkce:
+\begin{equation}
+	\nabla_\theta \hat{J}(\theta) =
+	\frac{1}{N} \sum_{i=1}^N \nabla_\xi L\left(F_{\theta}(\hat{x}^{(i)}), y^{(i)}\right) D_\theta F_\theta(\hat{x}^{(i)})
+\end{equation}
+a provede se krok vnějšího minimalizačního problému dle příslušného algoritmu.
+Jen poznamenejme, že tento algoritmus lze provést též na mini-dávce o $M \ll N$ vzorcích.
 
 
 % Srovnání algoritmů učení
@@ -1175,8 +1189,8 @@ když všechny představené algoritmy mají iterativní charakter.
 
 Jiným přístupem je užití tzv. \emph{testovací sady} $\mathbb{S}$ (angl. \emph{test dataset}).
 Svou strukturou testovací sada kopíruje sadu trénovací, jedná se tedy o uspořádanou dvojici
-množin vzorků $\mathbb{X} = \{x^{(i)} | i \in \hat{S} \}$
-a značek $\mathbb{Y} = \{y^{(i)} | i \in \hat{S} \}$,
+množin vzorků $\mathbb{X} = \left\{x^{(i)} | i \in \{1, ..., S\} \right\}$
+a značek $\mathbb{Y} = \left\{y^{(i)} | i \in \{1, ..., S\} \right\}$,
 kde $S$ je velikost testovací sady.
 
 Je-li neuronová síť svým charakterem síť klasifikační, pak lze sledovat podíl správných predikcí na~testovacím datasetu
@@ -1357,15 +1371,16 @@ pro kterou dojde po jejím přičtení k obrázku z datové sady k nesprávné k
 Jelikož všechny tyto metody pracují na \emph{white-box} principu,
 je nutné k jejich provedení mít k dispozici natrénovanou klasifikační neuronovou síť.
 Za tuto je zvolen model konvoluční neuronové sítě složené po řadě z vrstev:
-\begin{enumerate}
-	\item Konvoluční vrstva s $1$ vstupním kanálem, $32$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+\begin{enumerate} \setlength{\itemsep}{-5pt}
+	\item Konvoluční vrstva s $1$ vstupním kanálem, $32$ výstupními kanály a jádrem konvoluce $3 \times 3$,
+	% \itemsep{0cm}
 	\item aktivační vrstva s funkcí ReLU,
-	\item konvoluční vrstva s $32$ vstupními kanály, $32$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item konvoluční vrstva s $32$ vstupními kanály, $32$ výstupními kanály a jádrem konvoluce $3 \times 3$,
 	\item aktivační vrstva s funkcí ReLU,
 	\item max pooling vrstva s rozměry jádra $2 \times 2$,
-	\item konvoluční vrstva s $32$ vstupními kanály, $64$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item konvoluční vrstva s $32$ vstupními kanály, $64$ výstupními kanály a jádrem konvoluce $3 \times 3$,
 	\item aktivační vrstva s funkcí ReLU,
-	\item konvoluční vrstva s $64$ vstupními kanály, $64$ výstupními kanály a rozměrem konvolučního jádra $3 \times 3$,
+	\item konvoluční vrstva s $64$ vstupními kanály, $64$ výstupními kanály a jádrem konvoluce $3 \times 3$,
 	\item aktivační vrstva s funkcí ReLU,
 	\item max pooling vrstva s rozměry jádra $2 \times 2$,
 	\item hustá vrstva s $1024$ vstupy a $200$ výstupy,
@@ -1382,13 +1397,13 @@ a bylo dosaženo úspěšnosti $97.57 \%$ na testovací datové sadě.
 \subsection{Norma perturbace}
 
 Pro srovnání metod generování adversariálních vzorků byla zvolena
-\emph{maximová}, tedy \emph{$L^\infty$} norma.
+\emph{maximová}, tedy \emph{$l_\infty$} norma.
 Za toleranci v této normě, resp. velikost perturbace byl zvolen ekvivalent
 $50$ pixelových bodů, to jest $\kappa = \frac{50}{255}$,
 jelikož hodnoty pixelů obrázku jsou lineárně přeškálovány do intervalu $[0, 1]$.
 
 Připomeňme, kde figuruje volba normy v předpisech jednotlivých metod generování adversariálních vzorků.
-Pro FGSM útok se volba $L^\infty$ normy odráží v tom,
+Pro FGSM útok se volba $l_\infty$ normy odráží v tom,
 že se k benignímu obrázku přičítá $\kappa$ násobek znaménka gradientu,
 tedy z tohoto je nutně norma perturbace $\|\Delta x\|_\infty = \kappa$
 a je možné splnit definici adversariálního vzorku.
@@ -1413,7 +1428,7 @@ a při neúspěchu nahrazen dle pravidla
 \end{equation}
 Pro $c \leq 10^{-2}$ pak metoda vrátila poslední nalezený, byť stále správně klasifikovaný, vzorek.
 Tato procedura byla aplikována pro všechny možné cílové značky
-a za výsledný adversariální vzorek položila ten nejbližší (ve smyslu $L^\infty$ normy)
+a za výsledný adversariální vzorek položila ten nejbližší (ve smyslu $l_\infty$ normy)
 původnímu benignímu vzorku.
 
 Metoda CW byla implementována obdobně jako cílená optimalizační metoda
@@ -1553,25 +1568,25 @@ přidávají benigním vzorkům do pozadí jakési artefakty.
 % Při jakém c mi to fliplo? Odkázat na best case L-BFGS
 
 Při hlubším studiu CW útoku lze dojít k několika závěrům.
-Jeden se týká volby použité $L^{p}$ normy, další detailu implementace,
+Jeden se týká volby použité $l_{p}$ normy, další detailu implementace,
 totiž jestli dojde k aplikaci funkce Clip \emph{vždy} při každé iteraci algoritmu sign gradient descent,
 nebo \emph{jednou} na konci procesu generování adversariálních vzorků.
 A v neposlední řadě lze zkoumat vliv parametru $\lambda$ na úspěšnost metody.
 
 \subsection{Vliv volby normy na parametr $\kappa$}
 
-Parametrem $\kappa$ myslíme poloměr kulového okolí benigního vzorku v příslušné $L^p$ normě,
+Parametrem $\kappa$ myslíme poloměr kulového okolí benigního vzorku v příslušné $l_p$ normě,
 kde hledáme adversariální vzorek.
-V předcházející sekci bylo zvoleno pevně $\kappa = \frac{50}{255}$ pro $L^\infty$ normu.
+V předcházející sekci bylo zvoleno pevně $\kappa = \frac{50}{255}$ pro $l_\infty$ normu.
 To umožňuje každé složce vzorku změnit svou hodnotu o $50$ pixelových bodů.
 
-Použijeme-li ovšem stejné $\kappa$ pro $L^1$ normu,
+Použijeme-li ovšem stejné $\kappa$ pro $l_1$ normu,
 dovolíme jen jedné složce vzorku změnit svou hodnotu o $50$ pixelových bodů
 nebo dvěma složkám o $25$ pixelových bodů atp.
 Z této úvahy je zřejmé, že se změnou normy musí nastat i změna $\kappa$.
 
-Označme proto ono pevně zvolené $\kappa$ pro $L^\infty$ normu jako $\kappa_\infty$
-a odvoďme, jak by mělo vypadat $\kappa_1$ pro $L^1$ normu a $\kappa_2$ pro $L^2$ normu,
+Označme proto ono pevně zvolené $\kappa$ pro $l_\infty$ normu jako $\kappa_\infty$
+a odvoďme, jak by mělo vypadat $\kappa_1$ pro $l_1$ normu a $\kappa_2$ pro $l_2$ normu,
 abychom dovolili v zásadě stejnou změnu hodnot složek vzorku.
 
 Pro vektor $u$ dimenze $k$ platí:
@@ -1588,7 +1603,7 @@ volit:
 
 \subsection{Výsledky}
 
-Byly implementovány útoky s použitím $L^\infty$, $L^1$ a $L^2$ normy
+Byly implementovány útoky s použitím $l_\infty$, $l_1$ a $l_2$ normy
 vždy ve dvou verzích, jedna, kdy je funkce Clip aplikována vždy,
 a druhá, kdy je funkce Clip aplikována jednou.
 Následně byl pomocí každé z těchto implementací proveden útok na $100$ vzorcích trénovací sady MNIST
@@ -1598,33 +1613,33 @@ Na úspěšnost jednotlivých útoků lze nahlédnout v tabulce \ref{cw_success}
 a na příklad vygenerovaných adversariálních vzorků v obrázku \ref{cw_images}.
 
 Tyto výsledky dávají podnět k vyslovení následujících pozorování.
-$L^\infty$ útok je uspěšný pouze pro verzi, kdy je funkce Clip aplikována vždy.
+$l_\infty$ útok je uspěšný pouze pro verzi, kdy je funkce Clip aplikována vždy.
 Navíc tento útok vykazuje při této implementaci invarianci vůči volbě hodnoty parametru $\lambda$.
 % TODO: Vysvětlení
-Úspěšnost $L^1$ útoku je srovnatelná v nastavení, kdy je funkce Clip aplikována vždy,
+Úspěšnost $l_1$ útoku je srovnatelná v nastavení, kdy je funkce Clip aplikována vždy,
 s nastavením, kdy je funkce Clip aplikována jednou.
-Oproti $L^\infty$ útoku ovšem vykazuje silnou závislost na volbě hodnoty parametru $\lambda$,
+Oproti $l_\infty$ útoku ovšem vykazuje silnou závislost na volbě hodnoty parametru $\lambda$,
 kdy metoda je úspěšnější pro vyšší hodnoty $\lambda$.
-CW útok využívající normu $L^2$ je jako $L^\infty$ útok závislý na implementaci,
+CW útok využívající normu $l_2$ je jako $l_\infty$ útok závislý na implementaci,
 zda je funkce Clip aplikována vždy, nebo jednou,
-avšak v případě $L^2$ normy je závislost opačná,
-totiž $L^2$ útok je úspěšný v nastavení \emph{jednou}
+avšak v případě $l_2$ normy je závislost opačná,
+totiž $l_2$ útok je úspěšný v nastavení \emph{jednou}
 a v nastavení \emph{vždy} nemá zdaleka takovou úspěšnost.
-Stejně jako $L^1$ útok je $L^2$ útok závislý na volbě hodnoty parametru $\lambda$,
+Stejně jako $l_1$ útok je $l_2$ útok závislý na volbě hodnoty parametru $\lambda$,
 a to tak, že větší hodnota $\lambda$ poskytuje větší úspěšnost útoku.
-Celkově je $L^2$ CW útok při vhodném nastavení parametrů v této implementaci
+Celkově je $l_2$ CW útok při vhodném nastavení parametrů v této implementaci
 nejúspěšnější metoda generování adversariálních vzorků ze všech zkoumaných metod,
 jelikož dosahuje úspěšnosti $94 \%$.
 
 Další pozorování se týká samotné podoby jednotlivých útoků.
-Zatímco $L^\infty$ útok přidává podobně jako metody založené na FGSM útoku
+Zatímco $l_\infty$ útok přidává podobně jako metody založené na FGSM útoku
 jakési artefakty do pozadí obrázku,
-$L^1$ útok se zaměřuje pouze na samotnou číslici, a to zatmavením některých pixelů číslice.
-U $L^2$ útoku si lze všimnout kombinace předchozího.
-$L^2$ útok jednak zatmavuje vybrané pixely číslice, jednak přidává artefakty do pozadí číslice.
+$l_1$ útok se zaměřuje pouze na samotnou číslici, a to zatmavením některých pixelů číslice.
+U $l_2$ útoku si lze všimnout kombinace předchozího.
+$l_2$ útok jednak zatmavuje vybrané pixely číslice, jednak přidává artefakty do pozadí číslice.
 Jak je patrné z obrázku \ref{cw_ltwo},
-tyto artefakty se ovšem jako v případě $L^\infty$ útoku nezdají být náhodné.
-$L^2$ útok v tomto konkrétním případě dokreslil do obrázku číslice jedna vodorovnou čáru v místě,
+tyto artefakty se ovšem jako v případě $l_\infty$ útoku nezdají být náhodné.
+$l_2$ útok v tomto konkrétním případě dokreslil do obrázku číslice jedna vodorovnou čáru v místě,
 kde se obvykle nachází vodorovná čára číslice sedm.
 
 
@@ -1637,17 +1652,17 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		Norma & Clip & 0.1 & 1 & 10 & 100 \\
 		\hline
 		\hline
-		$L^\infty$ & Vždy & 74 \% & 74 \% & 74 \% & 74 \% \\
+		$l_\infty$ & Vždy & 74 \% & 74 \% & 74 \% & 74 \% \\
 		\hline
-		$L^1$ & Vždy & 0 \% & 50 \% & 87 \% & 90 \% \\
+		$l_1$ & Vždy & 0 \% & 50 \% & 87 \% & 90 \% \\
 		\hline
-		$L^2$ & Vždy & 1 \% & 8 \% & 14 \% & 16 \% \\
+		$l_2$ & Vždy & 1 \% & 8 \% & 14 \% & 16 \% \\
 		\hline
-		$L^\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
+		$l_\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
 		\hline
-		$L^1$ & Jednou & 0 \% & 33 \% & 89 \% & 93 \% \\
+		$l_1$ & Jednou & 0 \% & 33 \% & 89 \% & 93 \% \\
 		\hline
-		$L^2$ & Jednou & 8 \% & 87 \% & 94 \% & 94 \% \\
+		$l_2$ & Jednou & 8 \% & 87 \% & 94 \% & 94 \% \\
 		\hline
 	\end{tabular}
 	\caption{Úspěšnost CW útoku v závislosti na zvolených parametrech}
@@ -1667,7 +1682,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_linfty_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_linfty_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_linfty_2.png}
-		\caption{$L^\infty$ útok; Clip vždy}
+		\caption{$l_\infty$ útok; Clip vždy}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
@@ -1675,7 +1690,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_lone_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_lone_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_lone_2.png}
-		\caption{$L^1$ útok; Clip vždy}
+		\caption{$l_1$ útok; Clip vždy}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
@@ -1683,7 +1698,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_ltwo_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_ltwo_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_ltwo_2.png}
-		\caption{$L^2$ útok; Clip vždy}
+		\caption{$l_2$ útok; Clip vždy}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
@@ -1691,7 +1706,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_linfty_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_linfty_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_linfty_2.png}
-		\caption{$L^\infty$ útok; Clip jednou}
+		\caption{$l_\infty$ útok; Clip jednou}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
@@ -1699,7 +1714,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_lone_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_lone_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_lone_2.png}
-		\caption{$L^1$ útok; Clip jednou}
+		\caption{$l_1$ útok; Clip jednou}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
@@ -1707,7 +1722,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_ltwo_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_ltwo_2.png}
 		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_ltwo_2.png}
-		\caption{$L^2$ útok; Clip jednou}
+		\caption{$l_2$ útok; Clip jednou}
 	\end{subfigure}
 	\caption{CW útok pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
 	\label{cw_images}
@@ -1717,7 +1732,7 @@ kde se obvykle nachází vodorovná čára číslice sedm.
 	\centering
 	\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/benign_3.png}
 	\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_ltwo_3.png}
-	\caption{$L^2$ CW útok}
+	\caption{$l_2$ CW útok}
 	\label{cw_ltwo}
 \end{figure}
 
@@ -1729,7 +1744,7 @@ Následně pak byla touto implementací učena konvoluční neuronová síť ste
 jež byla použita v předchozí kapitole s výsledky experimentů souvisejícími s generováním adversariálních vzorků.
 
 Ohledně detailů implementace lze napsat, že za $\kappa$ v (\ref{robust_optim}) bylo voleno $\kappa = \frac{50}{255}$
-a za normu určující kouli o poloměru $\kappa$ okolo vzorků byla zvolena $L^{\infty}$ norma.
+a za normu určující kouli o poloměru $\kappa$ okolo vzorků byla zvolena $l_{\infty}$ norma.
 Dále zmiňme, že vnitřní maximalizační problém byl řešen algoritmem \emph{projected gradient descent} (PGD)
 s krokem $\gamma = 10^{-2}$ a $62$ iteracemi.
 Vnější minimalizace byla potom řešena algoritmem \emph{RMSProp} s řádem učení $\epsilon = 10^{-4}$.
@@ -1761,25 +1776,25 @@ Proto uveďme tabulku obdobnou tabulce \ref{cw_success} s úspěšností daného
 		Norma & Clip & 0.1 & 1 & 10 & 100 \\
 		\hline
 		\hline
-		$L^\infty$ & Vždy & 0 \% & 0 \% & 0 \% & 0 \% \\
+		$l_\infty$ & Vždy & 0 \% & 0 \% & 0 \% & 0 \% \\
 		\hline
-		$L^1$ & Vždy & 0 \% & 0 \% & 87 \% & 100 \% \\
+		$l_1$ & Vždy & 0 \% & 0 \% & 87 \% & 100 \% \\
 		\hline
-		$L^2$ & Vždy & 0 \% & 38 \% & 56 \% & 63 \% \\
+		$l_2$ & Vždy & 0 \% & 38 \% & 56 \% & 63 \% \\
 		\hline
-		$L^\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
+		$l_\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
 		\hline
-		$L^1$ & Jednou & 0 \% & 0 \% & 87 \% & 100 \% \\
+		$l_1$ & Jednou & 0 \% & 0 \% & 87 \% & 100 \% \\
 		\hline
-		$L^2$ & Jednou & 0 \% & 85 \% & 79 \% & 77 \% \\
+		$l_2$ & Jednou & 0 \% & 85 \% & 79 \% & 77 \% \\
 		\hline
 	\end{tabular}
 	\caption{Úspěšnost CW útoku na robustně učenou síť v závislosti na zvolených parametrech}
 	\label{cw_success_robust}
 \end{table}
 
-Tedy, jak je vidět z tabulky \ref{cw_success_robust}, robustní učení neuchránilo síť od CW útoku provedeného v $L^1$ nebo $L^2$ normě.
-Útok v $L^1$ normě při volbě hodnoty parametru $\lambda = 100$ je dokonce úspěšnější, je-li prováděn na robustně učené síti.
+Tedy, jak je vidět z tabulky \ref{cw_success_robust}, robustní učení neuchránilo síť od CW útoku provedeného v $l_1$ nebo $l_2$ normě.
+Útok v $l_1$ normě při volbě hodnoty parametru $\lambda = 100$ je dokonce úspěšnější, je-li prováděn na robustně učené síti.
 
 \chapter*{Závěr}
 
