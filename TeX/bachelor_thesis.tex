@@ -1874,42 +1874,160 @@ ovšem robustní učení trvalo více než $3$ hodiny.
 \section{Adversariální útoky na robustně učenou síť}
 
 Na takto robustně naučenou neuronovou síť byly provedeny adversariální útoky za stejného nastavení,
-které prezentuje tabulka \ref{allgen_success}.
-Žádný z útoků nebyl pro žádný vzorek úspěšný.
-
-\subsection{CW útok na robustně učenou síť}
-
-Předchozí kapitola představila, že úspěšnost CW útoku závisí také na volbě normy, ve které se útok provádí.
-Proto uveďme tabulku obdobnou tabulce \ref{cw_success} s úspěšností daného nastavení CW útoku na robustně učenou síť.
+které prezentuje tabulka \ref{allgen_success},
+proto lze nahlédnout na tabulku \ref{allgen_success_robust},
+odkud lze vyčíst, že útoky založené na FGSM (FGSM, I-FGSM a PGD) metodě jsou řádově méně úspěšné proti robustně trénované síti,
+než jsou proti standardně trénované síti.
+Avšak cílená optimalizační metoda a CW útok jsou proti robustně trénované síti stejně úspěšné jako proti standardně trénované síti.
+Je to dáno tím, že cílená optimalizační metoda a CW útok
+nemají ve svém předpisu zakomponováno ono $\kappa$-okolí okolo benigního vzorku ve vhodně zvolené $l_p$ normě.
+Proto tyto metody mohou překročit hranice $\kappa$-okolí vzorků trénovací sady,
+před čímž z podstaty předpisu robustního učení síť není chráněna.
+Jak lze ovšem vidět z obrázku \ref{r_allgen}, CW útok generuje při tomto nastavení ($l_\infty$ norma a $\lambda = 1$)
+vzorky velmi vzdálené původním benigním vzorkům.
 
 \begin{table}
 	\centering
-	\begin{tabular}{| c | c || c | c | c | c |}
+	\begin{tabular}{| c | c |}
 		\hline
-		Algoritmus & & $\lambda$ & & & \\
+		Metoda & Úspěšnost \\
 		\hline
-		Norma & Clip & 0.1 & 1 & 10 & 100 \\
-		\hline
-		\hline
-		$l_\infty$ & Vždy & 0 \% & 0 \% & 0 \% & 0 \% \\
-		\hline
-		$l_1$ & Vždy & 0 \% & 0 \% & 87 \% & 100 \% \\
-		\hline
-		$l_2$ & Vždy & 0 \% & 38 \% & 56 \% & 63 \% \\
-		\hline
-		$l_\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
-		\hline
-		$l_1$ & Jednou & 0 \% & 0 \% & 87 \% & 100 \% \\
-		\hline
-		$l_2$ & Jednou & 0 \% & 85 \% & 79 \% & 77 \% \\
+		FGSM & 5.7 \% \\
+		I-FGSM & 7 \% \\
+		PGD & 6.9 \% \\
+		Cílená optimalizační metoda & 100 \% \\
+		CW & 100 \% \\
 		\hline
 	\end{tabular}
-	\caption{Úspěšnost CW útoku na robustně učenou síť v závislosti na zvolených parametrech}
-	\label{cw_success_robust}
+	\caption{Úspěšnost metod generování adversariálních vzorků proti robustně naučené síti}
+	\label{allgen_success_robust}
 \end{table}
 
-Tedy, jak je vidět z tabulky \ref{cw_success_robust}, robustní učení neuchránilo síť od CW útoku provedeného v $l_1$ nebo $l_2$ normě.
-Útok v $l_1$ normě při volbě hodnoty parametru $\lambda = 100$ je dokonce úspěšnější, je-li prováděn na robustně učené síti.
+\begin{figure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_4.png}
+		\centering
+		\caption{Benigní vzorky}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_4.png}
+		\centering
+		\caption{FGSM}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_4.png}
+		\centering
+		\caption{I-FGSM}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_4.png}
+		\centering
+		\caption{PGD}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_4.png}
+		\centering
+		\caption{Cílená optimalizační metoda}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_1.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_3.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_5.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_7.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_2.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_34.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_18.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_37.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_17.png}
+		\includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_4.png}
+		\centering
+		\caption{CW}
+	\end{subfigure}
+	\centering
+	\caption{Vzorky generované různými metodami hledání adversariálních vzorků proti robustně naučené síti}
+	\label{r_allgen}
+\end{figure}
+
+\subsection{CW útok na robustně učenou síť}
+
+
+
+% Předchozí kapitola představila, že úspěšnost CW útoku závisí také na volbě normy, ve které se útok provádí.
+% Proto uveďme tabulku obdobnou tabulce \ref{cw_success} s úspěšností daného nastavení CW útoku na robustně učenou síť.
+
+% \begin{table}
+% 	\centering
+% 	\begin{tabular}{| c | c || c | c | c | c |}
+% 		\hline
+% 		Algoritmus & & $\lambda$ & & & \\
+% 		\hline
+% 		Norma & Clip & 0.1 & 1 & 10 & 100 \\
+% 		\hline
+% 		\hline
+% 		$l_\infty$ & Vždy & 0 \% & 0 \% & 0 \% & 0 \% \\
+% 		\hline
+% 		$l_1$ & Vždy & 0 \% & 0 \% & 87 \% & 100 \% \\
+% 		\hline
+% 		$l_2$ & Vždy & 0 \% & 38 \% & 56 \% & 63 \% \\
+% 		\hline
+% 		$l_\infty$ & Jednou & 0 \% & 0 \% & 0 \% & 0 \% \\
+% 		\hline
+% 		$l_1$ & Jednou & 0 \% & 0 \% & 87 \% & 100 \% \\
+% 		\hline
+% 		$l_2$ & Jednou & 0 \% & 85 \% & 79 \% & 77 \% \\
+% 		\hline
+% 	\end{tabular}
+% 	\caption{Úspěšnost CW útoku na robustně učenou síť v závislosti na zvolených parametrech}
+% 	\label{cw_success_robust}
+% \end{table}
+
+% Tedy, jak je vidět z tabulky \ref{cw_success_robust}, robustní učení neuchránilo síť od CW útoku provedeného v $l_1$ nebo $l_2$ normě.
+% Útok v $l_1$ normě při volbě hodnoty parametru $\lambda = 100$ je dokonce úspěšnější, je-li prováděn na robustně učené síti.
 
 \chapter*{Závěr}
 
@@ -1975,10 +2093,10 @@ In 'International Conference on Learning Representations', ICLR 2015.
 Computer Standards \& Interfaces, Volume 82, 2022.
 % FGSM - explanation & strength of PGD & CW
 
-\bibitem{robust_learning_algo}Y. Li, B. Wu, Y. Feng, Y. Fan, Y. Jiang, Z. Li, S. Xia,
-\emph{Semi-supervised robust training with generalized perturbed neighborhood}.
-Pattern Recognition, Volume 124, 2022.
-% TODO:
+% \bibitem{robust_learning_algo}Y. Li, B. Wu, Y. Feng, Y. Fan, Y. Jiang, Z. Li, S. Xia,
+% \emph{Semi-supervised robust training with generalized perturbed neighborhood}.
+% Pattern Recognition, Volume 124, 2022.
+% % TODO:
 
 \bibitem{I_FGSM} A. Kurakin, I. Goodfellow, S. Bengio, 
 \emph{Adversarial examples in the physical world}.
@@ -2003,10 +2121,10 @@ arXiv 2016 % arXiv preprint arXiv:1605.07277 (2016).
 \emph{The mnist database of handwritten digits}. 1998. % TODO: dovymyslet citaci
 % MNIST dataset
 
-\bibitem{weng2018evaluating}T. Weng, H. Zhang, P. Chen, J. Yi, D. Su, Y. Gao, C. Hsieh, L. Daniel,
-\emph{Evaluating the Robustness of Neural Networks: An Extreme Value Theory Approach}.
-In 'International Conference on Learning Representations', ICLR 2018.
-% CLEVER score for evaluating the robustness of NNs - TODO:
+% \bibitem{weng2018evaluating}T. Weng, H. Zhang, P. Chen, J. Yi, D. Su, Y. Gao, C. Hsieh, L. Daniel,
+% \emph{Evaluating the Robustness of Neural Networks: An Extreme Value Theory Approach}.
+% In 'International Conference on Learning Representations', ICLR 2018.
+% % CLEVER score for evaluating the robustness of NNs - TODO:
 
 
 \end{thebibliography}
