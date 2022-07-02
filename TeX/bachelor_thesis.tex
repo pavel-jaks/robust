@@ -1995,7 +1995,105 @@ vzorky velmi vzdálené původním benigním vzorkům.
 
 \subsection{CW útok na robustně učenou síť}
 
+Vzorky vzniklé $l_\infty$ CW útokem na robustně učenou síť jsou,
+jak lze vidět v obrázcích \ref{r_cw_images_four} a \ref{r_cw_images_eight},
+naprosto zkreslené a nepředstavují žádnou číslici,
+jak bylo nastíněno v úvodu této sekce textu,
+a to bez ohledu na volbu parametru $\lambda$.
+Pro změnu vzorky generované $l_1$ či $l_2$ CW útokem jsou čitelné číslice, jak lze nahlédnout v týž obrázcích.
+Při srovnání úspěšností CW útoků, které jsou vyneseny v tabulkách \ref{r_cw_success} a \ref{cw_success},
+lze říci, že pro robustně naučenou síť  je CW útok provedený v $l_1$ či $l_2$ normě méně úspěšný.
+Výjimkou je $l_1$ CW útok při volbě $\lambda = 100$.
 
+\begin{table}
+	\centering
+	\begin{tabular}{| c || c | c | c | c |}
+		\hline
+		Algoritmus & $\lambda$ & & & \\
+		\hline
+		Norma & 0.1 & 1 & 10 & 100 \\
+		\hline
+		\hline
+		$l_\infty$ & 100 \% & 100 \% & 100 \% & 100 \% \\
+		\hline
+		$l_1$ & 0 \% & 1 \% & 88.4 \% & 100 \% \\
+		\hline
+		$l_2$ & 0.2 \% & 88.7 \% & 99.9 \% & 100 \% \\
+		\hline
+	\end{tabular}
+	\caption{Úspěšnost CW útoku v závislosti na zvolených parametrech proti robustně naučené síti}
+	\label{r_cw_success}
+\end{table}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/benign_2.png}
+		\caption{Benigní vzorek}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_0.1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_10_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_100_cw_linfty_2.png}
+		\caption{$l_\infty$ útok}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_0.1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_10_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_100_cw_lone_2.png}
+		\caption{$l_1$ útok}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_0.1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_10_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_100_cw_ltwo_2.png}
+		\caption{$l_2$ útok}
+	\end{subfigure}
+	\caption{Výsledky CW útoku pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
+	\label{r_cw_images_four}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/benign_17.png}
+		\caption{Benigní vzorek}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_0.1_cw_linfty_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_1_cw_linfty_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_10_cw_linfty_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_100_cw_linfty_17.png}
+		\caption{$l_\infty$ útok}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_0.1_cw_lone_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_1_cw_lone_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_10_cw_lone_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_100_cw_lone_17.png}
+		\caption{$l_1$ útok}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_0.1_cw_ltwo_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_1_cw_ltwo_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_10_cw_ltwo_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/R_CW_BATCH_NOCLIP/c_lambda_100_cw_ltwo_17.png}
+		\caption{$l_2$ útok}
+	\end{subfigure}
+	\caption{Výsledky CW útoku pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
+	\label{r_cw_images_eight}
+\end{figure}
 
 % Předchozí kapitola představila, že úspěšnost CW útoku závisí také na volbě normy, ve které se útok provádí.
 % Proto uveďme tabulku obdobnou tabulce \ref{cw_success} s úspěšností daného nastavení CW útoku na robustně učenou síť.
