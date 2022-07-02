@@ -1573,6 +1573,25 @@ V předcházející části textu došlo k pevnému výběru $l_p$ normy, která
 a parametru $\lambda$.
 Zkusme proto zjistit, jaký vliv tyto volby mají na úspěšnost útoku a na kvalitu nalezených vzorků.
 
+\subsection{Vliv volby parametru $\lambda$}
+
+Z předpisu pro CW metodu lze odvodit, že větší hodnota $\lambda$ napomáhá adversarialitě vzorku,
+tak jinak je spíše špatně klasifikován, než při volbě menší hodnoty $\lambda$.
+Je to ovšem za cenu vyšší vzdálenosti (ve smyslu použité $l_p$ normy) nalezeného vzorku od původního benigního vzorku,
+tedy dojde k většímu zkreslení vzorku.
+Jak lze vyčíst z tabulky \ref{cw_success} a odvodit z obrázků \ref{cw_images_four} a \ref{cw_images_eight},
+tato úvaha je správná.
+
+\subsection{Vliv volby normy}
+
+Za normy byly v provedených numerických experimentech dosazeny $l_\infty$, $l_1$ a $l_2$ normy.
+Jak lze nahlédnout v obrázcích \ref{cw_images_four} a \ref{cw_images_eight},
+použití $l_\infty$ normy vede k silnému zkreslení.
+Je to dáno faktem, že tato norma při derivování, které se používá pro numerické optimalizační algoritmy,
+vyzdvihne pouze jeden pixel obrázku, zbylé nechává netknuté.
+Použití $l_1$ či $l_2$ normy potom vede ke kultivovanějším obrázkům.
+Tím je myšleno, že vzniklé obrázky pozbývají náhodně vypadající artefakty v pozadí číslice.
+
 \begin{table}
 	\centering
 	\begin{tabular}{| c || c | c | c | c |}
@@ -1597,59 +1616,70 @@ Zkusme proto zjistit, jaký vliv tyto volby mají na úspěšnost útoku a na kv
 	\centering
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/benign_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/benign_2.png}
 		\caption{Benigní vzorek}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_0.1_cw_linfty_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_linfty_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_linfty_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_linfty_2.png}
-		\caption{$l_\infty$ útok; Clip vždy}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_0.1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_1_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_10_cw_linfty_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_100_cw_linfty_2.png}
+		\caption{$l_\infty$ útok}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_0.1_cw_lone_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_lone_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_lone_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_lone_2.png}
-		\caption{$l_1$ útok; Clip vždy}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_0.1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_1_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_10_cw_lone_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_100_cw_lone_2.png}
+		\caption{$l_1$ útok}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_0.1_cw_ltwo_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_1_cw_ltwo_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_10_cw_ltwo_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_always_c_lambda_100_cw_ltwo_2.png}
-		\caption{$l_2$ útok; Clip vždy}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_0.1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_1_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_10_cw_ltwo_2.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_100_cw_ltwo_2.png}
+		\caption{$l_2$ útok}
+	\end{subfigure}
+	\caption{Výsledky CW útoku pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
+	\label{cw_images_four}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/benign_17.png}
+		\caption{Benigní vzorek}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_0.1_cw_linfty_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_linfty_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_linfty_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_linfty_2.png}
-		\caption{$l_\infty$ útok; Clip jednou}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_0.1_cw_linfty_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_1_cw_linfty_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_10_cw_linfty_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_100_cw_linfty_17.png}
+		\caption{$l_\infty$ útok}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_0.1_cw_lone_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_lone_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_lone_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_lone_2.png}
-		\caption{$l_1$ útok; Clip jednou}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_0.1_cw_lone_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_1_cw_lone_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_10_cw_lone_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_100_cw_lone_17.png}
+		\caption{$l_1$ útok}
 	\end{subfigure}
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_0.1_cw_ltwo_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_1_cw_ltwo_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_10_cw_ltwo_2.png}
-		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH/clip_once_c_lambda_100_cw_ltwo_2.png}
-		\caption{$l_2$ útok; Clip jednou}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_0.1_cw_ltwo_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_1_cw_ltwo_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_10_cw_ltwo_17.png}
+		\includegraphics[width=0.1\textwidth]{Images/Graphics/AEXAMPLES/CW_BATCH_NOCLIP/c_lambda_100_cw_ltwo_17.png}
+		\caption{$l_2$ útok}
 	\end{subfigure}
-	\caption{CW útok pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
-	\label{cw_images}
+	\caption{Výsledky CW útoku pro různé volby parametrů; $\lambda$ je voleno po řadě $0.1$, $1$, $10$ a $100$}
+	\label{cw_images_eight}
 \end{figure}
 
 % Při hlubším studiu CW útoku lze dojít k několika závěrům.
