@@ -230,25 +230,22 @@ Karlovo náměstí 13, 121 35, Praha 2
 % \noindent \emph{Konzultant:} doc. RNDr. Jméno Konzultanta, CSc., pracoviště
 % konzultanta. Pouze pokud konzultant byl jmenován.
 
-\bigskip{}
+% \bigskip{}
 
-\noindent \emph{Abstrakt:} Abstrakt max. na 10 řádků. Abstrakt max.
-na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků.
-Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max.
-na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků.
-Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max.
-na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků.
-Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max.
-na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků.
-Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max.
-na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků.
-Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max.
-na 10 řádků. Abstrakt max. na 10 řádků. Abstrakt max. na 10 řádků. 
+\noindent \emph{Abstrakt:} Algoritmy strojového učení vykazují přítomnost jevu,
+kde i malá perturbace vstupu algoritmu může způsobit velkou změnu predikce výstupu.
+Takto perturbovaným vstupům lze přisoudit název adversariální vzorky.
+Tento fenomén je demonstrován na příkladu klasifikace ručně psaných číslic
+pomocí konvolučních neuronových sítí.
+Předvedeny jsou metody jak pro generování těchto adversariálních vzorků,
+tak i pro obranu neuronové sítě proti těmto adversariálním útokům.
+
 
 \bigskip{}
 
-\noindent \emph{Klíčová slova:} klíčová slova (nebo výrazy) seřazená
-podle abecedy a oddělená čárkou
+\noindent \emph{Klíčová slova:} adversariální vzorky, cílená optimalizační metoda,
+CW, FGSM, I-FGSM, konvoluční neuronové sítě,
+PGD, robustní strojové učení, umělé neuronové sítě
 
 \vfill{}
 ~
@@ -266,26 +263,18 @@ podle abecedy a oddělená čárkou
 
 \bigskip{}
 
-\noindent \emph{Abstract:} Max. 10 lines of English abstract text.
-Max. 10 lines of English abstract text. Max. 10 lines of English abstract
-text. Max. 10 lines of English abstract text. Max. 10 lines of English
-abstract text. Max. 10 lines of English abstract text. Max. 10 lines
-of English abstract text. Max. 10 lines of English abstract text.
-Max. 10 lines of English abstract text. Max. 10 lines of English abstract
-text. Max. 10 lines of English abstract text. Max. 10 lines of English
-abstract text. Max. 10 lines of English abstract text. Max. 10 lines
-of English abstract text. Max. 10 lines of English abstract text.
-Max. 10 lines of English abstract text. Max. 10 lines of English abstract
-text. Max. 10 lines of English abstract text. Max. 10 lines of English
-abstract text. Max. 10 lines of English abstract text. Max. 10 lines
-of English abstract text. Max. 10 lines of English abstract text.
-Max. 10 lines of English abstract text. Max. 10 lines of English abstract
-text. Max. 10 lines of English abstract text.
+\noindent \emph{Abstract:} Machine learning algorithms suffer from a phenomenon
+which occurs when small perturbation of an input of the algorithm causes a great change
+of the output prediction. Such prturbated inputs can be called adversarial examples.
+This phenomenon is demonstrated using the problem of classification of handwritten digits
+using convolutional neural networks. Methods to create such adversarial examples are shown
+as well as methods of defense of the neural network against such adversarial attacks.
 
 \bigskip{}
 
-\noindent \emph{Key words:} keywords in alphabetical order separated
-by commas
+\noindent \emph{Key words:} adversarial examples, artificial neural networks, convolutional neural networks,
+CW, FGSM, I-FGSM,
+PGD, robust machine learning, targeted optimisation method
 
 \selectlanguage{czech}%
 \newpage{}
@@ -302,7 +291,49 @@ by commas
 
 \addcontentsline{toc}{chapter}{Úvod}
 
-Pojem neuronové sítě představuje výpočetní jednotku, která svou univerzálností nachází uplatnění v~mnoha disciplínách.
+Pojem \emph{neuronové sítě} představuje výpočetní jednotku, která svou univerzálností nachází uplatnění v~mnoha disciplínách.
+Disciplínou, která s nástupem výpočetního výkonu posledních let, a tedy i širšího záběru metod strojového učení,
+zažila velmi vítaný pokrok, je oblast strojového vidění.
+Jednou z úloh této disciplíny je potom klasifikace ručně psaných číslic na obrázku.
+Tato úloha pak slouží k demonstraci metod a jevů popsaných v tomto textu.
+
+Představeny budou v tomto textu základy umělých neuronových sítí,
+které svým charakterem představují nástroj na tvoření predikcí regresního či klasifikačního rázu.
+Tyto neuronové sítě lze potom na základě dat naučit,
+aby predikce byly užitečné a správné,
+tedy aby např. sítě klasifikovaly číslici na obrázku.
+Tento proces učení je prováděn převedením na \emph{optimalizační} problém,
+který se následně řeší \emph{numerickými gradientními metodami} také popsanými v tomto textu.
+V textu je též uvedeno srovnání těchto algoritmů učení.
+
+Stěžejní část textu se potom zabývá jevem, který neuronové sítě provází.
+Jedná se o existenci tzv. \emph{adversariálních vzorků}.
+Máme-li totiž vzorek, tedy vstup pro danou neuronovou síť, a to např. obrázek číslice,
+který daná neuronová síť správně klasifikuje,
+a přičteme-li k tomuto vzorku jistou perturbaci, která je velmi malá (myšleno ve zvolené $l_p$ normě),
+potom se stane, že takto vytvořený vzorek je nesprávně klasifikován danou neuronovou sítí.
+Takto vytvořené vzorky pak nesou název adversariální,
+jelikož pro danou neuronovou síť představují hrozbu.
+Nesou totiž stejnou informaci, jako původní vzorek (též označovaný jako benigní),
+tedy v případě klasifikace číslic se jedná o obrázek, na kterém je napsána stejná číslice,
+ale neuronová síť tento adversariální vzorek špatně klasifikuje.
+
+Metody, které vedou ke konstrukci takovýchto adversariálních vzorků,
+jsou nejčastěji založeny jednak na znalosti samotné neuronové sítě,
+proti které se adversariální vzorky tvoří,
+a jednak na znalosti optimalizovaného kritéria při učení neuronové sítě.
+Při tvorbě adversariálních vzorků potom dochází k maximalizaci
+vzdálenosti (ne nutně metrické) mezi predikcí dané neuronové sítě, je-li jí dán benigní vzorek,
+a predikcí hledaného adversariálního vzorku.
+Dále při tvorbě adversariálních vzorků dochází zajištění toho,
+aby vztvořený vzorek byl blízko benignímu vzorku ve smyslu zvolené $l_p$ normy.
+
+Poslední část textu uvádí metodu, jak danou neuronovou síť proti takovýmto adversariálním útokům bránit.
+Jedná se o metodu opět optimalizačního charakteru,
+která při učení neuronové sítě zohledňuje nejen body datové sady, která je použita k trénování dané neuronové sítě,
+nýbrž i celé jejich okolí ve smyslu $l_p$ normy.
+Tím se v neuronové síti odrazí myšlenka, že nejen jeden daný bod z datové sady má být klasifikován tím či oním způsobem,
+ale i celé okolí ve smyslu $l_p$ normy představuje tu samou třídu klasifikace.
 
 % \pagestyle{headings}
 
