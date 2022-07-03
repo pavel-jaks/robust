@@ -2164,7 +2164,34 @@ Výjimkou je $l_1$ CW útok při volbě $\lambda = 100$.
 
 \addcontentsline{toc}{chapter}{Záv\v{e}r}
 
-Text závěru....
+Úloha klasifikace ručně psaných číslic poskytla příležitost k srovnání algoritmů učení.
+Tyto výsledky pak jednak potvrzují oprávněnost oblíbenosti algoritmu RMSProp,
+jednak užitečnost stochastických variant těchto algoritmů pro jejich nižší výpočetní náročnost.
+
+Stěžejní však je ověření existence adversariálních vzorků,
+jakožto fenoménu spojeného s klasifikačními neuronovými sítěmi.
+Byla provedena implementace pěti metod generování těchto adversariálních vzorků.
+Těchto pět metod potom je
+\emph{fast gradient sign method (FGSM)},
+\emph{iterativní FGSM (I-FGSM)},
+\emph{projected gradient descent (PGD)},
+\emph{cílená optimalizační metoda}
+a \emph{Carlini-Wagner (CW)}.
+Bylo provedeno porovnání jejich úspěšnosti, kde jako nejméně úspěšná vyšla metoda FGSM
+a jako nejvíce úspěšná cílená optimalizační metoda.
+
+Dále bylo provedeno hlubší studium CW útoku,
+kde byly voleny v předpisu CW útoku (\ref{cw}) různé hodnoty parametru $\lambda$
+a různé $l_p$ normy.
+Tyto volby pak měly vliv jak na úspěšnost CW útoku,
+tak na kvalitativní stránku obrázků vzniklých tímto typem generování adversariálních vzorků.
+
+Zásadní potom bylo téma \emph{robustního strojového učení},
+kde bylo dosaženo pomocí algoritmu robustního strojového učení,
+který spočívá v řešení dvojitého optimalizačního problému,
+obrany proti útokům založených na metodě FGSM,
+totiž proti samotnému FGSM, dále však i I-FGSM a PGD.
+Pomocí tohoto algoritmu též došlo k částečné obraně proti CW útoku.
 
 
 \begin{thebibliography}{1}
