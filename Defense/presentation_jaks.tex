@@ -1,0 +1,434 @@
+\documentclass[czech]{beamer}
+
+\usetheme{Rochester}
+
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{babel}
+
+\title{Robustní strojové učení a adversariální vzorky}
+\author{Pavel Jakš}
+\institute{Matematická informatika, FJFI ČVUT v Praze}
+
+\begin{document}
+
+\selectlanguage{czech}
+
+\frame{\titlepage}
+
+\begin{frame}
+    \frametitle{Obsah}
+    \tableofcontents
+\end{frame}
+
+\section{Prostředí}
+
+\subsection{Neuronové sítě}
+
+% \begin{frame}
+%     \frametitle{Neuronová síť}
+%     \begin{itemize}
+%         % \item Výpočetní model
+%         % \item Sestává z tzv. vrstev \cite{Goodfellow}
+%         % \item Vhodná pro \emph{regresi} či \emph{klasifikaci}
+%         \item Odpovídá jí zobrazení $F_\theta: \mathbb{R}^{n_1 \times ... \times n_k} \rightarrow \mathbb{R}^{m_1 \times ... \times m_l}$
+%         \begin{itemize}
+%             \item $\theta$ jsou \emph{parametry neuronové sítě}
+%             \item Jedná se o zobrazení složené z tzv. vrstev \cite{Goodfellow}
+%         \end{itemize}
+%     \end{itemize}
+% \end{frame}
+
+% \subsection{Učení neuronové sítě}
+
+\begin{frame}
+    \frametitle{Neuronová síť}
+    \begin{itemize}
+        % \item Výpočetní model
+        % \item Sestává z tzv. vrstev \cite{Goodfellow}
+        % \item Vhodná pro \emph{regresi} či \emph{klasifikaci}
+        \item Odpovídá jí zobrazení $F_\theta: \mathbb{R}^{n_1 \times ... \times n_k} \rightarrow \mathbb{R}^{m_1 \times ... \times m_l}$
+        \begin{itemize}
+            \item $\theta$ jsou \emph{parametry neuronové sítě}
+            \item Jedná se o zobrazení složené z tzv. vrstev \cite{Goodfellow}
+        \end{itemize}
+        \item Hledání vhodných parametrů $\theta$ pro neuronovou síť
+        \begin{itemize}
+            \item Převedení na optimalizaci vhodné ztrátové funkce
+        \end{itemize}
+        % \item Volba vhodné \emph{účelové funkce}
+        % \item Následná \emph{optimalizace} tohoto kritéria
+    \end{itemize}
+    \begin{block}{Častá volba sestává z dílčích ztrát}
+        \centering
+        $J(\theta) = \frac{1}{N} \sum_{i=1}^N L\left(F_\theta(x^{(i)}), y^{(i)}\right)$
+    \end{block}
+    \begin{itemize}
+        \item Tento přístup vyžaduje existenci \emph{trénovací datové sady}
+        \begin{itemize}
+            \item Uspořádaná dvojice 
+            $\mathbb{T} = \left(\left\{x^{(i)} | i \in \{1, ..., N\}\right\}, \left\{y^{(i)} | i \in \{1, ..., N\}\right\}\right)$
+            % \item $\mathbb{X} = \left\{x^{(i)} | i \in \{1, ..., N\}\right\}$
+            % \item $\mathbb{Y} = \left\{y^{(i)} | i \in \{1, ..., N\}\right\}$
+        \end{itemize}
+        \item Cílem je $F_\theta(x^{(i)}) = y^{(i)} \quad \forall i \in \{1, ..., N\}$  
+    \end{itemize}
+\end{frame}
+
+% \subsection{Moje počínání}
+
+% \begin{frame}
+%     \frametitle{Moje počínání}
+%     \begin{itemize}
+%         \item Programovací prostředí \emph{pytorch} v jazyce \emph{python}
+%         \item Úkol klasifikace číslic z obrázku
+%         \begin{itemize}
+%             \item Výstupem je potom pravděpodopnostní distribuce
+%         \end{itemize}
+%         \item Datová sada MNIST \cite{MNIST}
+%     \end{itemize}
+%     \begin{figure}
+%         \includegraphics[scale=0.22]{GRAPHICS/MNIST/output0.png}
+%         \includegraphics[scale=0.22]{GRAPHICS/MNIST/output1.png}
+%         \includegraphics[scale=0.22]{GRAPHICS/MNIST/output2.png}
+%         \includegraphics[scale=0.22]{GRAPHICS/MNIST/output3.png}
+%         \includegraphics[scale=0.22]{GRAPHICS/MNIST/output4.png}
+%         \includegraphics[scale=0.22]{GRAPHICS/MNIST/output5.png}
+%         \centering
+%         \caption{Datová sada MNIST}
+%     \end{figure}
+% \end{frame}
+
+% \begin{frame}
+%     \frametitle{Moje počínání}
+%     \begin{itemize}
+%         \item Ztráta \emph{křížové entropie}
+%     \end{itemize}
+%     \begin{block}{Ztráta křížové entropie}
+%         \centering
+%         $L\left(F_\theta(x), y\right) = \sum_{j=1}^n y_j \cdot \operatorname{ln}\left(F_\theta (x)_j\right)$
+%     \end{block}
+%     \begin{itemize}
+%         % \item Algoritmus \emph{RMSProp}
+%         \item Úspešnost sítě: 97,57 \%
+%     \end{itemize}
+% \end{frame}
+
+\section{Adversariální vzorky}
+
+\begin{frame}
+    \frametitle{Adversariální vzorek}
+    \begin{itemize}
+        \item Szegedy a spol. objevili zvláštní chování klasifikačních sítí \cite{szegedy2014intriguing}
+    \end{itemize}
+    \begin{block}{Existence adversariálních vzorků}
+        \centering
+        $\exists x, y : \exists \Delta x, \|\Delta x\| \leq \kappa : $
+
+        $C(F(x)) = C(y) \land C(F(x + \Delta x)) \neq C(y)$
+    \end{block}
+    \begin{itemize}
+        \item Označme $\tilde{x} = x + \Delta x$
+    \end{itemize}
+\end{frame}
+
+\subsection{Metody generování adversariálních vzorků}
+
+\begin{frame}
+    \frametitle{Metody generování adversariálních vzorků}
+    \begin{itemize}
+        \item FGSM
+        \begin{itemize}
+            \item $\tilde{x} = x + \kappa \cdot \operatorname{sign} \left( \nabla_x L(F(x), y) \right)$
+        \end{itemize}
+        \item I-FGSM
+        \begin{itemize}
+            \item $\tilde{x}_0 = x$
+            \item $\tilde{x}_{n+1} = \operatorname{Clip}_x^\kappa \{\tilde{x}_n + \gamma \cdot \operatorname{sign}(\nabla_x L(F_{\theta}(x), y))\}$
+        \end{itemize}
+        \item PGD
+        \item Cílená optimalizační metoda
+        \begin{itemize}
+            \item $\tilde{x} = \operatorname{argmin}_{\hat{x}} \left( \|\hat{x} - x\|
+            + \lambda \cdot L(F_{\theta}(\hat{x}), \tilde{y}) \right)$
+        \end{itemize}
+        \item CW
+        \begin{itemize}
+            \item $\tilde{x} = \operatorname{argmin}_{\hat{x}} \left(\|\hat{x} - x\|
+            - \lambda \cdot L(F_{\theta}(\hat{x}), y) \right)$
+        \end{itemize}
+    \end{itemize}
+    
+    % \begin{block}{Fast Gradient Sign Method}
+    %     \centering
+    %     $\tilde{x} = x + \kappa \cdot \operatorname{sign} \left( \nabla_x L(F_\theta(x), y) \right)$
+    % \end{block}
+
+    % \begin{block}{Carlini-Wagner}
+    %     \centering
+    %     $\tilde{x} = \operatorname{argmin}_{\hat{x}} \left(\|\hat{x} - x\|- c \cdot L(F_{\theta}(\hat{x}), y) \right)$
+    % \end{block}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Příklady vzorků vygenerovaných metodami generování adversariálních vzorků}
+    % \begin{figure}
+    %     \centering
+    %     \begin{subfigure}[b]{\textwidth}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/FGSM/BENIGN/fgsm_benign_0.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/FGSM/BENIGN/fgsm_benign_1.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/FGSM/BENIGN/fgsm_benign_2.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/CW/BENIGN/cw_benign_10.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/CW/BENIGN/cw_benign_5.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/CW/BENIGN/cw_benign_4.png}
+    %     \end{subfigure}
+    %     \begin{subfigure}[b]{\textwidth}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/FGSM/ALTERED/fgsm_altered_0.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/FGSM/ALTERED/fgsm_altered_1.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/FGSM/ALTERED/fgsm_altered_2.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/CW/ALTERED/cw_altered_10.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/CW/ALTERED/cw_altered_5.png}
+    %         \includegraphics[scale=0.22]{GRAPHICS/AEXAMPLES/CW/ALTERED/cw_altered_4.png}
+    %     \end{subfigure}
+    %     \caption{FGSM a CW útoky}
+    % \end{figure}
+    \begin{figure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/benign_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/fgsm_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/ifgsm_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/pgd_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/lbfgs_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/ALLGEN/cw_4.png}
+        \end{subfigure}
+        \centering
+        \caption{Vzorky generované různými metodami hledání adversariálních vzorků}
+        \label{allgen}
+    \end{figure}
+\end{frame}
+
+\section{Robustní učení}
+
+\begin{frame}
+    \frametitle{Robustní učení}
+    \begin{itemize}
+        \item Snaha o \emph{robustnost} klasifikátorů proti adversariálním útokům
+    \end{itemize}
+
+    \begin{block}{Obecná formulace problému}
+        \centering
+        $\theta = \operatorname{argmin}_\theta \frac{1}{N} \sum_{i=1}^N  \operatorname{max}_{\tilde{x} \in B(x^{(i)}, \kappa)} L\left(F_\theta(\tilde{x}), y^{(i)}\right)$
+    \end{block}
+\end{frame}
+
+% \subsection{Adversariální trénink}
+
+% \begin{frame}
+%     \frametitle{Adversariální trénink}
+%     \begin{itemize}
+%         \item Přidání adversariálních vzorků do trénovací sady
+%         \item Zvyšuje robustnost sítě \cite{GoodfellowEtAl}
+%         \item Avšak požaduje vyšší kapacitu
+%     \end{itemize}
+% \end{frame}
+
+\subsection{Úspěšnost metod generování adversariálních vzorků}
+
+\begin{frame}
+    \frametitle{Úspěšnost metod generování adversariálních vzorků}
+    \begin{table}
+        \centering
+        \begin{tabular}{| c | c | c |}
+            \hline
+            Metoda & Úspěšnost & Robustní úspěšnost\\
+            \hline
+            FGSM & 40.4 \% & 5.7 \% \\
+            I-FGSM & 78.4 \% & 7.0 \% \\
+            PGD & 78.8 \% & 6.9 \% \\
+            Cílená optimalizační metoda & 100 \% & 100 \% \\
+            CW & 99.7 \% & 100 \% \\
+            \hline
+        \end{tabular}
+        \caption{Úspěšnost metod generování adversariálních vzorků}
+        \label{allgen_success}
+    \end{table}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Příklady vzorků vygenerovaných metodami generování adversariálních vzorků proti robustně naučené síti}
+    \begin{figure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/benign_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/fgsm_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/ifgsm_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/pgd_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/lbfgs_4.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_1.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_3.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_5.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_7.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_2.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_34.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_18.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_37.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_17.png}
+            \includegraphics[width=0.09\textwidth]{Images/Graphics/AEXAMPLES/R_ALLGEN/cw_4.png}
+        \end{subfigure}
+        \centering
+        \caption{Vzorky generované metodami hledání adversariálních vzorků proti robustně naučené síti}
+        \label{r_allgen}
+    \end{figure}
+\end{frame}
+
+\section*{Závěr}
+
+\begin{frame}
+    \frametitle{Závěr}
+    \begin{itemize}
+        \item Metody strojového učení skrývají úskalí
+        \item Lze snadno zneužít adversariálních vzorků
+        \item Proti takovým útokům se však lze bránit
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Literatura}
+    \begin{thebibliography}{1}
+        \bibitem{Goodfellow}I. Goodfellow, Y. Bengio, A. Courville,
+        \emph{Deep Learning}. MIT Press, 2016.
+
+        % \bibitem{MNIST} Y. Lecun, C. Cortes, C. J. Burges,
+        % \emph{The mnist database of handwritten digits}. 1998.
+
+        \bibitem{szegedy2014intriguing} C. Szegedy, W. Zaremba, I. Sutskever, J. Bruna, D. Erhan, I. Goodfellow, R. Fergus,
+        \emph{Intriguing properties of neural networks}.
+        arXiv, 2014.
+
+        % \bibitem{GoodfellowEtAl} I. Goodfellow, J. Shlens, C. Szegedy,
+        % \emph{Explaining and Harnessing Adversarial Examples}.
+        % In 'International Conference on Learning Representations', ICLR 2015.
+    \end{thebibliography}
+\end{frame}
+
+\end{document}
