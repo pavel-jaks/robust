@@ -412,6 +412,8 @@
     \end{itemize}
 \end{frame}
 
+\section*{Literatura}
+
 \begin{frame}
     \frametitle{Literatura}
     \begin{thebibliography}{1}
@@ -429,6 +431,84 @@
         % \emph{Explaining and Harnessing Adversarial Examples}.
         % In 'International Conference on Learning Representations', ICLR 2015.
     \end{thebibliography}
+\end{frame}
+
+\section{Otázky}
+
+\begin{frame}
+    \frametitle{Hledání $\lambda$ pomocí bisekce}
+    \begin{itemize}
+        \item Připomenutí: $\tilde{x}  = \operatorname{argmin}_{\hat{x}} \left(\|\hat{x} - x\|
+        - \lambda \cdot L(F_{\theta}(\hat{x}), y) \right)$
+        \item Cíl: Nalézt $\lambda$, pro které je řešení problému nesprávně klasifikováno a zároveň $\|\tilde{x} - x\|$ je co nejmenší
+        \item Definuji pomocnou funkci $g: \mathbb{R} \rightarrow \{-1, 1\}$
+        \begin{itemize}
+            \item $g(\lambda) = 1$, pokud $\tilde{x}$ pro ono $\lambda$ je nesprávně klasifikováno
+            \item $g(\lambda) = -1$, pokud $\tilde{x}$ pro ono $\lambda$ je správně klasifikováno
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hledání $\lambda$ pomocí bisekce}
+    \begin{enumerate}
+        \item Nalézt $\nu$, pro které $g(\nu) = 1$
+        \item Nalézt $\mu$, pro které $g(\mu) = -1$
+        \item Ozn. $\lambda = \mu + \frac{\nu - \mu}{2}$
+        \begin{itemize}
+            \item Pro $g(\lambda) = 1$ provést $\nu \leftarrow \lambda$
+            \item Pro $g(\lambda) = -1$ provést $\mu \leftarrow \lambda$
+        \end{itemize}
+        \item Opakovat až $\nu - \mu < \varepsilon$
+        \item Vrátit $\nu$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Bisekce a konvergence}
+    \begin{itemize}
+        \item Věta o konvergenci bisekce požaduje spojitost funkce, jejíž kořeny se hledají
+        \item To ovšem $g$ není
+        \item Nicméně posloupnost čísel $\nu$ je Cauchyovská v $\mathbb{R}$
+        \item Čili, lze-li provést každý krok algoritmu, pak metoda konverguje
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cílené FGSM}
+    \begin{itemize}
+        \item Předpis cílené FGSM: $\tilde{x} = x - \kappa \cdot \operatorname{sign} \left( \nabla_x L(F(x), \tilde{y}) \right)$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Počet iterací tréningu neuronové sítě}
+    \begin{itemize}
+        \item Volba probíhala s přihlédnutím k následujícím faktorům:
+        \begin{itemize}
+            \item Dostatečný počet vzorků, které síť během trénování potká
+            \begin{itemize}
+                \item $5000 \cdot 30 = 150000 > 60000$
+            \end{itemize}
+            \item Úspěšnost sítě na testovací datové sadě
+            \item CPU čas (trénoval jsem na CPU)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Porovnávání úspěšnosti útoku}
+    \begin{itemize}
+        \item Čistě porovnání procentuální úspěšnosti útoku nezohledňuje blízkost adversariálního vzorku k benignímu
+        \item Čili jako srovnání metod by byla lepší dvojice čísel, a to procentuální úspěšnost útoku a statistika norem perturbací (např. průměr)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Volba použité normy}
+    \begin{itemize}
+        \item Blíže bude vzorek s euklidovskou normou perturbace menší než $0.5$ oproti vzorku s maximovou normou perturbace menší než $0.5$
+    \end{itemize}
 \end{frame}
 
 \end{document}
