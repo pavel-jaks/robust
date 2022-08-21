@@ -441,7 +441,7 @@
         \item Připomenutí: $\tilde{x}  = \operatorname{argmin}_{\hat{x}} \left(\|\hat{x} - x\|
         - \lambda \cdot L(F_{\theta}(\hat{x}), y) \right)$
         \item Cíl: Nalézt $\lambda$, pro které je řešení problému nesprávně klasifikováno a zároveň $\|\tilde{x} - x\|$ je co nejmenší
-        \item Definuji pomocnou funkci $g: \mathbb{R} \rightarrow \{-1, 1\}$
+        \item Definuji pomocnou funkci $g: (0, + \infty) \rightarrow \{-1, 1\}$
         \begin{itemize}
             \item $g(\lambda) = 1$, pokud $\tilde{x}$ pro ono $\lambda$ je nesprávně klasifikováno
             \item $g(\lambda) = -1$, pokud $\tilde{x}$ pro ono $\lambda$ je správně klasifikováno
