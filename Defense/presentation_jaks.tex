@@ -126,7 +126,7 @@
         \centering
         $\exists x, y : \exists \Delta x, \|\Delta x\| \leq \kappa : $
 
-        $C(F(x)) = C(y) \land C(F(x + \Delta x)) \neq C(y)$
+        $C(F_\theta(x)) = C(y) \land C(F_\theta(x + \Delta x)) \neq C(y)$
     \end{block}
     \begin{itemize}
         \item Označme $\tilde{x} = x + \Delta x$
@@ -140,7 +140,7 @@
     \begin{itemize}
         \item FGSM
         \begin{itemize}
-            \item $\tilde{x} = x + \kappa \cdot \operatorname{sign} \left( \nabla_x L(F(x), y) \right)$
+            \item $\tilde{x} = x + \kappa \cdot \operatorname{sign} \left( \nabla_x L(F_\theta(x), y) \right)$
         \end{itemize}
         \item I-FGSM
         \begin{itemize}
@@ -283,7 +283,7 @@
 
     \begin{block}{Obecná formulace problému}
         \centering
-        $\theta = \operatorname{argmin}_\theta \frac{1}{N} \sum_{i=1}^N  \operatorname{max}_{\tilde{x} \in B(x^{(i)}, \kappa)} L\left(F_\theta(\tilde{x}), y^{(i)}\right)$
+        $\theta = \operatorname{argmin}_\theta \frac{1}{N} \sum_{i=1}^N  \operatorname{max}_{\hat{x} \in B(x^{(i)}, \kappa)} L\left(F_\theta(\hat{x}), y^{(i)}\right)$
     \end{block}
 \end{frame}
 
@@ -477,7 +477,7 @@
 \begin{frame}
     \frametitle{Cílené FGSM}
     \begin{itemize}
-        \item Předpis cílené FGSM: $\tilde{x} = x - \kappa \cdot \operatorname{sign} \left( \nabla_x L(F(x), \tilde{y}) \right)$
+        \item Předpis cílené FGSM: $\tilde{x} = x - \kappa \cdot \operatorname{sign} \left( \nabla_x L(F_\theta(x), \tilde{y}) \right)$
     \end{itemize}
 \end{frame}
 
